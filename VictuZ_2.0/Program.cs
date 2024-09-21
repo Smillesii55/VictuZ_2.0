@@ -1,3 +1,7 @@
+using VictuZ_2._0.Controllers;
+using VictuZ_2._0.Data;
+using VictuZ_2._0.Models.Sessions;
+
 namespace VictuZ_2._0
 {
     public class Program
@@ -5,6 +9,8 @@ namespace VictuZ_2._0
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<SessionDbContext>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
