@@ -19,5 +19,10 @@ html {
 
 body {
   margin-bottom: 60px;
-  background-color: lightgreen;
+  background-color: lightblue;
+}
+
+.basicbox {
+    min-height: 200px;
+    background-color: white;
 }
