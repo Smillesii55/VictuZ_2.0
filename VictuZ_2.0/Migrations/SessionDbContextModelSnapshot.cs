@@ -56,10 +56,10 @@ namespace VictuZ_2._0.Migrations
                         new
                         {
                             Id = 1,
-                            ActivityDate = new DateTime(2024, 9, 20, 16, 30, 31, 387, DateTimeKind.Local).AddTicks(9180),
+                            ActivityDate = new DateTime(2024, 9, 21, 11, 40, 4, 787, DateTimeKind.Local).AddTicks(2377),
                             CreatedById = 1,
                             Description = "Dit is een voorbeeld",
-                            EndDate = new DateTime(2024, 9, 20, 17, 30, 31, 387, DateTimeKind.Local).AddTicks(9231),
+                            EndDate = new DateTime(2024, 9, 21, 12, 40, 4, 787, DateTimeKind.Local).AddTicks(2431),
                             LocationId = 1,
                             Title = "Voorbeeld"
                         });
