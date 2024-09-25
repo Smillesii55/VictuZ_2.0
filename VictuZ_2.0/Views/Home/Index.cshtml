@@ -2,21 +2,41 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welkom bij de VictuZ Web Applicatie :)</h1>
-    <p>Yay</p>
+<!-- Header Banner -->
+<div class="header-banner">
+    <div class="banner-content text-center text-white">
+        <h1>Welkom bij VictuZ</h1>
+        <p class="lead">Ontdek onze activiteiten en word deel van onze gemeenschap</p>
+        <a href="@Url.Action("Index", "Sessions")" class="btn btn-primary btn-lg">Bekijk Activiteiten</a>
+    </div>
 </div>
-<div class="row gx-5">
-    <div class="col-6">
-        <div class="border basicbox">
-            Agenda
+
+<!-- Hoofdinhoud -->
+<div class="container mt-5">
+    <div class="row">
+        <!-- Agenda Sectie -->
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 fw-normal">Agenda</h4>
+                </div>
+                <div class="card-body">
+                    <p>Blijf op de hoogte van onze komende evenementen en activiteiten.</p>
+                    <a href="@Url.Action("Agenda", "Home")" class="btn btn-outline-primary">Bekijk Agenda</a>
+                </div>
+            </div>
         </div>
-        
-    </div>
-    <div class="col-6">
-        <div class="border basicbox">
-            Nieuws
+        <!-- Nieuws Sectie -->
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header">
+                    <h4 class="my-0 fw-normal">Nieuws</h4>
+                </div>
+                <div class="card-body">
+                    <p>Lees het laatste nieuws en updates van onze organisatie.</p>
+                    <a href="@Url.Action("Nieuws", "Home")" class="btn btn-outline-primary">Lees Nieuws</a>
+                </div>
+            </div>
         </div>
     </div>
-    
 </div>

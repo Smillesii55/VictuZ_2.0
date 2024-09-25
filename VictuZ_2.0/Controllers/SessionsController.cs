@@ -12,9 +12,9 @@ namespace VictuZ_2._0.Controllers
 {
     public class SessionsController : Controller
     {
-        private readonly SessionDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public SessionsController(SessionDbContext context)
+        public SessionsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -22,7 +22,8 @@ namespace VictuZ_2._0.Controllers
         // GET: Sessions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Voorbeelden.ToListAsync());
+            var applicationDbContext = _context.Sessions.Include(s => s.CreatedBy).Include(s => s.Location);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Sessions/Details/5
@@ -33,7 +34,9 @@ namespace VictuZ_2._0.Controllers
                 return NotFound();
             }
 
-            var session = await _context.Voorbeelden
+            var session = await _context.Sessions
+                .Include(s => s.CreatedBy)
+                .Include(s => s.Location)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (session == null)
             {
@@ -46,6 +49,8 @@ namespace VictuZ_2._0.Controllers
         // GET: Sessions/Create
         public IActionResult Create()
         {
+            ViewData["CreatedById"] = new SelectList(_context.BoardMembers, "Id", "Id");
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id");
             return View();
         }
 
@@ -62,6 +67,8 @@ namespace VictuZ_2._0.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CreatedById"] = new SelectList(_context.BoardMembers, "Id", "Id", session.CreatedById);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
             return View(session);
         }
 
@@ -73,11 +80,13 @@ namespace VictuZ_2._0.Controllers
                 return NotFound();
             }
 
-            var session = await _context.Voorbeelden.FindAsync(id);
+            var session = await _context.Sessions.FindAsync(id);
             if (session == null)
             {
                 return NotFound();
             }
+            ViewData["CreatedById"] = new SelectList(_context.BoardMembers, "Id", "Id", session.CreatedById);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
             return View(session);
         }
 
@@ -113,6 +122,8 @@ namespace VictuZ_2._0.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CreatedById"] = new SelectList(_context.BoardMembers, "Id", "Id", session.CreatedById);
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
             return View(session);
         }
 
@@ -124,7 +135,9 @@ namespace VictuZ_2._0.Controllers
                 return NotFound();
             }
 
-            var session = await _context.Voorbeelden
+            var session = await _context.Sessions
+                .Include(s => s.CreatedBy)
+                .Include(s => s.Location)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (session == null)
             {
@@ -139,10 +152,10 @@ namespace VictuZ_2._0.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var session = await _context.Voorbeelden.FindAsync(id);
+            var session = await _context.Sessions.FindAsync(id);
             if (session != null)
             {
-                _context.Voorbeelden.Remove(session);
+                _context.Sessions.Remove(session);
             }
 
             await _context.SaveChangesAsync();
@@ -151,7 +164,7 @@ namespace VictuZ_2._0.Controllers
 
         private bool SessionExists(int id)
         {
-            return _context.Voorbeelden.Any(e => e.Id == id);
+            return _context.Sessions.Any(e => e.Id == id);
         }
     }
 }

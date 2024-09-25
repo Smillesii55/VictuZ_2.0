@@ -1,28 +1,96 @@
+/* Algemene instellingen */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
-  background-color: lightblue;
+    background-color: #f8f9fa;
+    margin-bottom: 60px;
 }
 
-.basicbox {
-    min-height: 200px;
-    background-color: white;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
+
+/* Header Banner */
+.header-banner {
+    background-image: url('/images/Hero-Image.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    padding: 120px 0;
+    color: #fff;
+}
+
+    .header-banner::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Donkere overlay */
+        z-index: 1;
+    }
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+}
+
+    .banner-content h1 {
+        font-size: 3em;
+        margin-bottom: 0.5em;
+    }
+
+    .banner-content p.lead {
+        font-size: 1.5em;
+        margin-bottom: 1em;
+    }
+
+    .banner-content .btn {
+        font-size: 1.2em;
+        padding: 0.75em 1.5em;
+    }
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 8px;
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-body {
+    background-color: #fff;
+}
+
+.card h4 {
+    margin: 0;
+}
+
+.btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
