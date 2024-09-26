@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VictuZ_2._0.Models.Feedbacks;
 using VictuZ_2._0.Models.Locations;
+using VictuZ_2._0.Models.Newss;
 using VictuZ_2._0.Models.Sessions;
 using VictuZ_2._0.Models.Suggestions;
 using VictuZ_2._0.Models.Users;
@@ -18,6 +19,7 @@ namespace VictuZ_2._0.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<Suggestion> Suggestions { get; set; }
         public DbSet<SuggestionLike> SuggestionLikes { get; set; }
+        public DbSet<News> News { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

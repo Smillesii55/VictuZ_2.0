@@ -1,0 +1,49 @@
+﻿@model VictuZ_2._0.Models.Newss.News
+
+@{
+    ViewData["Title"] = "Edit News";
+}
+
+<h1>Edit News</h1>
+
+<h4>News</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="PublicationDate" />
+            <input type="hidden" asp-for="ImageUrl" id="hiddenImageUrl" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" id="Title" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control" rows="5" id="Content"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            @await Html.PartialAsync("_ImageUpload", Model)
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-link">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
