@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using VictuZ_2._0.Data;
 using VictuZ_2._0.Models;
 using VictuZ_2._0.Models.ViewModels;
