@@ -41,6 +41,8 @@ namespace VictuZ_2._0.Controllers
         }
 
         // GET: News/Create
+        [Authorize(Roles = "BoardMember")]
+
         public IActionResult Create()
         {
             var news = new News();
@@ -51,6 +53,7 @@ namespace VictuZ_2._0.Controllers
         // POST: News/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "BoardMember")]
         public async Task<IActionResult> Create([Bind("Id,Title,Content,ImageUrl")] News news, IFormFile imageFile)
         {
             if (ModelState.IsValid)
@@ -91,6 +94,8 @@ namespace VictuZ_2._0.Controllers
 
 
         // GET: News/Edit/5
+        [Authorize(Roles = "BoardMember")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -109,6 +114,8 @@ namespace VictuZ_2._0.Controllers
         // POST: News/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "BoardMember")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,PublicationDate,ImageUrl")] News news, IFormFile imageFile)
         {
             if (id != news.Id)
@@ -185,6 +192,8 @@ namespace VictuZ_2._0.Controllers
 
 
         // GET: News/Delete/5
+        [Authorize(Roles = "BoardMember")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -205,6 +214,8 @@ namespace VictuZ_2._0.Controllers
         // POST: News/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "BoardMember")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var news = await _context.News.FindAsync(id);
