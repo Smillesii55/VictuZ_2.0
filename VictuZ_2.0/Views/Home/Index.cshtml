@@ -1,4 +1,6 @@
-﻿@{
+﻿@model VictuZ_2._0.Models.ViewModels.HomeIndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -16,13 +18,36 @@
     <div class="row">
         <!-- Agenda Sectie -->
         <div class="col-md-6">
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header">
+            <div class="card mb-4 shadow-sm border-primary">
+                <!-- Toegevoegde border-class -->
+                <div class="card-header bg-primary text-white">
                     <h4 class="my-0 fw-normal">Agenda</h4>
                 </div>
                 <div class="card-body">
                     <p>Blijf op de hoogte van onze komende evenementen en activiteiten.</p>
-                    <a href="@Url.Action("Agenda", "Home")" class="btn btn-outline-primary">Bekijk Agenda</a>
+
+                    @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var session in Model.UpcomingSessions)
+                            {
+                                <div class="list-group-item list-group-item-action flex-column align-items-start border">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">@session.Title</h5>
+                                        <small>@session.ActivityDate.ToString("dd-MM-yyyy HH:mm")</small>
+                                    </div>
+                                    <p class="mb-1"><strong>Locatie:</strong> @session.Location?.Name</p>
+                                    <a href="@Url.Action("Details", "Sessions", new { id = session.Id })" class="btn btn-sm btn-outline-primary">Bekijk</a>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Geen komende activiteiten.</p>
+                    }
+
+                    <a href="@Url.Action("Index", "Sessions")" class="btn btn-outline-primary mt-3">Bekijk Alle Activiteiten</a>
                 </div>
             </div>
         </div>
