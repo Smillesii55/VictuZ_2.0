@@ -5,7 +5,7 @@ namespace VictuZ_2._0.Models.Suggestions
     public class Suggestion
     {
         public int Id { get; set; }
-        public int? MemberId { get; set; }  // Kan null zijn voor anonieme suggesties
+        public int? UserId { get; set; }  // Kan null zijn voor anonieme suggesties
         public string Content { get; set; }
         public DateTime SubmittedOn { get; set; }
         public bool IsAnonymous { get; set; }  // Anoniem voor andere leden
@@ -13,14 +13,14 @@ namespace VictuZ_2._0.Models.Suggestions
         public int LikeCount { get; set; }
 
         // Navigatie-eigenschappen
-        public Member? Member { get; set; }
+        public User? User { get; set; }
         public ICollection<SuggestionLike>? SuggestionLikes { get; set; }
 
         // Constructor
-        public Suggestion(int id, int? memberId, string content, DateTime submittedOn, bool isAnonymous, bool isAnonymousToBoard, int likeCount)
+        public Suggestion(int id, int? userId, string content, DateTime submittedOn, bool isAnonymous, bool isAnonymousToBoard, int likeCount)
         {
             Id = id;
-            MemberId = memberId;
+            UserId = userId;
             Content = content;
             SubmittedOn = submittedOn;
             IsAnonymous = isAnonymous;

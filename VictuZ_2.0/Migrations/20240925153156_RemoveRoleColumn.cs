@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VictuZ_2._0.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class RemoveRoleColumn : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,15 +32,14 @@ namespace VictuZ_2._0.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Role = table.Column<int>(type: "int", nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -182,7 +181,7 @@ namespace VictuZ_2._0.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MemberId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubmittedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsAnonymous = table.Column<bool>(type: "bit", nullable: false),
@@ -193,8 +192,8 @@ namespace VictuZ_2._0.Migrations
                 {
                     table.PrimaryKey("PK_Suggestions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Suggestions_AspNetUsers_MemberId",
-                        column: x => x.MemberId,
+                        name: "FK_Suggestions_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
@@ -237,14 +236,14 @@ namespace VictuZ_2._0.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SuggestionId = table.Column<int>(type: "int", nullable: false),
-                    MemberId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SuggestionLikes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SuggestionLikes_AspNetUsers_MemberId",
-                        column: x => x.MemberId,
+                        name: "FK_SuggestionLikes_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -263,7 +262,7 @@ namespace VictuZ_2._0.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SessionId = table.Column<int>(type: "int", nullable: false),
-                    MemberId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     SubmittedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -272,8 +271,8 @@ namespace VictuZ_2._0.Migrations
                 {
                     table.PrimaryKey("PK_Feedbacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Feedbacks_AspNetUsers_MemberId",
-                        column: x => x.MemberId,
+                        name: "FK_Feedbacks_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -292,15 +291,15 @@ namespace VictuZ_2._0.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SessionId = table.Column<int>(type: "int", nullable: false),
-                    MemberId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SessionRegistrations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SessionRegistrations_AspNetUsers_MemberId",
-                        column: x => x.MemberId,
+                        name: "FK_SessionRegistrations_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -352,24 +351,24 @@ namespace VictuZ_2._0.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_MemberId",
-                table: "Feedbacks",
-                column: "MemberId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Feedbacks_SessionId",
                 table: "Feedbacks",
                 column: "SessionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SessionRegistrations_MemberId",
-                table: "SessionRegistrations",
-                column: "MemberId");
+                name: "IX_Feedbacks_UserId",
+                table: "Feedbacks",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SessionRegistrations_SessionId",
                 table: "SessionRegistrations",
                 column: "SessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SessionRegistrations_UserId",
+                table: "SessionRegistrations",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sessions_CreatedById",
@@ -382,19 +381,19 @@ namespace VictuZ_2._0.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SuggestionLikes_MemberId",
-                table: "SuggestionLikes",
-                column: "MemberId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SuggestionLikes_SuggestionId",
                 table: "SuggestionLikes",
                 column: "SuggestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Suggestions_MemberId",
+                name: "IX_SuggestionLikes_UserId",
+                table: "SuggestionLikes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Suggestions_UserId",
                 table: "Suggestions",
-                column: "MemberId");
+                column: "UserId");
         }
 
         /// <inheritdoc />

@@ -1,21 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using VictuZ_2._0.Models.Users;
-using VictuZ_2._0.Models.Sessions;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using VictuZ_2._0.Models.Feedbacks;
 using VictuZ_2._0.Models.Locations;
+using VictuZ_2._0.Models.Sessions;
 using VictuZ_2._0.Models.Suggestions;
-using VictuZ_2._0.Models.Enums;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+using VictuZ_2._0.Models.Users;
 
 namespace VictuZ_2._0.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
-        // DbSet properties voor alle entiteiten
-        public DbSet<User> Users { get; set; }
-        public DbSet<Member> Members { get; set; }
-        public DbSet<BoardMember> BoardMembers { get; set; }
+        // DbSet properties voor alle entiteiten, zonder Users omdat IdentityDbContext dit al bevat
         public DbSet<Session> Sessions { get; set; }
         public DbSet<SessionRegistration> SessionRegistrations { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
@@ -26,28 +22,32 @@ namespace VictuZ_2._0.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-
         }
+
+        // Verwijder OnConfiguring als je de connectiestring in Program.cs instelt.
+        // Als je het toch wilt behouden, zorg ervoor dat het alleen wordt geconfigureerd als het nog niet is gedaan.
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=VictuZDb;Integrated Security=True;TrustServerCertificate=True");
+            if (!optionsBuilder.IsConfigured)
+            {
+                // Overweeg om de connectiestring naar appsettings.json te verplaatsen voor betere configuratie
+                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=VictuZDb;Integrated Security=True;TrustServerCertificate=True");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Configuratie voor overerving
-            modelBuilder.Entity<User>()
-                .HasDiscriminator<RoleType>("Role")
-                .HasValue<Member>(RoleType.Member)
-                .HasValue<BoardMember>(RoleType.BoardMember);
 
-            // Configuratie van relaties en constraints
+            // Verwijder de discriminator configuratie aangezien we geen overerving meer gebruiken
+            // Geen .HasDiscriminator() meer
 
-            // Session en BoardMember (CreatedBy)
+            // Configureer relaties en constraints
+
+            // Session en User (CreatedBy)
             modelBuilder.Entity<Session>()
                 .HasOne(s => s.CreatedBy)
-                .WithMany(b => b.CreatedActivities)
+                .WithMany(u => u.CreatedActivities)
                 .HasForeignKey(s => s.CreatedById)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -65,9 +65,9 @@ namespace VictuZ_2._0.Data
                 .HasForeignKey(sr => sr.SessionId);
 
             modelBuilder.Entity<SessionRegistration>()
-                .HasOne(sr => sr.Member)
-                .WithMany(m => m.ActivityRegistrations)
-                .HasForeignKey(sr => sr.MemberId);
+                .HasOne(sr => sr.User)
+                .WithMany(u => u.ActivityRegistrations)
+                .HasForeignKey(sr => sr.UserId);
 
             // Feedback relaties
             modelBuilder.Entity<Feedback>()
@@ -76,16 +76,16 @@ namespace VictuZ_2._0.Data
                 .HasForeignKey(f => f.SessionId);
 
             modelBuilder.Entity<Feedback>()
-                .HasOne(f => f.Member)
-                .WithMany(m => m.Feedbacks)
-                .HasForeignKey(f => f.MemberId);
+                .HasOne(f => f.User)
+                .WithMany(u => u.Feedbacks)
+                .HasForeignKey(f => f.UserId);
 
             // Suggestion relaties
             modelBuilder.Entity<Suggestion>()
-                .HasOne(s => s.Member)
-                .WithMany(m => m.Suggestions)
-                .HasForeignKey(s => s.MemberId)
-                .OnDelete(DeleteBehavior.SetNull); // Omdat MemberId nullable is
+                .HasOne(s => s.User)
+                .WithMany(u => u.Suggestions)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.SetNull); // Omdat UserId nullable is
 
             // SuggestionLike relaties
             modelBuilder.Entity<SuggestionLike>()
@@ -94,13 +94,20 @@ namespace VictuZ_2._0.Data
                 .HasForeignKey(sl => sl.SuggestionId);
 
             modelBuilder.Entity<SuggestionLike>()
-                .HasOne(sl => sl.Member)
+                .HasOne(sl => sl.User)
                 .WithMany()
-                .HasForeignKey(sl => sl.MemberId);
+                .HasForeignKey(sl => sl.UserId);
 
-            // Unieke constraints, indices en overige configuraties kunnen hier worden toegevoegd
+            // Configureer IdentityRole<int> tabel
+            modelBuilder.Entity<IdentityRole<int>>(entity =>
+            {
+                entity.ToTable("AspNetRoles");
+                entity.HasKey(r => r.Id);
+                entity.Property(r => r.Id).ValueGeneratedOnAdd();
+            });
 
-            base.OnModelCreating(modelBuilder);
+            // Laat IdentityDbContext de configuratie van IdentityUserRole<int> beheren
+            // Verwijder expliciete configuratie om conflicten te voorkomen
         }
     }
 }

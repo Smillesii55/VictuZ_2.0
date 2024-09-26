@@ -15,7 +15,7 @@ namespace VictuZ_2._0.Models.Sessions
         public int LocationId { get; set; }
 
         // Navigatie-eigenschappen
-        public BoardMember? CreatedBy { get; set; }
+        public User? CreatedBy { get; set; }
         public Location? Location { get; set; }
         public ICollection<SessionRegistration>? ActivityRegistrations { get; set; }
         public ICollection<Feedback>? Feedbacks { get; set; }

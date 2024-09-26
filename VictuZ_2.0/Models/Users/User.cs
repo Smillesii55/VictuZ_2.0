@@ -1,16 +1,32 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using VictuZ_2._0.Models.Enums;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using VictuZ_2._0.Models.Feedbacks;
+using VictuZ_2._0.Models.Sessions;
+using VictuZ_2._0.Models.Suggestions;
 
 namespace VictuZ_2._0.Models.Users
 {
-    public abstract class User : IdentityUser<int>
+    public class User : IdentityUser<int>
     {
-        public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? Email { get; set; }  // Beveiligd opslaan
-        public string? PasswordHash { get; set; }  // Hashed wachtwoorden
-        public RoleType Role { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-        public User() { }
+        public DateTime RegistrationDate { get; set; }
+
+        // Navigatie-eigenschappen
+        public ICollection<SessionRegistration>? ActivityRegistrations { get; set; }
+        public ICollection<Feedback>? Feedbacks { get; set; }
+        public ICollection<Suggestion>? Suggestions { get; set; }
+        public ICollection<Session>? CreatedActivities { get; set; }
+
+        public User()
+        {
+            ActivityRegistrations = new HashSet<SessionRegistration>();
+            Feedbacks = new HashSet<Feedback>();
+            Suggestions = new HashSet<Suggestion>();
+            CreatedActivities = new HashSet<Session>();
+        }
     }
 }

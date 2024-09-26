@@ -5,14 +5,27 @@ using VictuZ_2._0.Models.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configureer de connectiestring voor DbContext
+// Haal de connectiestring op uit appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Configureer de DbContext met de connectiestring
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 // Configureer Identity
-builder.Services.AddIdentity<User, IdentityRole<int>>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false; // Pas aan indien nodig
+    // Pas wachtwoordvereisten aan indien nodig
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
+
 
 // Voeg controllers en Razor Pages toe
 builder.Services.AddControllersWithViews();
@@ -38,10 +51,12 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Definieer de standaard route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// Map Razor Pages
 app.MapRazorPages();
 
 app.Run();

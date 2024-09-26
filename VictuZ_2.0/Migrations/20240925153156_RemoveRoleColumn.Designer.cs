@@ -12,8 +12,8 @@ using VictuZ_2._0.Data;
 namespace VictuZ_2._0.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240925100218_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240925153156_RemoveRoleColumn")]
+    partial class RemoveRoleColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,9 +170,6 @@ namespace VictuZ_2._0.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -182,11 +179,14 @@ namespace VictuZ_2._0.Migrations
                     b.Property<DateTime>("SubmittedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId");
-
                     b.HasIndex("SessionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Feedbacks");
                 });
@@ -258,20 +258,20 @@ namespace VictuZ_2._0.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("SessionId")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId");
-
                     b.HasIndex("SessionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("SessionRegistrations");
                 });
@@ -297,15 +297,15 @@ namespace VictuZ_2._0.Migrations
                     b.Property<int>("LikeCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MemberId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("SubmittedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Suggestions");
                 });
@@ -318,17 +318,17 @@ namespace VictuZ_2._0.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MemberId")
+                    b.Property<int>("SuggestionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SuggestionId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId");
-
                     b.HasIndex("SuggestionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("SuggestionLikes");
                 });
@@ -362,6 +362,7 @@ namespace VictuZ_2._0.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -381,8 +382,8 @@ namespace VictuZ_2._0.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -405,27 +406,6 @@ namespace VictuZ_2._0.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<int>("Role");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("VictuZ_2._0.Models.Users.BoardMember", b =>
-                {
-                    b.HasBaseType("VictuZ_2._0.Models.Users.User");
-
-                    b.HasDiscriminator().HasValue(1);
-                });
-
-            modelBuilder.Entity("VictuZ_2._0.Models.Users.Member", b =>
-                {
-                    b.HasBaseType("VictuZ_2._0.Models.Users.User");
-
-                    b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasDiscriminator().HasValue(0);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -481,26 +461,26 @@ namespace VictuZ_2._0.Migrations
 
             modelBuilder.Entity("VictuZ_2._0.Models.Feedbacks.Feedback", b =>
                 {
-                    b.HasOne("VictuZ_2._0.Models.Users.Member", "Member")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("VictuZ_2._0.Models.Sessions.Session", "Session")
                         .WithMany("Feedbacks")
                         .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Member");
+                    b.HasOne("VictuZ_2._0.Models.Users.User", "User")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Session");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VictuZ_2._0.Models.Sessions.Session", b =>
                 {
-                    b.HasOne("VictuZ_2._0.Models.Users.BoardMember", "CreatedBy")
+                    b.HasOne("VictuZ_2._0.Models.Users.User", "CreatedBy")
                         .WithMany("CreatedActivities")
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -519,50 +499,50 @@ namespace VictuZ_2._0.Migrations
 
             modelBuilder.Entity("VictuZ_2._0.Models.Sessions.SessionRegistration", b =>
                 {
-                    b.HasOne("VictuZ_2._0.Models.Users.Member", "Member")
-                        .WithMany("ActivityRegistrations")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("VictuZ_2._0.Models.Sessions.Session", "Session")
                         .WithMany("ActivityRegistrations")
                         .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Member");
+                    b.HasOne("VictuZ_2._0.Models.Users.User", "User")
+                        .WithMany("ActivityRegistrations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Session");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VictuZ_2._0.Models.Suggestions.Suggestion", b =>
                 {
-                    b.HasOne("VictuZ_2._0.Models.Users.Member", "Member")
+                    b.HasOne("VictuZ_2._0.Models.Users.User", "User")
                         .WithMany("Suggestions")
-                        .HasForeignKey("MemberId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Member");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VictuZ_2._0.Models.Suggestions.SuggestionLike", b =>
                 {
-                    b.HasOne("VictuZ_2._0.Models.Users.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("VictuZ_2._0.Models.Suggestions.Suggestion", "Suggestion")
                         .WithMany("SuggestionLikes")
                         .HasForeignKey("SuggestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Member");
+                    b.HasOne("VictuZ_2._0.Models.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Suggestion");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VictuZ_2._0.Models.Locations.Location", b =>
@@ -582,14 +562,11 @@ namespace VictuZ_2._0.Migrations
                     b.Navigation("SuggestionLikes");
                 });
 
-            modelBuilder.Entity("VictuZ_2._0.Models.Users.BoardMember", b =>
-                {
-                    b.Navigation("CreatedActivities");
-                });
-
-            modelBuilder.Entity("VictuZ_2._0.Models.Users.Member", b =>
+            modelBuilder.Entity("VictuZ_2._0.Models.Users.User", b =>
                 {
                     b.Navigation("ActivityRegistrations");
+
+                    b.Navigation("CreatedActivities");
 
                     b.Navigation("Feedbacks");
 
