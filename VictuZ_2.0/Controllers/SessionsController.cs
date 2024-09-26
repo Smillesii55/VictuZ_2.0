@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using VictuZ_2._0.Models.Sessions;
 
 namespace VictuZ_2._0.Controllers
 {
+    
     public class SessionsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -47,9 +49,10 @@ namespace VictuZ_2._0.Controllers
         }
 
         // GET: Sessions/Create
+        [Authorize(Roles = "BoardMember")]
         public IActionResult Create()
         {
-            ViewData["CreatedById"] = new SelectList(_context.BoardMembers, "Id", "Id");
+            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Name");
             ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id");
             return View();
         }
@@ -59,6 +62,7 @@ namespace VictuZ_2._0.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "BoardMember")]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,CreatedById,LocationId")] Session session)
         {
             if (ModelState.IsValid)
@@ -67,12 +71,13 @@ namespace VictuZ_2._0.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CreatedById"] = new SelectList(_context.BoardMembers, "Id", "Id", session.CreatedById);
+            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Name", session.CreatedById);
             ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
             return View(session);
         }
 
         // GET: Sessions/Edit/5
+        [Authorize(Roles = "BoardMember")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,7 +90,7 @@ namespace VictuZ_2._0.Controllers
             {
                 return NotFound();
             }
-            ViewData["CreatedById"] = new SelectList(_context.BoardMembers, "Id", "Id", session.CreatedById);
+            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Name", session.CreatedById);
             ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
             return View(session);
         }
@@ -95,6 +100,7 @@ namespace VictuZ_2._0.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "BoardMember")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,CreatedById,LocationId")] Session session)
         {
             if (id != session.Id)
@@ -122,12 +128,13 @@ namespace VictuZ_2._0.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CreatedById"] = new SelectList(_context.BoardMembers, "Id", "Id", session.CreatedById);
+            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Name", session.CreatedById);
             ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
             return View(session);
         }
 
         // GET: Sessions/Delete/5
+        [Authorize(Roles = "BoardMember")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

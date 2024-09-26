@@ -1,8 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -29,7 +25,6 @@ namespace VictuZ_2._0.Areas.Identity.Pages.Account
         private readonly IUserStore<User> _userStore;
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        //private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<User> userManager,
@@ -45,29 +40,13 @@ namespace VictuZ_2._0.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string ReturnUrl { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
             [Required]
@@ -90,7 +69,6 @@ namespace VictuZ_2._0.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
@@ -102,29 +80,50 @@ namespace VictuZ_2._0.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new Member
+                var user = new User
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
                     Name = Input.Name,
+                    RegistrationDate = DateTime.UtcNow // Voeg registratie datum toe indien nodig
                     // Voeg andere eigenschappen toe indien nodig
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
-                    // Toewijzen van de rol 'Member' aan de nieuwe gebruiker
-                    await _userManager.AddToRoleAsync(user, "Member");
+                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation($"User ID: {user.Id}");
+
+                    // Voeg de gebruiker toe aan de rol 'Member'
+                    var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+                    if (roleResult.Succeeded)
+                    {
+                        _logger.LogInformation($"User with ID {user.Id} added to role 'Member'.");
+                    }
+                    else
+                    {
+                        foreach (var error in roleResult.Errors)
+                        {
+                            _logger.LogError($"Error adding user to role: {error.Description}");
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return Page();
+                    }
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
+
                 foreach (var error in result.Errors)
                 {
+                    _logger.LogError($"Error creating user: {error.Description}");
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // Als er validatiefouten zijn, formulier opnieuw tonen
             return Page();
         }
 
