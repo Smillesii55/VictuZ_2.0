@@ -7,24 +7,23 @@
 <!-- Header Banner -->
 <div class="header-banner">
     <div class="banner-content text-center text-white">
-        <h1>Welkom bij VictuZ</h1>
-        <p class="lead">Ontdek onze activiteiten en word deel van onze gemeenschap</p>
-        <a href="@Url.Action("Index", "Sessions")" class="btn btn-primary btn-lg">Bekijk Activiteiten</a>
+        <h1>Welcome to VictuZ</h1>
+        <p class="lead">Discover our activities and become part of our community</p>
+        <a href="@Url.Action("Index", "Sessions")" class="btn btn-primary btn-lg">View Activities</a>
     </div>
 </div>
 
-<!-- Hoofdinhoud -->
+<!-- Main Content -->
 <div class="container mt-5">
     <div class="row">
-        <!-- Agenda Sectie -->
+        <!-- Agenda Section -->
         <div class="col-md-6">
             <div class="card mb-4 shadow-sm border-primary">
-                <!-- Toegevoegde border-class -->
                 <div class="card-header bg-primary text-white">
                     <h4 class="my-0 fw-normal">Agenda</h4>
                 </div>
                 <div class="card-body">
-                    <p>Blijf op de hoogte van onze komende evenementen en activiteiten.</p>
+                    <p>Stay updated with our upcoming events and activities.</p>
 
                     @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
                     {
@@ -36,30 +35,65 @@
                                         <h5 class="mb-1">@session.Title</h5>
                                         <small>@session.ActivityDate.ToString("dd-MM-yyyy HH:mm")</small>
                                     </div>
-                                    <p class="mb-1"><strong>Locatie:</strong> @session.Location?.Name</p>
-                                    <a href="@Url.Action("Details", "Sessions", new { id = session.Id })" class="btn btn-sm btn-outline-primary">Bekijk</a>
+                                    <p class="mb-1"><strong>Location:</strong> @session.Location?.Name</p>
+                                    <a href="@Url.Action("Details", "Sessions", new { id = session.Id })" class="btn btn-sm btn-outline-primary">View</a>
                                 </div>
                             }
                         </div>
                     }
                     else
                     {
-                        <p>Geen komende activiteiten.</p>
+                        <p>No upcoming activities.</p>
                     }
 
-                    <a href="@Url.Action("Index", "Sessions")" class="btn btn-outline-primary mt-3">Bekijk Alle Activiteiten</a>
+                    <a href="@Url.Action("Index", "Sessions")" class="btn btn-outline-primary mt-3">View All Activities</a>
                 </div>
             </div>
         </div>
-        <!-- Nieuws Sectie -->
+        <!-- News Section -->
         <div class="col-md-6">
-            <div class="card mb-4 shadow-sm">
-                <div class="card-header">
-                    <h4 class="my-0 fw-normal">Nieuws</h4>
+            <div class="card mb-4 shadow-sm border-success">
+                <div class="card-header bg-success text-white">
+                    <h4 class="my-0 fw-normal">News</h4>
                 </div>
                 <div class="card-body">
-                    <p>Lees het laatste nieuws en updates van onze organisatie.</p>
-                    <a href="@Url.Action("Nieuws", "Home")" class="btn btn-outline-primary">Lees Nieuws</a>
+                    <p>Read the latest news and updates from our organization.</p>
+
+                    @if (Model.News != null && Model.News.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var news in Model.News)
+                            {
+                                <div class="list-group-item list-group-item-action flex-column align-items-start border">
+                                    @if (!string.IsNullOrEmpty(news.ImageUrl))
+                                    {
+                                        <img src="@news.ImageUrl" alt="Image for @news.Title" class="img-fluid mb-2" style="max-height: 180px;" />
+                                    }
+
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">@news.Title</h5>
+                                        <small>@news.PublicationDate.ToString("dd-MM-yyyy")</small>
+                                    </div>
+
+                                    @if (!string.IsNullOrEmpty(news.ImageUrl))
+                                    {
+                                        <a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-sm btn-outline-success">View</a>
+                                    }
+                                    else
+                                    {
+                                        <p>@(news.Content.Length > 100 ? news.Content.Substring(0, 100) + "..." : news.Content)</p>
+                                        <a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-sm btn-outline-success">Read More</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No news available.</p>
+                    }
+
+                    <a href="@Url.Action("Index", "News")" class="btn btn-outline-success mt-3">View All News</a>
                 </div>
             </div>
         </div>

@@ -94,3 +94,27 @@ body {
         background-color: #007bff;
         color: #fff;
     }
+
+.image-dropzone {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    cursor: default;
+}
+
+    .image-dropzone .image-preview img {
+        max-height: 100%;
+        max-width: 100%;
+        height: auto;
+        width: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .image-dropzone .image-preview p {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+

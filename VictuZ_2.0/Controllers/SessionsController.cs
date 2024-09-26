@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging; // Voeg deze using directive toe
 using VictuZ_2._0.Data;
 using VictuZ_2._0.Models.Sessions;
 using VictuZ_2._0.Models.Users;
