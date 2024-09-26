@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging; // Voeg deze using directive toe
 using VictuZ_2._0.Data;
 using VictuZ_2._0.Models.Sessions;
+using VictuZ_2._0.Models.Users;
 
 namespace VictuZ_2._0.Controllers
 {
@@ -15,10 +14,14 @@ namespace VictuZ_2._0.Controllers
     public class SessionsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly ILogger<SessionsController> _logger; // Voeg deze property toe
 
-        public SessionsController(ApplicationDbContext context)
+        public SessionsController(ApplicationDbContext context, UserManager<User> userManager, ILogger<SessionsController> logger)
         {
             _context = context;
+            _userManager = userManager;
+            _logger = logger;
         }
 
         // GET: Sessions
@@ -52,27 +55,46 @@ namespace VictuZ_2._0.Controllers
         [Authorize(Roles = "BoardMember")]
         public IActionResult Create()
         {
-            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Name");
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id");
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name");
             return View();
         }
 
         // POST: Sessions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,CreatedById,LocationId")] Session session)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId")] Session session)
         {
+            _logger.LogInformation("Attempting to create a new session.");
+
             if (ModelState.IsValid)
             {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    _logger.LogWarning("User is null during session creation.");
+                    return Unauthorized();
+                }
+
+                session.CreatedById = user.Id;
                 _context.Add(session);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation($"Session '{session.Title}' created by user '{user.Email}'.");
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Name", session.CreatedById);
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
+            else
+            {
+                // Log ModelState errors
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        _logger.LogError($"ModelState error for {state.Key}: {error.ErrorMessage}");
+                    }
+                }
+            }
+
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", session.LocationId);
             return View(session);
         }
 
@@ -90,30 +112,52 @@ namespace VictuZ_2._0.Controllers
             {
                 return NotFound();
             }
-            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Name", session.CreatedById);
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
+
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", session.LocationId);
             return View(session);
         }
 
         // POST: Sessions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,CreatedById,LocationId")] Session session)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId")] Session session)
         {
             if (id != session.Id)
             {
                 return NotFound();
             }
 
+            _logger.LogInformation($"Attempting to edit session with ID {id}.");
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(session);
+                    var existingSession = await _context.Sessions.FindAsync(id);
+                    if (existingSession == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Validatie van datums
+                    if (session.EndDate < session.ActivityDate)
+                    {
+                        ModelState.AddModelError(string.Empty, "Einddatum moet na de activiteitsdatum liggen.");
+                        ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", session.LocationId);
+                        return View(session);
+                    }
+
+                    // Update de velden
+                    existingSession.Title = session.Title;
+                    existingSession.Description = session.Description;
+                    existingSession.ActivityDate = session.ActivityDate;
+                    existingSession.EndDate = session.EndDate;
+                    existingSession.LocationId = session.LocationId;
+
+                    _context.Update(existingSession);
                     await _context.SaveChangesAsync();
+                    _logger.LogInformation($"Session '{existingSession.Title}' updated by user '{User.Identity.Name}'.");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,15 +167,28 @@ namespace VictuZ_2._0.Controllers
                     }
                     else
                     {
+                        _logger.LogError("Concurrency exception tijdens het bewerken van de sessie.");
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Name", session.CreatedById);
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Id", session.LocationId);
+            else
+            {
+                // Log ModelState errors
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        _logger.LogError($"ModelState error for {state.Key}: {error.ErrorMessage}");
+                    }
+                }
+            }
+
+            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", session.LocationId);
             return View(session);
         }
+
 
         // GET: Sessions/Delete/5
         [Authorize(Roles = "BoardMember")]
@@ -157,6 +214,7 @@ namespace VictuZ_2._0.Controllers
         // POST: Sessions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "BoardMember")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var session = await _context.Sessions.FindAsync(id);
