@@ -1,7 +1,9 @@
 /* Algemene instellingen */
 html {
     font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
 }
+
 
 @media (min-width: 768px) {
     html {
@@ -10,17 +12,20 @@ html {
 }
 
 body {
-    background-color: #f8f9fa;
-    margin-bottom: 60px;
+    font-size: 1rem;
 }
+
+
 
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+    outline: none;
 }
+
 
 /* Header Banner */
 .header-banner {
@@ -39,7 +44,7 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Donkere overlay */
+        background-color: rgba(0, 0, 0, 0.5);
         z-index: 1;
     }
 
@@ -61,21 +66,54 @@ body {
     .banner-content .btn {
         font-size: 1.2em;
         padding: 0.75em 1.5em;
+        border-radius: 50px;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
+
+        .banner-content .btn:hover {
+            background-color: #e0a800;
+            color: #fff;
+        }
+
 
 /* Card Styling */
 .card {
     border: none;
     border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
+    .card.border-primary .card-header {
+        background-color: #007bff;
+    }
+
+    .card.border-success .card-header {
+        background-color: #28a745;
+    }
+
+    .card.border-warning .card-header {
+        background-color: #ffc107;
+    }
+
 .card-header {
-    background-color: #007bff;
     color: #fff;
     border-bottom: none;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
 }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.list-group-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #f8f9fa; /* Optional: change background on hover */
+}
+
+
+
 
 .card-body {
     background-color: #fff;
@@ -96,11 +134,14 @@ body {
     }
 
 .image-dropzone {
-    position: relative;
-    height: 200px;
-    overflow: hidden;
-    cursor: default;
+    border: 2px dashed #6c757d;
+    border-radius: 8px;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 
     .image-dropzone .image-preview img {
         max-height: 100%;
@@ -112,9 +153,66 @@ body {
     }
 
     .image-dropzone .image-preview p {
-        margin-top: 10px;
-        font-size: 14px;
-        color: #6c757d;
+        text-align: center;
+        margin: 0;
     }
+
+.footer {
+    background-color: #f8f9fa;
+    padding: 2em 0;
+    color: #6c757d;
+}
+
+    .footer a {
+        color: #6c757d;
+        text-decoration: none;
+    }
+
+        .footer a:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+    .footer h5 {
+        font-weight: 600;
+        margin-bottom: 1em;
+    }
+.navbar-brand span {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.navbar-nav .nav-link {
+    position: relative;
+    transition: color 0.3s;
+}
+
+    .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0%;
+        height: 2px;
+        background-color: #ffc107; /* Bootstrap warning color */
+        transition: width 0.3s;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #ffc107;
+    }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+    .navbar-nav .nav-link.active {
+        color: #ffc107;
+    }
+
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+
 
 

@@ -5,38 +5,60 @@
 }
 
 <!-- Header Banner -->
-<div class="header-banner">
-    <div class="banner-content text-center text-white">
-        <h1>Welcome to VictuZ</h1>
-        <p class="lead">Discover our activities and become part of our community</p>
-        <a href="@Url.Action("Index", "Sessions")" class="btn btn-primary btn-lg">View Activities</a>
+<div class="header-banner text-white">
+    <div class="banner-content text-center">
+        <h1>Join the Conversation on VictuZ</h1>
+        <p class="lead">Share your ideas and see what others are suggesting</p>
+        <a href="@Url.Action("Index", "Suggestions")" class="btn btn-warning btn-lg">View Suggestions</a>
     </div>
 </div>
+
 
 <!-- Main Content -->
 <div class="container mt-5">
     <div class="row">
+        <!-- Suggestions Section -->
+        <div class="col-md-6">
+            <!-- Suggestions Card -->
+            <div class="card mb-4 shadow-sm border-warning">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="my-0 fw-normal">Community Suggestions</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Suggestions Content -->
+                    <p>No suggestions available.</p>
+                </div>
+            </div>
+        </div>
         <!-- Agenda Section -->
         <div class="col-md-6">
+            <!-- Agenda Card -->
             <div class="card mb-4 shadow-sm border-primary">
                 <div class="card-header bg-primary text-white">
                     <h4 class="my-0 fw-normal">Agenda</h4>
                 </div>
                 <div class="card-body">
+                    <!-- Agenda Content -->
                     <p>Stay updated with our upcoming events and activities.</p>
 
                     @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
                     {
-                        <div class="list-group">
+                        <div class="row row-cols-1 g-4">
                             @foreach (var session in Model.UpcomingSessions)
                             {
-                                <div class="list-group-item list-group-item-action flex-column align-items-start border">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">@session.Title</h5>
-                                        <small>@session.ActivityDate.ToString("dd-MM-yyyy HH:mm")</small>
+                                <div class="col">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h5 class="card-title">@session.Title</h5>
+                                                <small class="text-muted">@session.ActivityDate.ToString("dd-MM-yyyy HH:mm")</small>
+                                            </div>
+                                            <p class="card-text"><strong>Location:</strong> @session.Location?.Name</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="@Url.Action("Details", "Sessions", new { id = session.Id })" class="btn btn-sm btn-primary">View</a>
+                                        </div>
                                     </div>
-                                    <p class="mb-1"><strong>Location:</strong> @session.Location?.Name</p>
-                                    <a href="@Url.Action("Details", "Sessions", new { id = session.Id })" class="btn btn-sm btn-outline-primary">View</a>
                                 </div>
                             }
                         </div>
@@ -50,40 +72,44 @@
                 </div>
             </div>
         </div>
-        <!-- News Section -->
-        <div class="col-md-6">
+
+
+    <!-- News Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- News Card -->
             <div class="card mb-4 shadow-sm border-success">
                 <div class="card-header bg-success text-white">
                     <h4 class="my-0 fw-normal">News</h4>
                 </div>
                 <div class="card-body">
+                    <!-- News Content -->
                     <p>Read the latest news and updates from our organization.</p>
 
                     @if (Model.News != null && Model.News.Any())
                     {
-                        <div class="list-group">
-                            @foreach (var news in Model.News)
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                            @foreach (var newsItem in Model.News)
                             {
-                                <div class="list-group-item list-group-item-action flex-column align-items-start border">
-                                    @if (!string.IsNullOrEmpty(news.ImageUrl))
-                                    {
-                                        <img src="@news.ImageUrl" alt="Image for @news.Title" class="img-fluid mb-2" style="max-height: 180px;" />
-                                    }
-
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">@news.Title</h5>
-                                        <small>@news.PublicationDate.ToString("dd-MM-yyyy")</small>
+                                <div class="col">
+                                    <div class="card h-100">
+                                        @if (!string.IsNullOrEmpty(newsItem.ImageUrl))
+                                        {
+                                            <img src="@newsItem.ImageUrl" class="card-img-top" alt="Image for @newsItem.Title" style="height: 200px; object-fit: cover;" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/default-news.jpg" class="card-img-top" alt="Default News Image" style="height: 200px; object-fit: cover;" />
+                                        }
+                                        <div class="card-body">
+                                            <h5 class="card-title">@newsItem.Title</h5>
+                                            <p class="card-text">@Html.Raw(newsItem.Content.Length > 100 ? newsItem.Content.Substring(0, 100) + "..." : newsItem.Content)</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <small class="text-muted">@newsItem.PublicationDate.ToString("dd-MM-yyyy")</small>
+                                            <a href="@Url.Action("Details", "News", new { id = newsItem.Id })" class="btn btn-sm btn-success float-end">Read More</a>
+                                        </div>
                                     </div>
-
-                                    @if (!string.IsNullOrEmpty(news.ImageUrl))
-                                    {
-                                        <a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-sm btn-outline-success">View</a>
-                                    }
-                                    else
-                                    {
-                                        <p>@(news.Content.Length > 100 ? news.Content.Substring(0, 100) + "..." : news.Content)</p>
-                                        <a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-sm btn-outline-success">Read More</a>
-                                    }
                                 </div>
                             }
                         </div>
@@ -98,4 +124,6 @@
             </div>
         </div>
     </div>
+
 </div>
+
