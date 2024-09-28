@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - VictuZ_2._0</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-
-</head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /></head>
 <body>
     <header>
-        <!-- Navigatiebalk --><nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <!-- Navigatiebalk -->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/victuz.png" alt="VictuZ" style="height: 40px;" class="me-2" />
@@ -23,20 +22,19 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
-                        <!-- Standard Links -->
+                        <!-- Navigatielinks -->
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Suggestions</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Suggestions">Suggestions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="index">Agenda</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Agenda">Agenda</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">News</a>
-                        </li
-
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="News">News</a>
+                        </li>
                         <!-- User Role Specific Links -->
                         @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
                         {
@@ -66,13 +64,12 @@
                         }
 
                         <!-- Additional Links -->
-                        <!-- 'Over Ons' Navigation Item Kept As Is -->
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Over Ons</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">Over Ons</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Contact</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -84,48 +81,9 @@
                 </div>
             </div>
         </nav>
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/victuz.png" alt="VictuZ" style="height: 40px;" class="me-2" />
-                    <span>VictuZ</span>
-                </a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-
-                        <!-- BoardMember specefieke navigatie -->
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
-                        {
-
-                        }
-
-                        <!-- Member specefieke navigatie -->
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
-                        {
-                            
-                        }
-                        <li 
-                            class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Over Ons</a>
-                        </li>
-
-
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
     </header>
+
+
 
     <!-- Body -->
     <div class="container">
@@ -134,37 +92,38 @@
         </main>
     </div>
 
-    <footer class="footer bg-light mt-auto py-3">
-        <div class="container text-center">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5>About Us</h5>
-                    <p>Brief description about your organization.</p>
+        <!-- Footer -->
+        <footer class="footer mt-auto py-3">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <h5>About Us</h5>
+                        <p>Brief description about your organization.</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+                            <li><a href="@Url.Action("Index", "Suggestions")">Suggestions</a></li>
+                            <li><a href="@Url.Action("Index", "Sessions")">Agenda</a></li>
+                            <li><a href="@Url.Action("Index", "News")">News</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5>Contact Us</h5>
+                        <p>Email: info@victuz.com</p>
+                        <p>Phone: +123 456 7890</p>
+                        <!-- Social media iconen in de footer -->
+                        <div class="footer-social-icons">
+                            <a href="#"><img src="~/images/icons/facebook.jpeg" alt="Facebook" style="width: 24px;" /></a>
+                            <a href="#"><img src="~/images/icons/twitter.png" alt="Twitter" style="width: 24px;" /></a>
+                            <a href="#"><img src="~/images/icons/instagram.jpeg" alt="Instagram" style="width: 24px;" /></a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                        <li><a href="@Url.Action("Index", "Suggestions")">Suggestions</a></li>
-                        <li><a href="@Url.Action("Index", "Sessions")">Agenda</a></li>
-                        <li><a href="@Url.Action("Index", "News")">News</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h5>Contact Us</h5>
-                    <p>Email: info@victuz.com</p>
-                    <p>Phone: +123 456 7890</p>
-                    <!-- Social Media Icons -->
-                    <a href="#"><img src="~/images/icons/facebook.png" alt="Facebook" style="width: 24px;" /></a>
-                    <a href="#"><img src="~/images/icons/twitter.png" alt="Twitter" style="width: 24px;" /></a>
-                    <a href="#"><img src="~/images/icons/instagram.png" alt="Instagram" style="width: 24px;" /></a>
-                </div>
+                <p class="text-muted">&copy; @DateTime.Now.Year VictuZ</p>
             </div>
-            <p class="text-muted">&copy; @DateTime.Now.Year VictuZ</p>
-        </div>
-    </footer>
-
-
+        </footer>
 
 
     <!-- Scripts -->

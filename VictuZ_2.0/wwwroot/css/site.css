@@ -1,41 +1,149 @@
-/* Algemene instellingen */
+/* Definieer de kleurvariabelen */
+:root {
+    /* Kleurpalet */
+    --title-color: #000000;
+    --border-color: #182833;
+    --primary-color: #86BBD8;
+    --secondary-color: #F26419;
+    --accent-color: #F6AE2D;
+    /* Extra kleuren voor contrast en leesbaarheid */
+    --white: #ffffff;
+    --black: #000000;
+    --gray: #6c757d;
+    --light-gray: #edf5f7;
+    --danger-red: #dc3545; /* Voor waarschuwingen/acties */
+    /* Transparant zwart voor overlays */
+    --overlay-color: rgba(0, 0, 0, 0.5);
+}
+
+/* site.css */
+
+/* Overschrijven van Bootstrap's achtergrondkleuren */
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.bg-warning {
+    background-color: var(--accent-color) !important;
+}
+
+.bg-success {
+    background-color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+}
+
+.bg-light {
+    background-color: var(--light-gray) !important;
+}
+
+.bg-dark {
+    background-color: var(--primary-color) !important;
+}
+
+/* Overschrijven van Bootstrap's randkleuren */
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.border-secondary {
+    border-color: var(--secondary-color) !important;
+}
+
+.border-warning {
+    border-color: var(--accent-color) !important;
+}
+
+.border-success {
+    border-color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+}
+
+.border-light {
+    border-color: var(--light-gray) !important;
+}
+
+.border-dark {
+    border-color: var(--primary-color) !important;
+}
+
+/* Overschrijven van Bootstrap's tekstkleuren */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+.text-warning {
+    color: var(--accent-color) !important;
+}
+
+.text-success {
+    color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+}
+
+.text-light {
+    color: var(--light-gray) !important;
+}
+
+.text-dark {
+    color: var(--primary-color) !important;
+}
+
+.text-white {
+    color: var(--white) !important;
+}
+
+.text-muted {
+    color: var(--gray) !important;
+}
+
+
+/* Algemene instellingen: Basis lettergrootte en lettertype */
 html {
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
 }
 
-
+/* Grotere lettergrootte voor bredere schermen (min-width: 768px) */
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
 }
 
+/* Body instellingen */
 body {
-    font-size: 1rem;
+    font-size: 1rem; /* Basis lettergrootte voor de inhoud */
+    background-color: var(--light-gray); /* Optioneel: achtergrondkleur van de body */
+    padding-top: 65px;
 }
 
-
-
+/* Focus-styling voor knoppen en formulier-elementen */
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus {
-    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
-    outline: none;
+    box-shadow: 0 0 0 0.2rem var(--primary-color);
+    outline: none; /* Verwijder de standaard focusring */
 }
 
-
-/* Header Banner */
+/* Header Banner Styling */
 .header-banner {
     background-image: url('/images/Hero-Image.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
     padding: 120px 0;
-    color: #fff;
+    color: var(--white); /* Witte tekst op de banner */
 }
+    .header-banner h1 {
+    color: var(--accent-color); /* Gele koptekst */
+    }
 
     .header-banner::after {
         content: '';
@@ -44,146 +152,56 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1;
+        z-index: 1; /* Overlay bovenop de afbeelding */
     }
 
+/* Content binnen de banner */
 .banner-content {
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Zorgt ervoor dat de content boven de overlay komt */
 }
 
-    .banner-content h1 {
-        font-size: 3em;
-        margin-bottom: 0.5em;
-    }
+/* Header Banner h1 kleur */
+.banner-content h1 {
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    color: var(--accent-color); /* Gele koptekst */
+}
 
     .banner-content p.lead {
         font-size: 1.5em;
         margin-bottom: 1em;
+        color: var(--white); /* Witte lead text */
     }
 
+    /* Styling voor knoppen in de banner */
     .banner-content .btn {
         font-size: 1.2em;
         padding: 0.75em 1.5em;
-        border-radius: 50px;
+        border-radius: 50px; /* Ronde knoppen */
+        background-color: var(--primary-color);
+        color: var(--white);
         transition: background-color 0.3s ease, color 0.3s ease;
+        border: none; /* Verwijder standaard rand */
     }
 
         .banner-content .btn:hover {
-            background-color: #e0a800;
-            color: #fff;
+            background-color: var(--secondary-color); /* Licht blauw bij hover */
+            color: var(--white); /* Witte tekst bij hover */
         }
 
-
-/* Card Styling */
-.card {
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Navbar Styling */
+.navbar {
+    background-color: var(--border-color) !important; /* Donker Grijs */
+    border-bottom: 2px solid var(--accent-color);
 }
 
-
-    .card.border-primary .card-header {
-        background-color: #007bff;
-    }
-
-    .card.border-success .card-header {
-        background-color: #28a745;
-    }
-
-    .card.border-warning .card-header {
-        background-color: #ffc107;
-    }
-
-.card-header {
-    color: #fff;
-    border-bottom: none;
-}
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.list-group-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background-color: #f8f9fa; /* Optional: change background on hover */
-}
-
-
-
-
-.card-body {
-    background-color: #fff;
-}
-
-.card h4 {
-    margin: 0;
-}
-
-.btn-outline-primary {
-    border-color: #007bff;
-    color: #007bff;
-}
-
-    .btn-outline-primary:hover {
-        background-color: #007bff;
-        color: #fff;
-    }
-
-.image-dropzone {
-    border: 2px dashed #6c757d;
-    border-radius: 8px;
-    background-color: #e9ecef;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-    .image-dropzone .image-preview img {
-        max-height: 100%;
-        max-width: 100%;
-        height: auto;
-        width: auto;
-        display: block;
-        margin: 0 auto;
-    }
-
-    .image-dropzone .image-preview p {
-        text-align: center;
-        margin: 0;
-    }
-
-.footer {
-    background-color: #f8f9fa;
-    padding: 2em 0;
-    color: #6c757d;
-}
-
-    .footer a {
-        color: #6c757d;
-        text-decoration: none;
-    }
-
-        .footer a:hover {
-            color: #007bff;
-            text-decoration: underline;
-        }
-
-    .footer h5 {
-        font-weight: 600;
-        margin-bottom: 1em;
-    }
 .navbar-brand span {
-    font-size: 1.5rem;
-    font-weight: bold;
+    color: var(--white) !important; /* Witte tekst */
 }
+
 .navbar-nav .nav-link {
-    position: relative;
-    transition: color 0.3s;
+    color: var(--white) !important; /* Witte tekst */
 }
 
     .navbar-nav .nav-link::after {
@@ -193,26 +211,324 @@ body {
         bottom: 0;
         width: 0%;
         height: 2px;
-        background-color: #ffc107; /* Bootstrap warning color */
+        background-color: var(--accent-color);
         transition: width 0.3s;
     }
 
-    .navbar-nav .nav-link:hover {
-        color: #ffc107;
-    }
-
-        .navbar-nav .nav-link:hover::after {
-            width: 100%;
-        }
-
+    .navbar-nav .nav-link:hover,
     .navbar-nav .nav-link.active {
-        color: #ffc107;
+        color: var(--accent-color) !important;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     }
 
+        .navbar-nav .nav-link:hover::after,
         .navbar-nav .nav-link.active::after {
             width: 100%;
         }
 
+/* Footer Styling */
+.footer {
+    background-color: var(--border-color) !important; /* Donker Grijs */
+    padding: 3em 0;
+    color: var(--white);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid var(--accent-color);
+}
+
+    .footer h5 {
+        color: var(--accent-color);
+        font-size: 1.5rem;
+        margin-bottom: 1em;
+    }
+
+    .footer p,
+    .footer a {
+        color: var(--white); /* Witte tekst */
+        font-size: 1rem;
+    }
+
+        .footer a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+.footer-social-icons a {
+    margin-right: 15px;
+    color: var(--accent-color);
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+    .footer-social-icons a:hover {
+        color: var(--white);
+    }
 
 
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--white);
+}
 
+.dropdown-item:hover {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.card-header {
+    color: var(--white);
+    border-bottom: none;
+}
+
+    .card-header.bg-primary {
+        background-color: var(--primary-color) !important;
+    }
+
+    .card-header.bg-secondary {
+        background-color: var(--secondary-color) !important;
+    }
+
+    .card-header.bg-warning {
+        background-color: var(--accent-color) !important;
+    }
+
+.card-body {
+    background-color: var(--white);
+}
+
+.card h4 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+/* Algemene styling voor sectietitels */
+.section-title {
+    color: var(--title-color) !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Button Styling */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+.btn-warning {
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-warning:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+.btn-danger {
+    background-color: var(--danger-red);
+    color: var(--white);
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-danger:hover {
+        background-color: #a71d2a; /* Iets donkerder rood */
+        color: var(--white);
+    }
+
+.btn-success {
+    background-color: var(--secondary-color); /* Of een specifieke success-kleur */
+    color: var(--white);
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-success:hover {
+        background-color: #c7510a; /* Iets donkerder dan secondary-color */
+        color: var(--white);
+    }
+
+.btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: var(--white);
+    }
+
+.btn-outline-secondary {
+    border: 2px solid var(--secondary-color);
+    color: var(--secondary-color);
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-outline-secondary:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+.btn-outline-warning {
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-outline-warning:hover {
+        background-color: var(--accent-color);
+        color: var(--white);
+    }
+
+.btn-outline-success {
+    border: 2px solid var(--secondary-color); /* Aangepast naar secundaire kleur */
+    color: var(--secondary-color);
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .btn-outline-success:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+/* Suggestiekaart Styling */
+.suggestion-card {
+    padding: 15px;
+    background-color: var(--white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .suggestion-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .suggestion-card .card-text {
+        font-size: 1rem;
+
+    }
+
+    .suggestion-card .text-muted {
+        font-size: 0.85rem;
+        color: var(--gray);
+    }
+
+    .suggestion-card .btn {
+        margin-left: 5px;
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 4px;
+        padding: 0.5em 1em;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .suggestion-card .btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+
+/* Like-knop styling */
+.btn-like {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+    .btn-like .like-count {
+        margin-left: 5px;
+        font-size: 0.9em;
+        color: var(--primary-color);
+    }
+
+    .btn-like.liked {
+        color: var(--danger-red);
+    }
+
+    .btn-like:focus {
+        outline: none;
+    }
+
+/* Image Dropzone Styling */
+.image-dropzone {
+    border: 2px dashed var(--gray);
+    border-radius: 8px;
+    background-color: var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .image-dropzone .image-preview img {
+        max-height: 100%;
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .image-dropzone .image-preview p {
+        text-align: center;
+        margin: 0;
+        color: var(--primary-color);
+    }
+
+/* Form Elements Styling */
+input, textarea, select {
+    border: 1px solid var(--gray);
+    border-radius: 4px;
+    padding: 0.5em;
+    transition: border-color 0.3s ease;
+}
+
+    input:focus, textarea:focus, select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem var(--primary-color);
+    }

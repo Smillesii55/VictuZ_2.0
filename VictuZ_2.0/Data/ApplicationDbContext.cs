@@ -82,14 +82,14 @@ namespace VictuZ_2._0.Data
                 .WithMany(u => u.Feedbacks)
                 .HasForeignKey(f => f.UserId);
 
-            // Suggestion relaties
+            // Suggestion and User (CreatedBy)
             modelBuilder.Entity<Suggestion>()
-                .HasOne(s => s.User)
+                .HasOne(s => s.CreatedBy)
                 .WithMany(u => u.Suggestions)
-                .HasForeignKey(s => s.UserId)
-                .OnDelete(DeleteBehavior.SetNull); // Omdat UserId nullable is
+                .HasForeignKey(s => s.CreatedById)
+                .OnDelete(DeleteBehavior.SetNull);
 
-            // SuggestionLike relaties
+            // SuggestionLike relationships
             modelBuilder.Entity<SuggestionLike>()
                 .HasOne(sl => sl.Suggestion)
                 .WithMany(s => s.SuggestionLikes)
