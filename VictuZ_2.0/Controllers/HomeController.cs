@@ -34,11 +34,20 @@ namespace VictuZ_2._0.Controllers
                 .Take(3)
                 .ToListAsync();
 
+            // Haal de laatste 3 suggesties op en sorteer deze op like count
+            var suggestions = await _context.Suggestions
+                .Include(s => s.CreatedBy)
+                .Include(s => s.SuggestionLikes)
+                .OrderByDescending(s => s.LikeCount)
+                .Take(3)
+                .ToListAsync();
+
             // Vul het ViewModel
             var viewModel = new HomeIndexViewModel
             {
                 UpcomingSessions = upcomingSessions,
-                News = LatestNews
+                News = LatestNews,
+                Suggestions = suggestions
             };
 
             return View(viewModel);
