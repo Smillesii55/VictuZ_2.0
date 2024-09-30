@@ -188,6 +188,18 @@ namespace VictuZ_2._0.Controllers
             return View(session);
         }
 
+        private bool SessionExists(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        //Choose which session to delete page
+        [Authorize(Roles = "BoardMember")]
+        public async Task<IActionResult> DeleteSelection()
+        {
+            var sessions = await _context.Sessions.Include(s => s.CreatedBy).Include(s => s.Location).ToListAsync();
+            return View(sessions); // This returns the list of sessions to the view
+        }
 
         // GET: Sessions/Delete/5
         [Authorize(Roles = "BoardMember")]
@@ -207,7 +219,7 @@ namespace VictuZ_2._0.Controllers
                 return NotFound();
             }
 
-            return View(session);
+            return View(session); // This returns the confirmation view
         }
 
         // POST: Sessions/Delete/5
@@ -226,9 +238,5 @@ namespace VictuZ_2._0.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SessionExists(int id)
-        {
-            return _context.Sessions.Any(e => e.Id == id);
-        }
     }
 }
