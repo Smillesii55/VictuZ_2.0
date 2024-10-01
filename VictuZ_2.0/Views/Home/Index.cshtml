@@ -60,25 +60,24 @@
                                                 userHasLiked = suggestion.SuggestionLikes.Any(like => like.UserId == currentUserId.Value);
                                             }
                                         }
-
                                         <div>
                                             @if (currentUserId.HasValue)
                                             {
                                                 @using (Html.BeginForm("ToggleLike", "Suggestions", new { id = suggestion.Id }, FormMethod.Post, null, new { @class = "d-inline" }))
                                                 {
                                                     @Html.AntiForgeryToken()
-                                                    if (userHasLiked)
+                                                    @if (userHasLiked)
                                                     {
                                                         <!-- Unlike Button -->
-                                                        <button type="submit" class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-thumbs-down"></i> @suggestion.LikeCount
+                                                        <button type="submit" class="btn-sm btn-danger">
+                                                            <i class="bi bi-hand-thumbs-down"></i> @suggestion.LikeCount
                                                         </button>
                                                     }
                                                     else
                                                     {
                                                         <!-- Like Button -->
-                                                        <button type="submit" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-thumbs-up"></i> @suggestion.LikeCount
+                                                        <button type="submit" class="btn-sm btn-primary">
+                                                            <i class="bi bi-hand-thumbs-up"></i> @suggestion.LikeCount
                                                         </button>
                                                     }
                                                 }
