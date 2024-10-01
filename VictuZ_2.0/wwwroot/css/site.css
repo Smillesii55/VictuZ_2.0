@@ -1,4 +1,6 @@
-/* Definieer de kleurvariabelen */
+/* ========================= */
+/*        KLEURVARIABELEN     */
+/* ========================= */
 :root {
     /* Kleurpalet */
     --title-color: #000000;
@@ -16,9 +18,45 @@
     --overlay-color: rgba(0, 0, 0, 0.5);
 }
 
-/* site.css */
+/* ========================= */
+/*        GENERALE STIJLEN    */
+/* ========================= */
 
-/* Overschrijven van Bootstrap's achtergrondkleuren */
+/* Basis lettergrootte en lettertype */
+html {
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Grotere lettergrootte voor bredere schermen (min-width: 768px) */
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Body instellingen */
+body {
+    font-size: 1rem; /* Basis lettergrootte voor de inhoud */
+    background-color: var(--light-gray); /* Optioneel: achtergrondkleur van de body */
+    padding-top: 65px;
+}
+
+/* Focus-styling voor knoppen en formulier-elementen */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem var(--primary-color);
+    outline: none; /* Verwijder de standaard focusring */
+}
+
+/* ========================= */
+/*    OVERSCHRIJVINGEN BOOTSTRAP */
+/* ========================= */
+
+/* Achtergrondkleuren */
 .bg-primary {
     background-color: var(--primary-color) !important;
 }
@@ -43,7 +81,7 @@
     background-color: var(--primary-color) !important;
 }
 
-/* Overschrijven van Bootstrap's randkleuren */
+/* Randkleuren */
 .border-primary {
     border-color: var(--primary-color) !important;
 }
@@ -68,7 +106,7 @@
     border-color: var(--primary-color) !important;
 }
 
-/* Overschrijven van Bootstrap's tekstkleuren */
+/* Tekstkleuren */
 .text-primary {
     color: var(--primary-color) !important;
 }
@@ -101,38 +139,52 @@
     color: var(--gray) !important;
 }
 
+/* ========================= */
+/*         NAVBAR STIJLEN     */
+/* ========================= */
 
-/* Algemene instellingen: Basis lettergrootte en lettertype */
-html {
-    font-size: 14px;
-    font-family: 'Open Sans', sans-serif;
+.navbar {
+    background-color: var(--border-color) !important; /* Donker Grijs */
+    border-bottom: 2px solid var(--accent-color);
 }
 
-/* Grotere lettergrootte voor bredere schermen (min-width: 768px) */
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
+.navbar-brand span {
+    color: var(--white) !important; /* Witte tekst */
+}
+
+.navbar-nav .nav-link {
+    color: var(--white) !important; /* Witte tekst */
+    position: relative;
+    display: inline-block;
+}
+
+    /* Onderstrepende lijn onder nav-links */
+    .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px; /* Plaatst de lijn direct onder de link */
+        width: 0%;
+        height: 2px;
+        background-color: var(--accent-color);
+        transition: width 0.3s;
     }
-}
 
-/* Body instellingen */
-body {
-    font-size: 1rem; /* Basis lettergrootte voor de inhoud */
-    background-color: var(--light-gray); /* Optioneel: achtergrondkleur van de body */
-    padding-top: 65px;
-}
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+        color: var(--accent-color) !important;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
 
-/* Focus-styling voor knoppen en formulier-elementen */
-.btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-    box-shadow: 0 0 0 0.2rem var(--primary-color);
-    outline: none; /* Verwijder de standaard focusring */
-}
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
 
-/* Header Banner Styling */
+/* ========================= */
+/*       HEADER BANNER        */
+/* ========================= */
+
 .header-banner {
     background-image: url('/images/Hero-Image.jpg');
     background-size: cover;
@@ -141,9 +193,6 @@ body {
     padding: 120px 0;
     color: var(--white); /* Witte tekst op de banner */
 }
-    .header-banner h1 {
-    color: var(--accent-color); /* Gele koptekst */
-    }
 
     .header-banner::after {
         content: '';
@@ -161,12 +210,11 @@ body {
     z-index: 2; /* Zorgt ervoor dat de content boven de overlay komt */
 }
 
-/* Header Banner h1 kleur */
-.banner-content h1 {
-    font-size: 3em;
-    margin-bottom: 0.5em;
-    color: var(--accent-color); /* Gele koptekst */
-}
+    .banner-content h1 {
+        font-size: 3em;
+        margin-bottom: 0.5em;
+        color: var(--accent-color); /* Gele koptekst */
+    }
 
     .banner-content p.lead {
         font-size: 1.5em;
@@ -190,43 +238,10 @@ body {
             color: var(--white); /* Witte tekst bij hover */
         }
 
-/* Navbar Styling */
-.navbar {
-    background-color: var(--border-color) !important; /* Donker Grijs */
-    border-bottom: 2px solid var(--accent-color);
-}
+/* ========================= */
+/*         FOOTER STIJLEN     */
+/* ========================= */
 
-.navbar-brand span {
-    color: var(--white) !important; /* Witte tekst */
-}
-
-.navbar-nav .nav-link {
-    color: var(--white) !important; /* Witte tekst */
-}
-
-    .navbar-nav .nav-link::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 0%;
-        height: 2px;
-        background-color: var(--accent-color);
-        transition: width 0.3s;
-    }
-
-    .navbar-nav .nav-link:hover,
-    .navbar-nav .nav-link.active {
-        color: var(--accent-color) !important;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-    }
-
-        .navbar-nav .nav-link:hover::after,
-        .navbar-nav .nav-link.active::after {
-            width: 100%;
-        }
-
-/* Footer Styling */
 .footer {
     background-color: var(--border-color) !important; /* Donker Grijs */
     padding: 3em 0;
@@ -243,7 +258,7 @@ body {
 
     .footer p,
     .footer a {
-        color: var(--white); /* Witte tekst */
+        color: var(--white) !important; /* Witte tekst */
         font-size: 1rem;
     }
 
@@ -252,6 +267,7 @@ body {
             text-decoration: underline;
         }
 
+/* Social icons in de footer */
 .footer-social-icons a {
     margin-right: 15px;
     color: var(--accent-color);
@@ -263,8 +279,10 @@ body {
         color: var(--white);
     }
 
+/* ========================= */
+/*      DROPDOWN MENU STIJLEN */
+/* ========================= */
 
-/* Dropdown Menu Styling */
 .dropdown-menu {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -276,7 +294,10 @@ body {
     color: var(--white);
 }
 
-/* Card Styling */
+/* ========================= */
+/*        CARD STIJLEN        */
+/* ========================= */
+
 .card {
     border: none;
     border-radius: 8px;
@@ -295,6 +316,7 @@ body {
     border-bottom: none;
 }
 
+    /* Specifieke card-header kleuren */
     .card-header.bg-primary {
         background-color: var(--primary-color) !important;
     }
@@ -316,19 +338,36 @@ body {
     color: var(--primary-color);
 }
 
-/* Algemene styling voor sectietitels */
+/* ========================= */
+/*    SECTIETITEL STIJLEN     */
+/* ========================= */
+
 .section-title {
     color: var(--title-color) !important;
     font-weight: bold;
     font-size: 1.5rem;
 }
 
-/* Button Styling */
+/* ========================= */
+/*        BUTTON STIJLEN      */
+/* ========================= */
+
+/* Basis knopstijl */
+.btn {
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+}
+
+/* Primair knopstijl */
 .btn-primary {
     background-color: var(--primary-color);
     color: var(--white);
     border: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
     .btn-primary:hover {
@@ -336,11 +375,11 @@ body {
         color: var(--white);
     }
 
+/* Waarschuwing knopstijl */
 .btn-warning {
     background-color: var(--accent-color);
     color: var(--white);
     border: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
     .btn-warning:hover {
@@ -348,11 +387,11 @@ body {
         color: var(--white);
     }
 
+/* Gevaarlijk knopstijl */
 .btn-danger {
     background-color: var(--danger-red);
     color: var(--white);
     border: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
     .btn-danger:hover {
@@ -360,11 +399,11 @@ body {
         color: var(--white);
     }
 
+/* Succes knopstijl */
 .btn-success {
-    background-color: var(--secondary-color); /* Of een specifieke success-kleur */
+    background-color: var(--secondary-color);
     color: var(--white);
     border: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
     .btn-success:hover {
@@ -372,25 +411,25 @@ body {
         color: var(--white);
     }
 
-.btn {
-    background-color: var(--primary-color);
+/* Algemene hover stijl voor alle knoppen */
+.btn:hover {
+    background-color: var(--secondary-color);
     color: var(--white);
-    border: none;
-    padding: 0.5em 1em;
-    border-radius: 4px;
+}
+
+/* Outline knoppen */
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-warning,
+.btn-outline-success {
+    background-color: transparent;
+    border: 2px solid;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-    .btn:hover {
-        background-color: var(--secondary-color);
-        color: var(--white);
-    }
-
 .btn-outline-primary {
-    border: 2px solid var(--primary-color);
+    border-color: var(--primary-color);
     color: var(--primary-color);
-    background-color: transparent;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
     .btn-outline-primary:hover {
@@ -399,10 +438,8 @@ body {
     }
 
 .btn-outline-secondary {
-    border: 2px solid var(--secondary-color);
+    border-color: var(--secondary-color);
     color: var(--secondary-color);
-    background-color: transparent;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
     .btn-outline-secondary:hover {
@@ -411,10 +448,8 @@ body {
     }
 
 .btn-outline-warning {
-    border: 2px solid var(--accent-color);
+    border-color: var(--accent-color);
     color: var(--accent-color);
-    background-color: transparent;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
     .btn-outline-warning:hover {
@@ -423,10 +458,8 @@ body {
     }
 
 .btn-outline-success {
-    border: 2px solid var(--secondary-color); /* Aangepast naar secundaire kleur */
+    border-color: var(--secondary-color);
     color: var(--secondary-color);
-    background-color: transparent;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
     .btn-outline-success:hover {
@@ -434,44 +467,7 @@ body {
         color: var(--white);
     }
 
-/* Suggestiekaart Styling */
-.suggestion-card {
-    padding: 15px;
-    background-color: var(--white);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-    .suggestion-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .suggestion-card .card-text {
-        font-size: 1rem;
-
-    }
-
-    .suggestion-card .text-muted {
-        font-size: 0.85rem;
-        color: var(--gray);
-    }
-
-    .suggestion-card .btn {
-        margin-left: 5px;
-        background-color: var(--primary-color);
-        color: var(--white);
-        border: none;
-        border-radius: 4px;
-        padding: 0.5em 1em;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-        .suggestion-card .btn:hover {
-            background-color: var(--secondary-color);
-            color: var(--white);
-        }
-
-/* Like-knop styling */
+/* Like-knop stijl */
 .btn-like {
     background-color: transparent;
     border: none;
@@ -497,7 +493,49 @@ body {
         outline: none;
     }
 
-/* Image Dropzone Styling */
+/* ========================= */
+/*     SUGGESTIEKAART STIJLEN  */
+/* ========================= */
+
+.suggestion-card {
+    padding: 15px;
+    background-color: var(--white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .suggestion-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .suggestion-card .card-text {
+        font-size: 1rem;
+    }
+
+    .suggestion-card .text-muted {
+        font-size: 0.85rem;
+        color: var(--gray);
+    }
+
+    .suggestion-card .btn {
+        margin-left: 5px;
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 4px;
+        padding: 0.5em 1em;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .suggestion-card .btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+
+/* ========================= */
+/*      IMAGE DROPZONE STIJLEN  */
+/* ========================= */
+
 .image-dropzone {
     border: 2px dashed var(--gray);
     border-radius: 8px;
@@ -520,15 +558,45 @@ body {
         color: var(--primary-color);
     }
 
-/* Form Elements Styling */
-input, textarea, select {
+/* ========================= */
+/*     FORMULIER ELEMENTEN     */
+/* ========================= */
+
+input,
+textarea,
+select {
     border: 1px solid var(--gray);
     border-radius: 4px;
     padding: 0.5em;
     transition: border-color 0.3s ease;
 }
 
-    input:focus, textarea:focus, select:focus {
+    input:focus,
+    textarea:focus,
+    select:focus {
         border-color: var(--primary-color);
         box-shadow: 0 0 0 0.2rem var(--primary-color);
     }
+
+/* ========================= */
+/*        BOOTSTRAP ICONS      */
+/* ========================= */
+
+.bi {
+    font-family: "Bootstrap Icons" !important;
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    line-height: 1;
+    text-decoration: inherit;
+    text-align: center;
+    text-transform: none;
+    vertical-align: -0.125em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.btn .bi {
+    color: inherit; /* Erf de kleur van de knop */
+}
