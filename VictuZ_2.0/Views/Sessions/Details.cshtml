@@ -56,7 +56,8 @@
 <div>
     @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
 {
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model?.Id" class="btn btn-danger">Delete</a>
 }
     <a asp-action="Index" class="btn btn-link">Back to List</a>
 </div>

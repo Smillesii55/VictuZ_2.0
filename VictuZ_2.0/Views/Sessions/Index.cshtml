@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<VictuZ_2._0.Models.Sessions.Session>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Agenda";
 }
 
-<h1>Index</h1>
+<h1>Agenda</h1>
 
-<!-- Alleen BoardMembers kunnen nieuwe sessies aanmaken -->
+<!-- Alleen BoardMembers kunnen nieuwe sessies aanmaken en verwijderen -->
 @* Controleer of de gebruiker is ingelogd en de rol "BoardMember" heeft *@
 @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
 {
@@ -15,54 +15,30 @@
     </p>
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivityDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                <td>@Html.DisplayFor(modelItem => item.ActivityDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.CreatedBy.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Location.Name)</td>
-                <td>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
-                    {
-                        <p>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        </p>
-                    }
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<!--Show cards for each task model, grouped per month-->
+@foreach (var sessionsInMonth in Model.GroupBy(x => x.ActivityDate.Month))
+{
+    <div class="card mb-4 shadow-sm border-success">
+        <div class="card-header bg-primary">
+            <h4 class="my-0 fw-normal title-text">@sessionsInMonth.First().ActivityDate.ToString("MMMM")</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var session in sessionsInMonth)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm border-success">
+                            <div class="card-header bg-success">
+                                <h4 class="my-0 fw-normal">@session.Title</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">@session.Description</p>
+                                <a asp-action="Details" asp-route-id="@session.Id" class="btn btn-primary">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

@@ -335,7 +335,7 @@ body {
 
 .card h4 {
     margin: 0;
-    color: var(--primary-color);
+/*    color: var(--primary-color); */
 }
 
 /* ========================= */
@@ -599,4 +599,8 @@ select {
 
 .btn .bi {
     color: inherit; /* Erf de kleur van de knop */
+}
+/* Schrijft maand in Sessions met Hoofdletter*/
+.title-text {
+    text-transform: capitalize;
 }
