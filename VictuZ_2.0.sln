@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VictuZ_2.0", "VictuZ_2.0\VictuZ_2.0.csproj", "{0E0D9979-DA06-4E36-96DF-FB867206D9E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VictuZ_2.0_API", "VictuZ_2.0_API\VictuZ_2.0_API.csproj", "{47DBEF1E-FD6A-4394-87AA-4128A87A5511}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0E0D9979-DA06-4E36-96DF-FB867206D9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E0D9979-DA06-4E36-96DF-FB867206D9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E0D9979-DA06-4E36-96DF-FB867206D9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47DBEF1E-FD6A-4394-87AA-4128A87A5511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47DBEF1E-FD6A-4394-87AA-4128A87A5511}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47DBEF1E-FD6A-4394-87AA-4128A87A5511}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47DBEF1E-FD6A-4394-87AA-4128A87A5511}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
