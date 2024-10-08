@@ -1,65 +1,88 @@
-﻿@model IEnumerable<VictuZ_2._0.Models.Suggestions.Suggestion>
+﻿@using VictuZ_2._0.Models.Suggestions
+@using static  VictuZ_2._0.ViewModels.SuggestionsViewModel
 
-@{
-    ViewData["Title"] = "Index";
-}
+<div class="container mt-5">
+    <!-- Top Message Card -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Like een suggestie als deze je dusdanig aanspreekt dat je ook mee wilt helpen het op te zetten</h5>
+            <p class="card-text">Jouw input en steun helpen ons om betere ideeën te realiseren!</p>
+        </div>
+    </div>
 
-<h1>Index</h1>
+    <!-- Suggestions Section -->
+    <div class="row">
+        <!-- Top Suggestions Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card suggestion-card">
+                <div class="card-header bg-primary">
+                    <h4 class="text-white">Top Suggesties</h4>
+                </div>
+                <div class="card-body">
+                    @foreach (var suggestion in Model.TopSuggestions)
+                    {
+                        <div class="suggestion">
+                            <p>@suggestion.Content</p>
+                            <button class="btn btn-like @(suggestion.LikedByCurrentUser() ? "liked" : "")"
+                                    data-suggestion-id="@suggestion.Id">
+                                <i class="bi bi-hand-thumbs-up"></i> Like
+                                <span class="like-count">@suggestion.LikeCount</span>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SubmittedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsAnonymous)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsAnonymousToBoard)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LikeCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubmittedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAnonymous)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAnonymousToBoard)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LikeCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <!-- Trending Suggestions Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card suggestion-card">
+                <div class="card-header bg-secondary">
+                    <h4 class="text-white">Trending Suggesties</h4>
+                </div>
+                <div class="card-body">
+                    @foreach (var suggestion in Model.TrendingSuggestions)
+                    {
+                        <div class="suggestion">
+                            <p>@suggestion.Content</p>
+                            <button class="btn btn-like @(suggestion.LikedByCurrentUser() ? "liked" : "")"
+                                    data-suggestion-id="@suggestion.Id">
+                                <i class="bi bi-hand-thumbs-up"></i> Like
+                                <span class="like-count">@suggestion.LikeCount</span>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- All Suggestions Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card suggestion-card">
+                <div class="card-header bg-warning">
+                    <h4 class="text-white">Alle Suggesties</h4>
+                </div>
+                <div class="card-body">
+                    @foreach (var suggestion in Model.AllSuggestions)
+                    {
+                        <div class="suggestion">
+                            <p>@suggestion.Content</p>
+                            <button class="btn btn-like @(suggestion.LikedByCurrentUser() ? "liked" : "")"
+                                    data-suggestion-id="@suggestion.Id">
+                                <i class="bi bi-hand-thumbs-up"></i> Like
+                                <span class="like-count">@suggestion.LikeCount</span>
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button to add a new suggestion -->
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Create", "Suggestions")" class="btn btn-primary">
+            Nieuwe Suggestie Toevoegen
+        </a>
+    </div>
+</div>
