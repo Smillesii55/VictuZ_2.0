@@ -28,14 +28,14 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Suggestions" asp-action="Index">Suggestions</a>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Suggestions">Suggestions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Agenda">Agenda</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="News">News</a>
+                            <a class="nav-link" asp-area="" asp-controller="Sessions" asp-action="Index">Agenda</a>
                         </li>
                         <!-- User Role Specific Links -->
                         @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
@@ -64,18 +64,6 @@
                                 </ul>
                             </li>
                         }
-
-                        <!-- Additional Links -->
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">Over Ons</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <partial name="_LoginPartial" />

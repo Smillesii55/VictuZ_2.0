@@ -26,15 +26,15 @@
 <div class="container mt-5">
     <div class="row">
         <!-- Suggestions Section (Only visible for logged-in users) -->
-        @if (User.Identity.IsAuthenticated)
-        {
-            <div class="col-md-6 d-flex">
-                <!-- Suggestions Card -->
-                <div class="card mb-4 shadow-sm border-warning h-70 w-100 d-flex flex-column">
-                    <div class="card-header bg-warning text-white">
-                        <h4 class="my-0 fw-normal section-title">Community Suggesties</h4>
-                    </div>
-                    <div class="card-body d-flex flex-column flex-grow-1">
+        <div class="col-md-6 d-flex">
+            <!-- Suggestions Card -->
+            <div class="card mb-4 shadow-sm border-warning h-70 w-100 d-flex flex-column">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="my-0 fw-normal section-title">Community Suggesties</h4>
+                </div>
+                <div class="card-body d-flex flex-column flex-grow-1">
+                    @if (User.Identity.IsAuthenticated)
+                    {
                         <p>Share your ideas and see what others are suggesting</p>
                         @if (Model.Suggestions != null && Model.Suggestions.Any())
                         {
@@ -103,14 +103,15 @@
                         <div class="mt-auto">
                             <a href="@Url.Action("Index", "Suggestions")" class="btn btn-outline-primary mt-3">Bekijk alle suggesties</a>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Log in to view and submit community suggestions.</p>
+                    }
                 </div>
             </div>
-        }
-        else
-        {
-            <p class="text-muted">Log in to view and submit community suggestions.</p>
-        }
+        </div>
+        
 
         <!-- Agenda Section -->
         <div class="col-md-6 d-flex">
