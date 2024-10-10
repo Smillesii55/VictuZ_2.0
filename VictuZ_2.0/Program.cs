@@ -34,7 +34,7 @@ builder.Services.AddRazorPages();
 var app = builder.Build();
 
 // Pas migraties toe en maak rollen aan bij opstarten
-await SeedDatabaseAsync(app.Services);
+//await SeedDatabaseAsync(app.Services);
 
 // Configureer de HTTP request pipeline
 if (!app.Environment.IsDevelopment())
@@ -62,6 +62,7 @@ app.MapRazorPages();
 app.Run();
 
 // Asynchrone methode voor het toepassen van migraties en aanmaken van rollen
+/*
 async Task SeedDatabaseAsync(IServiceProvider services)
 {
     using var scope = services.CreateScope();
@@ -82,3 +83,4 @@ async Task SeedDatabaseAsync(IServiceProvider services)
         }
     }
 }
+*/
