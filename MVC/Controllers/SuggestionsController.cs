@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Core.Data;
 using Core.Models.Suggestions;
 
-namespace VictuZ_2._0.Controllers
+namespace MVC.Controllers
 {
     public class SuggestionsController : Controller
     {
