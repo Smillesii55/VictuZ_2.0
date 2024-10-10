@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Core.Models.Sessions.Session>
+
+@{
+    ViewData["Title"] = "Agenda";
+}
+
+<h1>Agenda</h1>
+
+<!-- Alleen BoardMembers kunnen nieuwe sessies aanmaken en verwijderen -->
+@* Controleer of de gebruiker is ingelogd en de rol "BoardMember" heeft *@
+@if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+}
+
+<!--Show cards for each task model, grouped per month-->
+@foreach (var sessionsInMonth in Model.GroupBy(x => x.ActivityDate.Month))
+{
+    <div class="card mb-4 shadow-sm border-success">
+        <div class="card-header bg-primary">
+            <h4 class="my-0 fw-normal title-text">@sessionsInMonth.First().ActivityDate.ToString("MMMM")</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var session in sessionsInMonth)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm border-success">
+                            <div class="card-header bg-success">
+                                <h4 class="my-0 fw-normal">@session.Title</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">@session.Description</p>
+                                <a asp-action="Details" asp-route-id="@session.Id" class="btn btn-primary">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
