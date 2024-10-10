@@ -1,0 +1,606 @@
+/* ========================= */
+/*        KLEURVARIABELEN     */
+/* ========================= */
+:root {
+    /* Kleurpalet */
+    --title-color: #000000;
+    --border-color: #182833;
+    --primary-color: #86BBD8;
+    --secondary-color: #F26419;
+    --accent-color: #F6AE2D;
+    /* Extra kleuren voor contrast en leesbaarheid */
+    --white: #ffffff;
+    --black: #000000;
+    --gray: #6c757d;
+    --light-gray: #edf5f7;
+    --danger-red: #dc3545; /* Voor waarschuwingen/acties */
+    /* Transparant zwart voor overlays */
+    --overlay-color: rgba(0, 0, 0, 0.5);
+}
+
+/* ========================= */
+/*        GENERALE STIJLEN    */
+/* ========================= */
+
+/* Basis lettergrootte en lettertype */
+html {
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Grotere lettergrootte voor bredere schermen (min-width: 768px) */
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Body instellingen */
+body {
+    font-size: 1rem; /* Basis lettergrootte voor de inhoud */
+    background-color: var(--light-gray); /* Optioneel: achtergrondkleur van de body */
+    padding-top: 65px;
+}
+
+/* Focus-styling voor knoppen en formulier-elementen */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem var(--primary-color);
+    outline: none; /* Verwijder de standaard focusring */
+}
+
+/* ========================= */
+/*    OVERSCHRIJVINGEN BOOTSTRAP */
+/* ========================= */
+
+/* Achtergrondkleuren */
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.bg-warning {
+    background-color: var(--accent-color) !important;
+}
+
+.bg-success {
+    background-color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+}
+
+.bg-light {
+    background-color: var(--light-gray) !important;
+}
+
+.bg-dark {
+    background-color: var(--primary-color) !important;
+}
+
+/* Randkleuren */
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.border-secondary {
+    border-color: var(--secondary-color) !important;
+}
+
+.border-warning {
+    border-color: var(--accent-color) !important;
+}
+
+.border-success {
+    border-color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+}
+
+.border-light {
+    border-color: var(--light-gray) !important;
+}
+
+.border-dark {
+    border-color: var(--primary-color) !important;
+}
+
+/* Tekstkleuren */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+.text-warning {
+    color: var(--accent-color) !important;
+}
+
+.text-success {
+    color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+}
+
+.text-light {
+    color: var(--light-gray) !important;
+}
+
+.text-dark {
+    color: var(--primary-color) !important;
+}
+
+.text-white {
+    color: var(--white) !important;
+}
+
+.text-muted {
+    color: var(--gray) !important;
+}
+
+/* ========================= */
+/*         NAVBAR STIJLEN     */
+/* ========================= */
+
+.navbar {
+    background-color: var(--border-color) !important; /* Donker Grijs */
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.navbar-brand span {
+    color: var(--white) !important; /* Witte tekst */
+}
+
+.navbar-nav .nav-link {
+    color: var(--white) !important; /* Witte tekst */
+    position: relative;
+    display: inline-block;
+}
+
+    /* Onderstrepende lijn onder nav-links */
+    .navbar-nav .nav-link::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px; /* Plaatst de lijn direct onder de link */
+        width: 0%;
+        height: 2px;
+        background-color: var(--accent-color);
+        transition: width 0.3s;
+    }
+
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+        color: var(--accent-color) !important;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            width: 100%;
+        }
+
+/* ========================= */
+/*       HEADER BANNER        */
+/* ========================= */
+
+.header-banner {
+    background-image: url('/images/Hero-Image.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    padding: 120px 0;
+    color: var(--white); /* Witte tekst op de banner */
+}
+
+    .header-banner::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1; /* Overlay bovenop de afbeelding */
+    }
+
+/* Content binnen de banner */
+.banner-content {
+    position: relative;
+    z-index: 2; /* Zorgt ervoor dat de content boven de overlay komt */
+}
+
+    .banner-content h1 {
+        font-size: 3em;
+        margin-bottom: 0.5em;
+        color: var(--accent-color); /* Gele koptekst */
+    }
+
+    .banner-content p.lead {
+        font-size: 1.5em;
+        margin-bottom: 1em;
+        color: var(--white); /* Witte lead text */
+    }
+
+    /* Styling voor knoppen in de banner */
+    .banner-content .btn {
+        font-size: 1.2em;
+        padding: 0.75em 1.5em;
+        border-radius: 50px; /* Ronde knoppen */
+        background-color: var(--primary-color);
+        color: var(--white);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border: none; /* Verwijder standaard rand */
+    }
+
+        .banner-content .btn:hover {
+            background-color: var(--secondary-color); /* Licht blauw bij hover */
+            color: var(--white); /* Witte tekst bij hover */
+        }
+
+/* ========================= */
+/*         FOOTER STIJLEN     */
+/* ========================= */
+
+.footer {
+    background-color: var(--border-color) !important; /* Donker Grijs */
+    padding: 3em 0;
+    color: var(--white);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+    border-top: 5px solid var(--accent-color);
+}
+
+    .footer h5 {
+        color: var(--accent-color);
+        font-size: 1.5rem;
+        margin-bottom: 1em;
+    }
+
+    .footer p,
+    .footer a {
+        color: var(--white) !important; /* Witte tekst */
+        font-size: 1rem;
+    }
+
+        .footer a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+/* Social icons in de footer */
+.footer-social-icons a {
+    margin-right: 15px;
+    color: var(--accent-color);
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+    .footer-social-icons a:hover {
+        color: var(--white);
+    }
+
+/* ========================= */
+/*      DROPDOWN MENU STIJLEN */
+/* ========================= */
+
+.dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--white);
+}
+
+.dropdown-item:hover {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+/* ========================= */
+/*        CARD STIJLEN        */
+/* ========================= */
+
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: var(--white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.card-header {
+    color: var(--white);
+    border-bottom: none;
+}
+
+    /* Specifieke card-header kleuren */
+    .card-header.bg-primary {
+        background-color: var(--primary-color) !important;
+    }
+
+    .card-header.bg-secondary {
+        background-color: var(--secondary-color) !important;
+    }
+
+    .card-header.bg-warning {
+        background-color: var(--accent-color) !important;
+    }
+
+.card-body {
+    background-color: var(--white);
+}
+
+.card h4 {
+    margin: 0;
+    /*    color: var(--primary-color); */
+}
+
+/* ========================= */
+/*    SECTIETITEL STIJLEN     */
+/* ========================= */
+
+.section-title {
+    color: var(--title-color) !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* ========================= */
+/*        BUTTON STIJLEN      */
+/* ========================= */
+
+/* Basis knopstijl */
+.btn {
+    padding: 0.5em 1em;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+}
+
+/* Primair knopstijl */
+.btn-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+/* Waarschuwing knopstijl */
+.btn-warning {
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: none;
+}
+
+    .btn-warning:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+/* Gevaarlijk knopstijl */
+.btn-danger {
+    background-color: var(--danger-red);
+    color: var(--white);
+    border: none;
+}
+
+    .btn-danger:hover {
+        background-color: #a71d2a; /* Iets donkerder rood */
+        color: var(--white);
+    }
+
+/* Succes knopstijl */
+.btn-success {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: none;
+}
+
+    .btn-success:hover {
+        background-color: #c7510a; /* Iets donkerder dan secondary-color */
+        color: var(--white);
+    }
+
+/* Algemene hover stijl voor alle knoppen */
+.btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--white);
+}
+
+/* Outline knoppen */
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-warning,
+.btn-outline-success {
+    background-color: transparent;
+    border: 2px solid;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: var(--white);
+    }
+
+.btn-outline-secondary {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+    .btn-outline-secondary:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+.btn-outline-warning {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+    .btn-outline-warning:hover {
+        background-color: var(--accent-color);
+        color: var(--white);
+    }
+
+.btn-outline-success {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+    .btn-outline-success:hover {
+        background-color: var(--secondary-color);
+        color: var(--white);
+    }
+
+/* Like-knop stijl */
+.btn-like {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.2em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+    .btn-like .like-count {
+        margin-left: 5px;
+        font-size: 0.9em;
+        color: var(--primary-color);
+    }
+
+    .btn-like.liked {
+        color: var(--danger-red);
+    }
+
+    .btn-like:focus {
+        outline: none;
+    }
+
+/* ========================= */
+/*     SUGGESTIEKAART STIJLEN  */
+/* ========================= */
+
+.suggestion-card {
+    padding: 15px;
+    background-color: var(--white);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .suggestion-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .suggestion-card .card-text {
+        font-size: 1rem;
+    }
+
+    .suggestion-card .text-muted {
+        font-size: 0.85rem;
+        color: var(--gray);
+    }
+
+    .suggestion-card .btn {
+        margin-left: 5px;
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        border-radius: 4px;
+        padding: 0.5em 1em;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .suggestion-card .btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+
+/* ========================= */
+/*      IMAGE DROPZONE STIJLEN  */
+/* ========================= */
+
+.image-dropzone {
+    border: 2px dashed var(--gray);
+    border-radius: 8px;
+    background-color: var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .image-dropzone .image-preview img {
+        max-height: 100%;
+        max-width: 100%;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .image-dropzone .image-preview p {
+        text-align: center;
+        margin: 0;
+        color: var(--primary-color);
+    }
+
+/* ========================= */
+/*     FORMULIER ELEMENTEN     */
+/* ========================= */
+
+input,
+textarea,
+select {
+    border: 1px solid var(--gray);
+    border-radius: 4px;
+    padding: 0.5em;
+    transition: border-color 0.3s ease;
+}
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem var(--primary-color);
+    }
+
+/* ========================= */
+/*        BOOTSTRAP ICONS      */
+/* ========================= */
+
+.bi {
+    font-family: "Bootstrap Icons" !important;
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    line-height: 1;
+    text-decoration: inherit;
+    text-align: center;
+    text-transform: none;
+    vertical-align: -0.125em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.btn .bi {
+    color: inherit; /* Erf de kleur van de knop */
+}
+/* Schrijft maand in Sessions met Hoofdletter*/
+.title-text {
+    text-transform: capitalize;
+}

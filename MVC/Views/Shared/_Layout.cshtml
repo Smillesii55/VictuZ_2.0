@@ -37,33 +37,6 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Sessions" asp-action="Index">Agenda</a>
                         </li>
-                        <!-- User Role Specific Links -->
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
-                        {
-                            <!-- BoardMember Dropdown -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Board
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="boardDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Board" asp-action="Dashboard">Dashboard</a></li>
-                                    <!-- Additional BoardMember links -->
-                                </ul>
-                            </li>
-                        }
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
-                        {
-                            <!-- Member Dropdown -->
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="memberDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Member
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="memberDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Member" asp-action="Profile">Profile</a></li>
-                                    <!-- Additional Member links -->
-                                </ul>
-                            </li>
-                        }
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <partial name="_LoginPartial" />

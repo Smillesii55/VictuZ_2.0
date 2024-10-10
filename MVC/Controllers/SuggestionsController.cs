@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-using VictuZ_2._0.Data;
-using VictuZ_2._0.Models.Suggestions;
-using VictuZ_2._0.Models.Users;
-using VictuZ_2._0.ViewModels;
+using Core.Data;
+using Core.Models.Suggestions;
+using MVC.Models;
 
-namespace VictuZ_2._0.Controllers
+namespace MVC.Controllers
 {
     public class SuggestionsController : Controller
     {
@@ -101,7 +100,6 @@ namespace VictuZ_2._0.Controllers
         }
 
         // Other methods remain unchanged...
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ToggleLike(int id)
@@ -147,9 +145,21 @@ namespace VictuZ_2._0.Controllers
 
             _context.SaveChanges();
 
-            // Redirect terug naar de huidige pagina (Suggestions Index)
-            return RedirectToAction("Index");
+            // Haal de URL van de vorige pagina op uit de Referer-header
+            var referer = Request.Headers["Referer"].ToString();
+
+            if (!string.IsNullOrEmpty(referer))
+            {
+                // Redirect naar de vorige pagina
+                return Redirect(referer);
+            }
+            else
+            {
+                // Als de Referer-header niet beschikbaar is, redirect naar een fallback actie
+                return RedirectToAction("Index");
+            }
         }
+
 
         private bool SuggestionExists(int id)
         {
