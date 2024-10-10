@@ -1,4 +1,4 @@
-﻿@model MVC.Models.HomeIndexViewModel
+﻿@model VictuZ_2._0.Models.ViewModels.HomeIndexViewModel
 @using System.Security.Claims
 @{
     ViewData["Title"] = "Home Page";
@@ -25,7 +25,7 @@
 <!-- Main Content -->
 <div class="container mt-5">
     <div class="row">
-        <!-- Suggestions Section -->
+        <!-- Suggestions Section (Only visible for logged-in users) -->
         <div class="col-md-6 d-flex">
             <!-- Suggestions Card -->
             <div class="card mb-4 shadow-sm border-warning h-70 w-100 d-flex flex-column">
@@ -33,74 +33,81 @@
                     <h4 class="my-0 fw-normal section-title">Community Suggesties</h4>
                 </div>
                 <div class="card-body d-flex flex-column flex-grow-1">
-                    <p>Share your ideas and see what others are suggesting</p>
-                    @if (Model.Suggestions != null && Model.Suggestions.Any())
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        @foreach (var suggestion in Model.Suggestions)
+                        <p>Share your ideas and see what others are suggesting</p>
+                        @if (Model.Suggestions != null && Model.Suggestions.Any())
                         {
-                            <div class="card mb-3 suggestion-card">
-                                <div class="card-body">
-                                    <h5 class="card-text">@suggestion.Content</h5>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <small class="text-muted">
-                                            Ingediend op @suggestion.SubmittedOn.ToString("dd-MM-yyyy HH:mm")
-                                            @if (!suggestion.IsAnonymous && suggestion.CreatedBy != null)
-                                            {
-                                                <span>door @suggestion.CreatedBy.UserName</span>
-                                            }
-                                            else
-                                            {
-                                                <span>door Anoniem</span>
-                                            }
-                                        </small>
-                                        @{
-                                            bool userHasLiked = false;
-                                            if (currentUserId.HasValue && suggestion.SuggestionLikes != null)
-                                            {
-                                                userHasLiked = suggestion.SuggestionLikes.Any(like => like.UserId == currentUserId.Value);
-                                            }
-                                        }
-                                        <div>
-                                            @if (currentUserId.HasValue)
-                                            {
-                                                @using (Html.BeginForm("ToggleLike", "Suggestions", new { id = suggestion.Id }, FormMethod.Post, null, new { @class = "d-inline" }))
+                            @foreach (var suggestion in Model.Suggestions)
+                            {
+                                <div class="card mb-3 suggestion-card">
+                                    <div class="card-body">
+                                        <h5 class="card-text">@suggestion.Content</h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                Ingediend op @suggestion.SubmittedOn.ToString("dd-MM-yyyy HH:mm")
+                                                @if (!suggestion.IsAnonymous && suggestion.CreatedBy != null)
                                                 {
-                                                    @Html.AntiForgeryToken()
-                                                    @if (userHasLiked)
-                                                    {
-                                                        <!-- Unlike Button -->
-                                                        <button type="submit" class="btn-sm btn-danger">
-                                                            <i class="bi bi-hand-thumbs-down"></i> @suggestion.LikeCount
-                                                        </button>
-                                                    }
-                                                    else
-                                                    {
-                                                        <!-- Like Button -->
-                                                        <button type="submit" class="btn-sm btn-primary">
-                                                            <i class="bi bi-hand-thumbs-up"></i> @suggestion.LikeCount
-                                                        </button>
-                                                    }
+                                                    <span>door @suggestion.CreatedBy.UserName</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>door Anoniem</span>
+                                                }
+                                            </small>
+                                            @{
+                                                bool userHasLiked = false;
+                                                if (currentUserId.HasValue && suggestion.SuggestionLikes != null)
+                                                {
+                                                    userHasLiked = suggestion.SuggestionLikes.Any(like => like.UserId == currentUserId.Value);
                                                 }
                                             }
-                                            else
-                                            {
-                                                <!-- Display Like Count for Unauthenticated Users -->
-                                                <span><i class="fas fa-thumbs-up"></i> @suggestion.LikeCount</span>
-                                            }
+                                            <div>
+                                                @if (currentUserId.HasValue)
+                                                {
+                                                    @using (Html.BeginForm("ToggleLike", "Suggestions", new { id = suggestion.Id }, FormMethod.Post, null, new { @class = "d-inline" }))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        @if (userHasLiked)
+                                                        {
+                                                            <!-- Unlike Button -->
+                                                            <button type="submit" class="btn-sm btn-danger">
+                                                                <i class="bi bi-hand-thumbs-down"></i> @suggestion.LikeCount
+                                                            </button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <!-- Like Button -->
+                                                            <button type="submit" class="btn-sm btn-primary">
+                                                                <i class="bi bi-hand-thumbs-up"></i> @suggestion.LikeCount
+                                                            </button>
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <!-- Display Like Count for Unauthenticated Users -->
+                                                    <span><i class="fas fa-thumbs-up"></i> @suggestion.LikeCount</span>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         }
+                        else
+                        {
+                            <p>Geen suggesties beschikbaar.</p>
+                        }
+                        <!-- "Bekijk alle" knop aan de onderkant -->
+                        <div class="mt-auto">
+                            <a href="@Url.Action("Index", "Suggestions")" class="btn btn-outline-primary mt-3">Bekijk alle suggesties</a>
+                        </div>
                     }
                     else
                     {
-                        <p>Geen suggesties beschikbaar.</p>
+                        <p class="text-muted">Log in to view and submit community suggestions.</p>
                     }
-                    <!-- "Bekijk alle" knop aan de onderkant -->
-                    <div class="mt-auto">
-                        <a href="@Url.Action("Index", "Suggestions")" class="btn btn-outline-primary mt-3">Bekijk alle suggesties</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -149,7 +156,6 @@
             </div>
         </div>
 
-
         <!-- News Section -->
         <div class="col-md-12">
             <!-- News Card -->
@@ -197,5 +203,6 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
