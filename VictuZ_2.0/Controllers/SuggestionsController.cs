@@ -109,16 +109,17 @@ namespace VictuZ_2._0.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ToggleLike(int id)
         {
-            // Check if the user is authenticated
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Login", "Account");
+                return Unauthorized();
             }
 
-            // Get the current user's ID
-            int currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdValue, out int userId))
+            {
+                return Unauthorized();
+            }
 
-            // Retrieve the suggestion along with its likes
             var suggestion = _context.Suggestions
                 .Include(s => s.SuggestionLikes)
                 .FirstOrDefault(s => s.Id == id);
@@ -128,37 +129,29 @@ namespace VictuZ_2._0.Controllers
                 return NotFound();
             }
 
-            // Check if the current user has already liked the suggestion
-            var existingLike = suggestion.SuggestionLikes
-                .FirstOrDefault(like => like.UserId == currentUserId);
-
+            var existingLike = suggestion.SuggestionLikes.FirstOrDefault(l => l.UserId == userId);
             if (existingLike != null)
             {
-                // User has liked it before; remove the like
-                suggestion.SuggestionLikes.Remove(existingLike);
-                suggestion.LikeCount--;
-
-                // Optionally, remove the like from the database context
+                // Unlike
                 _context.SuggestionLikes.Remove(existingLike);
+                suggestion.LikeCount--;
             }
             else
             {
-                // User has not liked it before; add a new like
-                var newLike = new SuggestionLike
+                // Like
+                var like = new SuggestionLike
                 {
                     SuggestionId = id,
-                    UserId = currentUserId
+                    UserId = userId
                 };
-
-                suggestion.SuggestionLikes.Add(newLike);
+                _context.SuggestionLikes.Add(like);
                 suggestion.LikeCount++;
             }
 
-            // Save changes to the database
             _context.SaveChanges();
 
-            // Redirect back to the page where the user came from
-            return RedirectToAction("Index", "Home");
+            // Redirect terug naar de huidige pagina (Suggestions Index)
+            return RedirectToAction("Index");
         }
 
         private bool SuggestionExists(int id)
