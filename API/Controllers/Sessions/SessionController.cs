@@ -25,7 +25,7 @@ namespace API.Controllers.Sessions
             return await _context.Sessions
                                  .Include(s => s.CreatedBy)
                                  .Include(s => s.Location)
-                                 .Include(s => s.ActivityRegistrations)
+                                 .Include(s => s.SessionRegistrations)
                                  .Include(s => s.Feedbacks)
                                  .ToListAsync();
         }
@@ -37,7 +37,7 @@ namespace API.Controllers.Sessions
             var session = await _context.Sessions
                                         .Include(s => s.CreatedBy)
                                         .Include(s => s.Location)
-                                        .Include(s => s.ActivityRegistrations)
+                                        .Include(s => s.SessionRegistrations)
                                         .Include(s => s.Feedbacks)
                                         .FirstOrDefaultAsync(s => s.Id == id);
 

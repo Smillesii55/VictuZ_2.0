@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241009132710_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241011085907_SessionsFix")]
+    partial class SessionsFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,6 +156,15 @@ namespace Core.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("HasAttended")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasCancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
@@ -580,9 +589,9 @@ namespace Core.Migrations
 
             modelBuilder.Entity("Core.Models.Sessions.Session", b =>
                 {
-                    b.Navigation("SessionRegistrations");
-
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("SessionRegistrations");
                 });
 
             modelBuilder.Entity("Core.Models.Suggestions.Suggestion", b =>

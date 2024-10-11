@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Core.Data;
 using Core.Models.Sessions;
 using Core.Models.Users;
+using System.Security.Claims;
 
 namespace MVC.Controllers
 {
@@ -33,7 +34,7 @@ namespace MVC.Controllers
         // GET: Sessions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Sessions == null)
             {
                 return NotFound();
             }
@@ -41,7 +42,9 @@ namespace MVC.Controllers
             var session = await _context.Sessions
                 .Include(s => s.CreatedBy)
                 .Include(s => s.Location)
+                .Include(s => s.SessionRegistrations)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (session == null)
             {
                 return NotFound();
@@ -229,6 +232,105 @@ namespace MVC.Controllers
         private bool SessionExists(int id)
         {
             return _context.Sessions.Any(e => e.Id == id);
+        }
+
+        // POST: Sessions/Register/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(int id)
+        {
+            var session = await _context.Sessions.FindAsync(id);
+            if (session == null)
+            {
+                return NotFound();
+            }
+
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdString == null)
+            {
+                return Unauthorized();
+            }
+
+            int userId = int.Parse(userIdString);
+
+            // Haal de gebruiker op inclusief zijn SessionRegistrations
+            var user = await _userManager.Users
+                .Include(u => u.SessionRegistrations)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            // Controleer of de gebruiker al is geregistreerd
+            if (user.SessionRegistrations.Any(r => r.SessionId == id))
+            {
+                // Gebruiker is al geregistreerd
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+
+            var registration = new SessionRegistration
+            {
+                SessionId = id,
+                UserId = userId,
+                RegistrationDate = DateTime.Now,
+                Session = session,
+                User = user
+            };
+
+            // Voeg de registratie toe aan de gebruiker
+            user.SessionRegistrations.Add(registration);
+
+            // Voeg de registratie toe aan de context
+            _context.SessionRegistrations.Add(registration);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id = id });
+        }
+
+
+        // POST: Sessions/Unregister/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Unregister(int id)
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdString == null)
+            {
+                return Unauthorized();
+            }
+
+            int userId = int.Parse(userIdString);
+
+            // Haal de gebruiker op inclusief zijn SessionRegistrations
+            var user = await _userManager.Users
+                .Include(u => u.SessionRegistrations)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            // Vind de registratie die moet worden verwijderd
+            var registration = user.SessionRegistrations.FirstOrDefault(r => r.SessionId == id);
+            if (registration == null)
+            {
+                // Gebruiker is niet geregistreerd
+                return RedirectToAction(nameof(Details), new { id = id });
+            }
+
+            // Verwijder de registratie uit de gebruiker
+            user.SessionRegistrations.Remove(registration);
+
+            // Verwijder de registratie uit de context
+            _context.SessionRegistrations.Remove(registration);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id = id });
         }
     }
 }

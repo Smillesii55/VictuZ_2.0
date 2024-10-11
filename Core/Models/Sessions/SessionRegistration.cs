@@ -9,6 +9,10 @@ namespace Core.Models.Sessions
         public int UserId { get; set; }
         public DateTime RegistrationDate { get; set; }
 
+        public bool HasCancelled { get; set; } = false;
+        public bool IsPresent { get; set; } = false;
+        public bool HasAttended { get; set; } = false;
+
         // Navigatie-eigenschappen
         public Session? Session { get; set; }
         public User? User { get; set; }
@@ -22,5 +26,7 @@ namespace Core.Models.Sessions
             UserId = userId;
             RegistrationDate = registrationDate;
         }
+
+
     }
 }
