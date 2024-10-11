@@ -44,6 +44,43 @@ namespace Core.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configureer Identity-tabelnamen als je aangepaste namen wilt
+            // Anders kun je deze stap overslaan
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("AspNetUsers");
+            });
+
+            modelBuilder.Entity<IdentityRole<int>>(entity =>
+            {
+                entity.ToTable("AspNetRoles");
+            });
+
+            modelBuilder.Entity<IdentityUserRole<int>>(entity =>
+            {
+                entity.ToTable("AspNetUserRoles");
+            });
+
+            modelBuilder.Entity<IdentityUserClaim<int>>(entity =>
+            {
+                entity.ToTable("AspNetUserClaims");
+            });
+
+            modelBuilder.Entity<IdentityUserLogin<int>>(entity =>
+            {
+                entity.ToTable("AspNetUserLogins");
+            });
+
+            modelBuilder.Entity<IdentityUserToken<int>>(entity =>
+            {
+                entity.ToTable("AspNetUserTokens");
+            });
+
+            modelBuilder.Entity<IdentityRoleClaim<int>>(entity =>
+            {
+                entity.ToTable("AspNetRoleClaims");
+            });
+
             // Configureer relaties en constraints
 
             // User en Session (CreatedBy)
@@ -111,6 +148,8 @@ namespace Core.Data
                 .HasOne(sl => sl.User)
                 .WithMany()
                 .HasForeignKey(sl => sl.UserId);
+
+
         }
     }
 }
