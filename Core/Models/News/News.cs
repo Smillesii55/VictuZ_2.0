@@ -1,11 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Core.Models.Users;
 
 namespace Core.Models.Newss
 {
     public class News
     {
         public int Id { get; set; }
+
+        public int? CreatedById { get; set; }
+        public User? CreatedBy { get; set; }
 
         [Required(ErrorMessage = "Title is required.")]
         [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters.")]

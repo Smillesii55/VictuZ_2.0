@@ -4,6 +4,7 @@ using Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241013123204_NewsConnections")]
+    partial class NewsConnections
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,15 +161,6 @@ namespace Core.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("HasAttended")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("HasCancelled")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPresent")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
@@ -502,13 +496,13 @@ namespace Core.Migrations
             modelBuilder.Entity("Core.Models.Sessions.SessionRegistration", b =>
                 {
                     b.HasOne("Core.Models.Sessions.Session", "Session")
-                        .WithMany("SessionRegistrations")
+                        .WithMany("ActivityRegistrations")
                         .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Models.Users.User", "User")
-                        .WithMany("SessionRegistrations")
+                        .WithMany("ActivityRegistrations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -601,9 +595,9 @@ namespace Core.Migrations
 
             modelBuilder.Entity("Core.Models.Sessions.Session", b =>
                 {
-                    b.Navigation("Feedbacks");
+                    b.Navigation("ActivityRegistrations");
 
-                    b.Navigation("SessionRegistrations");
+                    b.Navigation("Feedbacks");
                 });
 
             modelBuilder.Entity("Core.Models.Suggestions.Suggestion", b =>
@@ -613,13 +607,13 @@ namespace Core.Migrations
 
             modelBuilder.Entity("Core.Models.Users.User", b =>
                 {
+                    b.Navigation("ActivityRegistrations");
+
                     b.Navigation("CreatedActivities");
 
                     b.Navigation("CreatedNews");
 
                     b.Navigation("Feedbacks");
-
-                    b.Navigation("SessionRegistrations");
 
                     b.Navigation("Suggestions");
                 });

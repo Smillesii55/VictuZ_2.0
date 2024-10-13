@@ -82,8 +82,6 @@ namespace Core.Data
             });
 
             // Configureer relaties en constraints
-
-            // User en Session (CreatedBy)
             modelBuilder.Entity<Session>()
                 .HasOne(s => s.CreatedBy)
                 .WithMany(u => u.CreatedActivities)
@@ -148,6 +146,12 @@ namespace Core.Data
                 .HasOne(sl => sl.User)
                 .WithMany()
                 .HasForeignKey(sl => sl.UserId);
+                
+            modelBuilder.Entity<News>()
+                .HasOne(n => n.CreatedBy)
+                .WithMany(u => u.CreatedNews)
+                .HasForeignKey(n => n.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
         }
