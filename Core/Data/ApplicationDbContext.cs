@@ -13,7 +13,7 @@ namespace Core.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
-        // DbSet properties voor alle entiteiten, zonder Users omdat IdentityDbContext dit al bevat
+        // DbSet properties voor alle entiteiten
         public DbSet<Session> Sessions { get; set; }
         public DbSet<SessionRegistration> SessionRegistrations { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
@@ -22,38 +22,66 @@ namespace Core.Data
         public DbSet<SuggestionLike> SuggestionLikes { get; set; }
         public DbSet<News> News { get; set; }
 
+        // Constructor
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        // Verwijder OnConfiguring als je de connectiestring in Program.cs instelt.
-        // Als je het toch wilt behouden, zorg ervoor dat het alleen wordt geconfigureerd als het nog niet is gedaan.
+        // Als je de connectiestring in Program.cs instelt, is OnConfiguring niet nodig
+        // Maar als je het toch wilt behouden:
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // Overweeg om de connectiestring naar appsettings.json te verplaatsen voor betere configuratie
+                // Het is beter om de connectiestring in appsettings.json te plaatsen
                 optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=VictuZDb;Integrated Security=True;TrustServerCertificate=True");
             }
         }
 
+        // Modelconfiguratie
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Verwijder de discriminator configuratie aangezien we geen overerving meer gebruiken
-            // Geen .HasDiscriminator() meer
+            // Configureer Identity-tabelnamen als je aangepaste namen wilt
+            // Anders kun je deze stap overslaan
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("AspNetUsers");
+            });
+
+            modelBuilder.Entity<IdentityRole<int>>(entity =>
+            {
+                entity.ToTable("AspNetRoles");
+            });
+
+            modelBuilder.Entity<IdentityUserRole<int>>(entity =>
+            {
+                entity.ToTable("AspNetUserRoles");
+            });
+
+            modelBuilder.Entity<IdentityUserClaim<int>>(entity =>
+            {
+                entity.ToTable("AspNetUserClaims");
+            });
+
+            modelBuilder.Entity<IdentityUserLogin<int>>(entity =>
+            {
+                entity.ToTable("AspNetUserLogins");
+            });
+
+            modelBuilder.Entity<IdentityUserToken<int>>(entity =>
+            {
+                entity.ToTable("AspNetUserTokens");
+            });
+
+            modelBuilder.Entity<IdentityRoleClaim<int>>(entity =>
+            {
+                entity.ToTable("AspNetRoleClaims");
+            });
 
             // Configureer relaties en constraints
-
-            modelBuilder.Entity<News>()
-                .HasOne(n => n.CreatedBy)
-                .WithMany(u => u.CreatedNews)
-                .HasForeignKey(n => n.CreatedById)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Session en User (CreatedBy)
             modelBuilder.Entity<Session>()
                 .HasOne(s => s.CreatedBy)
                 .WithMany(u => u.CreatedActivities)
@@ -69,16 +97,22 @@ namespace Core.Data
 
             // SessionRegistration relaties
             modelBuilder.Entity<SessionRegistration>()
+                .HasKey(sr => sr.Id); // Primair sleutel
+
+            modelBuilder.Entity<SessionRegistration>()
                 .HasOne(sr => sr.Session)
-                .WithMany(s => s.ActivityRegistrations)
+                .WithMany(s => s.SessionRegistrations)
                 .HasForeignKey(sr => sr.SessionId);
 
             modelBuilder.Entity<SessionRegistration>()
                 .HasOne(sr => sr.User)
-                .WithMany(u => u.ActivityRegistrations)
+                .WithMany(u => u.SessionRegistrations)
                 .HasForeignKey(sr => sr.UserId);
 
             // Feedback relaties
+            modelBuilder.Entity<Feedback>()
+                .HasKey(f => f.Id); // Primair sleutel
+
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Session)
                 .WithMany(s => s.Feedbacks)
@@ -89,14 +123,20 @@ namespace Core.Data
                 .WithMany(u => u.Feedbacks)
                 .HasForeignKey(f => f.UserId);
 
-            // Suggestion and User (CreatedBy)
+            // Suggestion relaties
+            modelBuilder.Entity<Suggestion>()
+                .HasKey(s => s.Id); // Primair sleutel
+
             modelBuilder.Entity<Suggestion>()
                 .HasOne(s => s.CreatedBy)
                 .WithMany(u => u.Suggestions)
                 .HasForeignKey(s => s.CreatedById)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            // SuggestionLike relationships
+            // SuggestionLike relaties
+            modelBuilder.Entity<SuggestionLike>()
+                .HasKey(sl => sl.Id); // Primair sleutel
+
             modelBuilder.Entity<SuggestionLike>()
                 .HasOne(sl => sl.Suggestion)
                 .WithMany(s => s.SuggestionLikes)
@@ -106,18 +146,14 @@ namespace Core.Data
                 .HasOne(sl => sl.User)
                 .WithMany()
                 .HasForeignKey(sl => sl.UserId);
+                
+            modelBuilder.Entity<News>()
+                .HasOne(n => n.CreatedBy)
+                .WithMany(u => u.CreatedNews)
+                .HasForeignKey(n => n.CreatedById)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Configureer IdentityRole<int> tabel
-            modelBuilder.Entity<IdentityRole<int>>(entity =>
-            {
-                entity.ToTable("AspNetRoles");
-                entity.HasKey(r => r.Id);
-                entity.Property(r => r.Id).ValueGeneratedOnAdd();
-            });
 
-            // Laat IdentityDbContext de configuratie van IdentityUserRole<int> beheren
-            // Verwijder expliciete configuratie om conflicten te voorkomen
         }
     }
 }
-

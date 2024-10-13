@@ -159,6 +159,15 @@ namespace Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("HasAttended")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasCancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
@@ -493,13 +502,13 @@ namespace Core.Migrations
             modelBuilder.Entity("Core.Models.Sessions.SessionRegistration", b =>
                 {
                     b.HasOne("Core.Models.Sessions.Session", "Session")
-                        .WithMany("ActivityRegistrations")
+                        .WithMany("SessionRegistrations")
                         .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Models.Users.User", "User")
-                        .WithMany("ActivityRegistrations")
+                        .WithMany("SessionRegistrations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -592,9 +601,9 @@ namespace Core.Migrations
 
             modelBuilder.Entity("Core.Models.Sessions.Session", b =>
                 {
-                    b.Navigation("ActivityRegistrations");
-
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("SessionRegistrations");
                 });
 
             modelBuilder.Entity("Core.Models.Suggestions.Suggestion", b =>
@@ -604,13 +613,13 @@ namespace Core.Migrations
 
             modelBuilder.Entity("Core.Models.Users.User", b =>
                 {
-                    b.Navigation("ActivityRegistrations");
-
                     b.Navigation("CreatedActivities");
 
                     b.Navigation("CreatedNews");
 
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("SessionRegistrations");
 
                     b.Navigation("Suggestions");
                 });

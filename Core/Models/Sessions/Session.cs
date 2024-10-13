@@ -28,12 +28,12 @@ namespace Core.Models.Sessions
         // Navigatie-eigenschappen
         public User? CreatedBy { get; set; }
         public Location? Location { get; set; }
-        public ICollection<SessionRegistration>? ActivityRegistrations { get; set; }
+        public ICollection<SessionRegistration>? SessionRegistrations { get; set; }
         public ICollection<Feedback>? Feedbacks { get; set; }
 
         public Session()
         {
-            ActivityRegistrations = new HashSet<SessionRegistration>();
+            SessionRegistrations = new HashSet<SessionRegistration>();
             Feedbacks = new HashSet<Feedback>();
         }
     }
