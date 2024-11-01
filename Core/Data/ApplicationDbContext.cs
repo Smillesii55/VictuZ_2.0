@@ -109,20 +109,6 @@ namespace Core.Data
                 .WithMany(u => u.SessionRegistrations)
                 .HasForeignKey(sr => sr.UserId);
 
-            // Feedback relaties
-            modelBuilder.Entity<Feedback>()
-                .HasKey(f => f.Id); // Primair sleutel
-
-            modelBuilder.Entity<Feedback>()
-                .HasOne(f => f.Session)
-                .WithMany(s => s.Feedbacks)
-                .HasForeignKey(f => f.SessionId);
-
-            modelBuilder.Entity<Feedback>()
-                .HasOne(f => f.User)
-                .WithMany(u => u.Feedbacks)
-                .HasForeignKey(f => f.UserId);
-
             // Suggestion relaties
             modelBuilder.Entity<Suggestion>()
                 .HasKey(s => s.Id); // Primair sleutel

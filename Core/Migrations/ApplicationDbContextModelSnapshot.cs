@@ -22,38 +22,6 @@ namespace Core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Core.Models.Feedbacks.Feedback", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SessionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SubmittedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SessionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Feedbacks");
-                });
 
             modelBuilder.Entity("Core.Models.Locations.Location", b =>
                 {
@@ -116,40 +84,46 @@ namespace Core.Migrations
                 });
 
             modelBuilder.Entity("Core.Models.Sessions.Session", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ActivityDate")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("ActivityDate")
+                    .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                b.Property<int>("CreatedById")
+                    .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Description")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("EndDate")
+                    .HasColumnType("datetime2");
 
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
+                b.Property<int>("LocationId")
+                    .HasColumnType("int");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Title")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.Property<string>("Host")
+                    .HasColumnType("nvarchar(max)"); 
 
-                    b.HasIndex("CreatedById");
+                b.Property<int>("MaxParticipants")
+                    .HasColumnType("int");
 
-                    b.HasIndex("LocationId");
+                b.HasKey("Id");
 
-                    b.ToTable("Sessions");
-                });
+                b.HasIndex("CreatedById");
+
+                b.HasIndex("LocationId");
+
+                b.ToTable("Sessions");
+            });
 
             modelBuilder.Entity("Core.Models.Sessions.SessionRegistration", b =>
                 {

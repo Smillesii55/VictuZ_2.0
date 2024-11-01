@@ -26,7 +26,6 @@ namespace API.Controllers.Sessions
                                  .Include(s => s.CreatedBy)
                                  .Include(s => s.Location)
                                  .Include(s => s.SessionRegistrations)
-                                 .Include(s => s.Feedbacks)
                                  .ToListAsync();
         }
 
@@ -38,7 +37,6 @@ namespace API.Controllers.Sessions
                                         .Include(s => s.CreatedBy)
                                         .Include(s => s.Location)
                                         .Include(s => s.SessionRegistrations)
-                                        .Include(s => s.Feedbacks)
                                         .FirstOrDefaultAsync(s => s.Id == id);
 
             if (session == null)

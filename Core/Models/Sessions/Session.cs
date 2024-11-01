@@ -24,17 +24,18 @@ namespace Core.Models.Sessions
 
         public int CreatedById { get; set; }
         public int LocationId { get; set; }
+        public string Host { get; set; }              // Organisator
+        public int MaxParticipants { get; set; }      // Max aantal deelnemers
+
 
         // Navigatie-eigenschappen
         public User? CreatedBy { get; set; }
         public Location? Location { get; set; }
         public ICollection<SessionRegistration>? SessionRegistrations { get; set; }
-        public ICollection<Feedback>? Feedbacks { get; set; }
 
         public Session()
         {
             SessionRegistrations = new HashSet<SessionRegistration>();
-            Feedbacks = new HashSet<Feedback>();
         }
     }
 }

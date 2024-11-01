@@ -65,7 +65,7 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId")] Session session)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants")] Session session)
         {
             _logger.LogInformation("Attempting to create a new session.");
 
@@ -123,7 +123,8 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId")] Session session)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants")] Session session)
+
         {
             if (id != session.Id)
             {
