@@ -47,6 +47,18 @@
                 <span asp-validation-for="LocationId" class="text-danger"></span>
             </div>
 
+            <div class="form-group mb-3">
+                <label asp-for="Host" class="control-label"></label>
+                <input asp-for="Host" class="form-control" />
+                <span asp-validation-for="Host" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MaxParticipants" class="control-label"></label>
+                <input asp-for="MaxParticipants" class="form-control" type="number" min="1" />
+                <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+            </div>
+
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-link">Cancel</a>
