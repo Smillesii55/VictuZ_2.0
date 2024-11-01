@@ -24,6 +24,9 @@ namespace Core.Models.Sessions
 
         public int CreatedById { get; set; }
         public int LocationId { get; set; }
+        
+        public string Host { get; set; }
+        public int MaxParticipants { get; set; }
 
         // Navigatie-eigenschappen
         public User? CreatedBy { get; set; }
