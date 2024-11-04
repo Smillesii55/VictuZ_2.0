@@ -16,9 +16,9 @@
 <!-- Header Banner -->
 <div class="header-banner text-white">
     <div class="banner-content text-center">
-        <h1>Join the Conversation on VictuZ</h1>
-        <p class="lead">Share your ideas and see what others are suggesting</p>
-        <a href="@Url.Action("Index", "Suggestions")" class="btn btn-warning btn-lg">View Suggestions</a>
+        <h1>Bekijk de volgende activiteiten!</h1>
+        <p class="lead">Meld je aan en doe mee</p>
+        <a href="@Url.Action("Index", "Sessions")" class="btn btn-warning btn-lg">Bekijk Activiteiten</a>
     </div>
 </div>
 
@@ -35,7 +35,7 @@
                 <div class="card-body d-flex flex-column flex-grow-1">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <p>Share your ideas and see what others are suggesting</p>
+                        <p>Deel je ideën en bekijk wat anderen hebben voorgesteld.</p>
                         @if (Model.Suggestions != null && Model.Suggestions.Any())
                         {
                             @foreach (var suggestion in Model.Suggestions)
@@ -106,7 +106,7 @@
                     }
                     else
                     {
-                        <p class="text-muted">Log in to view and submit community suggestions.</p>
+                        <p class="text-black">Wordt lid om suggesties te bekijken en te delen.</p>
                     }
                 </div>
             </div>
@@ -121,7 +121,7 @@
                     <h4 class="my-0 fw-normal section-title">Agenda</h4>
                 </div>
                 <div class="card-body d-flex flex-column flex-grow-1">
-                    <p>Stay updated with our upcoming events and activities.</p>
+                    <p>Bekijk aankomende activiteiten.</p>
                     @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
                     {
                         <div class="row row-cols-1 g-4">
@@ -161,12 +161,12 @@
             <!-- News Card -->
             <div class="card mb-4 shadow-sm border-success">
                 <div class="card-header bg-success text-white">
-                    <h4 class="my-0 fw-normal section-title">News</h4>
+                    <h4 class="my-0 fw-normal section-title">Nieuws</h4>
                 </div>
 
                 <div class="card-body">
                     <!-- News Content -->
-                    <p>Read the latest news and updates from our organization.</p>
+                    <p>In ontwikkeling.</p>
                     @if (Model.News != null && Model.News.Any())
                     {
                         <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -197,9 +197,9 @@
                     }
                     else
                     {
-                        <p>No news available.</p>
+                        <p>Hier valt niks te zien.</p>
                     }
-                    <a href="@Url.Action("Index", "News")" class="btn btn-outline-primary mt-3">View All News</a>
+                    <a href="@Url.Action("Index", "News")" class="btn btn-outline-primary mt-3">Bekijk alles</a>
                 </div>
             </div>
         </div>
