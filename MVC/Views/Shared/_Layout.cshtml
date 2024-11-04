@@ -31,7 +31,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Suggestions" asp-action="Index">Suggestions</a>
+                                <a class="nav-link" asp-area="" asp-controller="Suggestions" asp-action="Index">Suggesties</a>
                             </li>
                         }
                         <li class="nav-item">
@@ -61,21 +61,21 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <h5>About Us</h5>
-                    <p>Brief description about your organization.</p>
+                    <p>VictuZ is de studievereniging voor ICT-studenten in Zuid-Limburg, gericht op het verbinden en inspireren van toekomstige IT-professionals. Met leerzame workshops, netwerkevenementen en gezellige activiteiten streven we ernaar om een gemeenschap te bouwen waar kennis en ervaring gedeeld worden. Sluit je aan en maak deel uit van onze groeiende ICT-community!</p>
                 </div>
                 <div class="col-md-4 mb-3">
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                        <li><a href="@Url.Action("Index", "Suggestions")">Suggestions</a></li>
+                        <li><a href="@Url.Action("Index", "Suggestions")">Suggesties</a></li>
                         <li><a href="@Url.Action("Index", "Sessions")">Agenda</a></li>
-                        <li><a href="@Url.Action("Index", "News")">News</a></li>
+                        <li><a href="@Url.Action("Index", "News")">Nieuws</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-3">
-                    <h5>Contact Us</h5>
+                    <h5>Contact</h5>
                     <p>Email: info@victuz.com</p>
-                    <p>Phone: +123 456 7890</p>
+                    <p>Telefoon: +31 456 7890</p>
                     <!-- Social media iconen in de footer -->
                     <div class="footer-social-icons">
                         <a href="#"><img src="~/images/icons/facebook.jpeg" alt="Facebook" style="width: 24px;" /></a>
