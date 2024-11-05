@@ -127,20 +127,23 @@
                         <div class="row row-cols-1 g-4">
                             @foreach (var session in Model.UpcomingSessions)
                             {
-                                <div class="col">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="card-title">@session.Title</h5>
-                                                <small class="text-muted">@session.ActivityDate.ToString("dd-MM-yyyy HH:mm")</small>
+                                @if ((session.IsEarlyAccess == true && DateTime.Now.AddDays(3) < session.CreatedAt) || session.IsEarlyAccess == false || User.Identity.IsAuthenticated)
+                                {
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h5 class="card-title">@session.Title</h5>
+                                                    <small class="text-muted">@session.ActivityDate.ToString("dd-MM-yyyy HH:mm")</small>
+                                                </div>
+                                                <p class="card-text"><strong>Locatie:</strong> @session.Location?.Name</p>
                                             </div>
-                                            <p class="card-text"><strong>Locatie:</strong> @session.Location?.Name</p>
-                                        </div>
-                                        <div class="card-footer text-end">
-                                            <a href="@Url.Action("Details", "Sessions", new { id = session.Id })" class="btn btn-sm btn-primary">View</a>
+                                            <div class="card-footer text-end">
+                                                <a href="@Url.Action("Details", "Sessions", new { id = session.Id })" class="btn btn-sm btn-primary">View</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
                             }
                         </div>
                     }

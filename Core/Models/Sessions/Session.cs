@@ -27,6 +27,9 @@ namespace Core.Models.Sessions
         
         public string Host { get; set; }
         public int MaxParticipants { get; set; }
+        public bool IsEarlyAccess { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedAt { get; set; }
 
         // Navigatie-eigenschappen
         public User? CreatedBy { get; set; }

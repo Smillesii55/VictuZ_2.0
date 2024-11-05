@@ -65,7 +65,7 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants")] Session session)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,IsEarlyAccess")] Session session)
         {
             _logger.LogInformation("Attempting to create a new session.");
 
@@ -79,6 +79,7 @@ namespace MVC.Controllers
                 }
 
                 session.CreatedById = user.Id;
+                session.CreatedAt = DateTime.Now;
                 _context.Add(session);
                 await _context.SaveChangesAsync();
                 _logger.LogInformation($"Session '{session.Title}' created by user '{user.Email}'.");
@@ -123,7 +124,7 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants")] Session session)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,IsEarlyAccess")] Session session)
         {
             if (id != session.Id)
             {
@@ -158,6 +159,7 @@ namespace MVC.Controllers
                     existingSession.LocationId = session.LocationId;
                     existingSession.Host = session.Host;
                     existingSession.MaxParticipants = session.MaxParticipants;
+                    existingSession.IsEarlyAccess = existingSession.IsEarlyAccess;
 
                     _context.Update(existingSession);
                     await _context.SaveChangesAsync();
