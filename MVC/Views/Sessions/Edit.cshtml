@@ -59,6 +59,11 @@
                 <span asp-validation-for="MaxParticipants" class="text-danger"></span>
             </div>
 
+            <div class="form-group mb-3">
+                <input type="checkbox" asp-for="IsEarlyAccess" class="form-check-input"/>
+                <label asp-for="IsEarlyAccess" class="control-label">Vervroegde toegang voor leden</label>
+            </div>
+
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-link">Cancel</a>
