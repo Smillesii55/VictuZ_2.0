@@ -99,7 +99,6 @@ namespace MVC.Controllers
             return View(suggestion);
         }
 
-        // Other methods remain unchanged...
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ToggleLike(int id)
