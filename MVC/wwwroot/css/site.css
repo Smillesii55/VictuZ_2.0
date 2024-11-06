@@ -1,62 +1,62 @@
 /* ========================= */
-/*        KLEURVARIABELEN     */
+/*        COLOR VARIABLES    */
 /* ========================= */
 :root {
-    /* Kleurpalet */
+    /* Color Palette */
     --title-color: #000000;
     --border-color: #182833;
     --primary-color: #86BBD8;
     --secondary-color: #F26419;
     --accent-color: #F6AE2D;
-    /* Extra kleuren voor contrast en leesbaarheid */
+    /* Extra colors for contrast and readability */
     --white: #ffffff;
     --black: #000000;
     --gray: #6c757d;
     --light-gray: #edf5f7;
-    --danger-red: #dc3545; /* Voor waarschuwingen/acties */
-    /* Transparant zwart voor overlays */
+    --danger-red: #dc3545; /* For warnings/actions */
+    /* Transparent black for overlays */
     --overlay-color: rgba(0, 0, 0, 0.5);
 }
 
 /* ========================= */
-/*        GENERALE STIJLEN    */
+/*        GENERAL STYLES     */
 /* ========================= */
 
-/* Basis lettergrootte en lettertype */
+/* Base font size and font family */
 html {
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
 }
 
-/* Grotere lettergrootte voor bredere schermen (min-width: 768px) */
+/* Larger font size for wider screens (min-width: 768px) */
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
 }
 
-/* Body instellingen */
+/* Body settings */
 body {
-    font-size: 1rem; /* Basis lettergrootte voor de inhoud */
-    background-color: var(--light-gray); /* Optioneel: achtergrondkleur van de body */
+    font-size: 1rem; /* Base font size for content */
+    background-color: var(--light-gray); /* Optional: body background color */
     padding-top: 65px;
 }
 
-/* Focus-styling voor knoppen en formulier-elementen */
+/* Focus styling for buttons and form elements */
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus {
     box-shadow: 0 0 0 0.2rem var(--primary-color);
-    outline: none; /* Verwijder de standaard focusring */
+    outline: none; /* Remove default focus ring */
 }
 
 /* ========================= */
-/*    OVERSCHRIJVINGEN BOOTSTRAP */
+/*    BOOTSTRAP OVERRIDES    */
 /* ========================= */
 
-/* Achtergrondkleuren */
+/* Background colors */
 .bg-primary {
     background-color: var(--primary-color) !important;
 }
@@ -70,7 +70,7 @@ body {
 }
 
 .bg-success {
-    background-color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+    background-color: var(--secondary-color) !important; /* Adjusted if desired */
 }
 
 .bg-light {
@@ -81,7 +81,7 @@ body {
     background-color: var(--primary-color) !important;
 }
 
-/* Randkleuren */
+/* Border colors */
 .border-primary {
     border-color: var(--primary-color) !important;
 }
@@ -95,7 +95,7 @@ body {
 }
 
 .border-success {
-    border-color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+    border-color: var(--secondary-color) !important; /* Adjusted if desired */
 }
 
 .border-light {
@@ -106,7 +106,7 @@ body {
     border-color: var(--primary-color) !important;
 }
 
-/* Tekstkleuren */
+/* Text colors */
 .text-primary {
     color: var(--primary-color) !important;
 }
@@ -120,7 +120,7 @@ body {
 }
 
 .text-success {
-    color: var(--secondary-color) !important; /* Aangepast indien gewenst */
+    color: var(--secondary-color) !important; /* Adjusted if desired */
 }
 
 .text-light {
@@ -140,30 +140,30 @@ body {
 }
 
 /* ========================= */
-/*         NAVBAR STIJLEN     */
+/*        NAVBAR STYLES      */
 /* ========================= */
 
 .navbar {
-    background-color: var(--border-color) !important; /* Donker Grijs */
+    background-color: var(--border-color) !important; /* Dark Gray */
     border-bottom: 2px solid var(--accent-color);
 }
 
 .navbar-brand span {
-    color: var(--white) !important; /* Witte tekst */
+    color: var(--white) !important; /* White text */
 }
 
 .navbar-nav .nav-link {
-    color: var(--white) !important; /* Witte tekst */
+    color: var(--white) !important; /* White text */
     position: relative;
     display: inline-block;
 }
 
-    /* Onderstrepende lijn onder nav-links */
+    /* Underline effect under nav-links */
     .navbar-nav .nav-link::after {
         content: '';
         position: absolute;
         left: 0;
-        bottom: -2px; /* Plaatst de lijn direct onder de link */
+        bottom: -2px; /* Places the line directly under the link */
         width: 0%;
         height: 2px;
         background-color: var(--accent-color);
@@ -182,7 +182,7 @@ body {
         }
 
 /* ========================= */
-/*       HEADER BANNER        */
+/*        HEADER BANNER      */
 /* ========================= */
 
 .header-banner {
@@ -191,7 +191,7 @@ body {
     background-position: center;
     position: relative;
     padding: 120px 0;
-    color: var(--white); /* Witte tekst op de banner */
+    color: var(--white); /* White text on the banner */
 }
 
     .header-banner::after {
@@ -201,49 +201,49 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 1; /* Overlay bovenop de afbeelding */
+        z-index: 1; /* Overlay above the image */
     }
 
-/* Content binnen de banner */
+/* Content within the banner */
 .banner-content {
     position: relative;
-    z-index: 2; /* Zorgt ervoor dat de content boven de overlay komt */
+    z-index: 2; /* Ensures content is above the overlay */
 }
 
     .banner-content h1 {
         font-size: 3em;
         margin-bottom: 0.5em;
-        color: var(--accent-color); /* Gele koptekst */
+        color: var(--accent-color); /* Yellow heading */
     }
 
     .banner-content p.lead {
         font-size: 1.5em;
         margin-bottom: 1em;
-        color: var(--white); /* Witte lead text */
+        color: var(--white); /* White lead text */
     }
 
-    /* Styling voor knoppen in de banner */
+    /* Styling for buttons in the banner */
     .banner-content .btn {
         font-size: 1.2em;
         padding: 0.75em 1.5em;
-        border-radius: 50px; /* Ronde knoppen */
+        border-radius: 50px; /* Round buttons */
         background-color: var(--primary-color);
         color: var(--white);
         transition: background-color 0.3s ease, color 0.3s ease;
-        border: none; /* Verwijder standaard rand */
+        border: none; /* Remove default border */
     }
 
         .banner-content .btn:hover {
-            background-color: var(--secondary-color); /* Licht blauw bij hover */
-            color: var(--white); /* Witte tekst bij hover */
+            background-color: var(--secondary-color); /* Light blue on hover */
+            color: var(--white); /* White text on hover */
         }
 
 /* ========================= */
-/*         FOOTER STIJLEN     */
+/*         FOOTER STYLES     */
 /* ========================= */
 
 .footer {
-    background-color: var(--border-color) !important; /* Donker Grijs */
+    background-color: var(--border-color) !important; /* Dark Gray */
     padding: 3em 0;
     color: var(--white);
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
@@ -258,7 +258,7 @@ body {
 
     .footer p,
     .footer a {
-        color: var(--white) !important; /* Witte tekst */
+        color: var(--white) !important; /* White text */
         font-size: 1rem;
     }
 
@@ -267,7 +267,7 @@ body {
             text-decoration: underline;
         }
 
-/* Social icons in de footer */
+/* Social icons in the footer */
 .footer-social-icons a {
     margin-right: 15px;
     color: var(--accent-color);
@@ -280,7 +280,7 @@ body {
     }
 
 /* ========================= */
-/*      DROPDOWN MENU STIJLEN */
+/*      DROPDOWN MENU STYLES */
 /* ========================= */
 
 .dropdown-menu {
@@ -295,7 +295,7 @@ body {
 }
 
 /* ========================= */
-/*        CARD STIJLEN        */
+/*        CARD STYLES        */
 /* ========================= */
 
 .card {
@@ -316,7 +316,7 @@ body {
     border-bottom: none;
 }
 
-    /* Specifieke card-header kleuren */
+    /* Specific card-header colors */
     .card-header.bg-primary {
         background-color: var(--primary-color) !important;
     }
@@ -335,11 +335,11 @@ body {
 
 .card h4 {
     margin: 0;
-    /*    color: var(--primary-color); */
+    /* color: var(--primary-color); */
 }
 
 /* ========================= */
-/*    SECTIETITEL STIJLEN     */
+/*    SECTION TITLE STYLES   */
 /* ========================= */
 
 .section-title {
@@ -349,10 +349,10 @@ body {
 }
 
 /* ========================= */
-/*        BUTTON STIJLEN      */
+/*        BUTTON STYLES      */
 /* ========================= */
 
-/* Basis knopstijl */
+/* Base button style */
 .btn {
     padding: 0.5em 1em;
     border-radius: 4px;
@@ -363,7 +363,7 @@ body {
     font-size: 1em;
 }
 
-/* Primair knopstijl */
+/* Primary button style */
 .btn-primary {
     background-color: var(--primary-color);
     color: var(--white);
@@ -375,7 +375,7 @@ body {
         color: var(--white);
     }
 
-/* Waarschuwing knopstijl */
+/* Warning button style */
 .btn-warning {
     background-color: var(--accent-color);
     color: var(--white);
@@ -387,7 +387,7 @@ body {
         color: var(--white);
     }
 
-/* Gevaarlijk knopstijl */
+/* Danger button style */
 .btn-danger {
     background-color: var(--danger-red);
     color: var(--white);
@@ -395,11 +395,11 @@ body {
 }
 
     .btn-danger:hover {
-        background-color: #a71d2a; /* Iets donkerder rood */
+        background-color: #a71d2a; /* Slightly darker red */
         color: var(--white);
     }
 
-/* Succes knopstijl */
+/* Success button style */
 .btn-success {
     background-color: var(--secondary-color);
     color: var(--white);
@@ -407,17 +407,17 @@ body {
 }
 
     .btn-success:hover {
-        background-color: #c7510a; /* Iets donkerder dan secondary-color */
+        background-color: #c7510a; /* Slightly darker than secondary-color */
         color: var(--white);
     }
 
-/* Algemene hover stijl voor alle knoppen */
+/* General hover style for all buttons */
 .btn:hover {
     background-color: var(--secondary-color);
     color: var(--white);
 }
 
-/* Outline knoppen */
+/* Outline buttons */
 .btn-outline-primary,
 .btn-outline-secondary,
 .btn-outline-warning,
@@ -467,7 +467,7 @@ body {
         color: var(--white);
     }
 
-/* Like-knop stijl */
+/* Like button style */
 .btn-like {
     background-color: transparent;
     border: none;
@@ -494,14 +494,23 @@ body {
     }
 
 /* ========================= */
-/*     SUGGESTIEKAART STIJLEN  */
+/*     SUGGESTION CARD STYLES */
 /* ========================= */
 
-.suggestion-card {
-    padding: 15px;
-    background-color: var(--white);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.suggestion-card .card-body {
+    display: flex;
+    flex-direction: column;
 }
+
+.suggestion-card .card-text {
+    margin-bottom: 10px;
+}
+
+.suggestion-card .d-flex {
+    justify-content: space-between;
+    align-items: center;
+}
+
 
     .suggestion-card:hover {
         transform: translateY(-5px);
@@ -533,7 +542,7 @@ body {
         }
 
 /* ========================= */
-/*      IMAGE DROPZONE STIJLEN  */
+/*      IMAGE DROPZONE STYLES */
 /* ========================= */
 
 .image-dropzone {
@@ -559,27 +568,27 @@ body {
     }
 
 /* ========================= */
-/*     FORMULIER ELEMENTEN     */
+/*     FORM ELEMENTS         */
 /* ========================= */
 
-input,
-textarea,
-select {
+form input,
+form textarea,
+form select {
     border: 1px solid var(--gray);
     border-radius: 4px;
     padding: 0.5em;
     transition: border-color 0.3s ease;
 }
 
-    input:focus,
-    textarea:focus,
-    select:focus {
+    form input:focus,
+    form textarea:focus,
+    form select:focus {
         border-color: var(--primary-color);
         box-shadow: 0 0 0 0.2rem var(--primary-color);
     }
 
 /* ========================= */
-/*        BOOTSTRAP ICONS      */
+/*        BOOTSTRAP ICONS    */
 /* ========================= */
 
 .bi {
@@ -598,11 +607,96 @@ select {
 }
 
 .btn .bi {
-    color: inherit; /* Erf de kleur van de knop */
+    color: inherit; /* Inherit the color from the button */
 }
-/* Schrijft maand in Sessions met Hoofdletter*/
+
+/* Capitalize month in Sessions */
 .title-text {
     text-transform: capitalize;
 }
 
+/* ========================= */
+/*     LIKE BUTTON STYLES    */
+/* ========================= */
 
+/* Wrap the like button in a unique class to prevent conflicts */
+.uiverse-like-button input.on {
+    display: none;
+}
+
+.uiverse-like-button .like-button {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    height: 48px;
+    width: 136px;
+    border-radius: 16px;
+    border: none;
+    background-color: var(--white);
+    overflow: hidden;
+    box-shadow: none;
+}
+
+.uiverse-like-button .like {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.uiverse-like-button .like-icon {
+    fill: #505050;
+    height: 28px;
+    width: 28px;
+}
+
+.uiverse-like-button .like-text {
+    color: var(--title-color);
+    font-size: 16px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.uiverse-like-button .like-count {
+    position: absolute;
+    right: 0;
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gray);
+    font-size: 16px;
+    border-left: 2px solid #4e4e4e;
+    transition: all 0.5s ease-out;
+}
+
+    .uiverse-like-button .like-count.two {
+        transform: translateY(40px);
+    }
+
+.uiverse-like-button input.on:checked ~ .like .like-icon {
+    fill: var(--secondary-color);
+    animation: enlarge 0.2s ease-out 1;
+    transition: all 0.2s ease-out;
+}
+
+.uiverse-like-button input.on:checked ~ .like-count.two {
+    transform: translateX(0);
+    color: var(--secondary-color);
+}
+
+.uiverse-like-button input.on:checked ~ .like-count.one {
+    transform: translateY(-40px);
+}
+
+@keyframes enlarge {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1.2);
+    }
+}
