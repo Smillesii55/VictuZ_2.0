@@ -57,15 +57,16 @@ namespace MVC.Controllers
         [Authorize(Roles = "BoardMember")]
         public IActionResult Create()
         {
+            Session session = new Session();
             ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name");
-            return View();
+            return View(session);
         }
 
         // POST: Sessions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,IsEarlyAccess")] Session session)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,ImageUrl,IsEarlyAccess")] Session session, IFormFile imageFile)
         {
             _logger.LogInformation("Attempting to create a new session.");
 
@@ -76,6 +77,31 @@ namespace MVC.Controllers
                 {
                     _logger.LogWarning("User is null during session creation.");
                     return Unauthorized();
+                }
+
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    // Validatie en opslag van de afbeelding
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                    var extension = Path.GetExtension(imageFile.FileName).ToLower();
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        ModelState.AddModelError("ImageUrl", "Only JPG, JPEG, PNG, and GIF files are allowed.");
+                        return View(session);
+                    }
+
+                    var fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
+                    var uniqueFileName = $"{fileName}_{Guid.NewGuid()}{extension}";
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "sessions", uniqueFileName);
+
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+
+                    session.ImageUrl = $"/images/sessions/{uniqueFileName}";
                 }
 
                 session.CreatedById = user.Id;
@@ -124,7 +150,7 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,IsEarlyAccess")] Session session)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,ImageUrl,IsEarlyAccess")] Session session, IFormFile imageFile)
         {
             if (id != session.Id)
             {
@@ -149,6 +175,39 @@ namespace MVC.Controllers
                         ModelState.AddModelError(string.Empty, "Einddatum moet na de activiteitsdatum liggen.");
                         ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Name", session.LocationId);
                         return View(session);
+                    }
+
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                        var extension = Path.GetExtension(imageFile.FileName).ToLower();
+                        if (!allowedExtensions.Contains(extension))
+                        {
+                            ModelState.AddModelError("ImageUrl", "Only JPG, JPEG, PNG, and GIF files are allowed.");
+                            return View(session);
+                        }
+
+                        var fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
+                        var uniqueFileName = $"{fileName}_{Guid.NewGuid()}{extension}";
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "sessions", uniqueFileName);
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+
+                        if (!string.IsNullOrEmpty(existingSession.ImageUrl))
+                        {
+                            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingSession.ImageUrl.TrimStart('/'));
+                            if (System.IO.File.Exists(oldFilePath))
+                            {
+                                System.IO.File.Delete(oldFilePath);
+                            }
+                        }
+
+                        existingSession.ImageUrl = $"/images/sessions/{uniqueFileName}";
                     }
 
                     // Update de velden

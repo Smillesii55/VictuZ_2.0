@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <input type="hidden" asp-for="Id" />
 
@@ -63,6 +63,8 @@
                 <input type="checkbox" asp-for="IsEarlyAccess" class="form-check-input" />
                 <label asp-for="IsEarlyAccess" class="control-label">Vervroegde toegang voor leden</label>
             </div>
+
+            @await Html.PartialAsync("_ImageUploadSession", Model)
 
             <div class="form-group mt-3">
                 <input type="submit" value="Opslaan" class="btn btn-primary" />

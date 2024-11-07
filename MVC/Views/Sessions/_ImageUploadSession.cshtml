@@ -1,0 +1,23 @@
+﻿@model Core.Models.Sessions.Session
+
+<div class="form-group mb-3">
+    <label for="imageFile" class="control-label">Afbeelding (optioneel)</label>
+    <div class="image-dropzone border p-3 text-center"
+         style="position: relative; height: 200px; overflow: hidden; cursor: default;"
+         data-has-image="@(!string.IsNullOrEmpty(Model.ImageUrl)).ToString().ToLower()"
+         data-image-url="@Model.ImageUrl">
+        <input type="file" name="imageFile" id="imageFile" accept="image/*" class="form-control" />
+        <div class="image-preview mt-2">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="Huidige Afbeelding" class="img-fluid mb-2 preview-image" />
+                <p>Sleep een nieuwe afbeelding hierheen of gebruik de bestandskiezer hierboven</p>
+            }
+            else
+            {
+                <p>Sleep een afbeelding hierheen of gebruik de bestandskiezer hierboven!</p>
+            }
+        </div>
+    </div>
+    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+</div>
