@@ -65,12 +65,36 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,IsEarlyAccess")] Session session)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,IsEarlyAccess, ImageUrl")] Session session)
         {
             _logger.LogInformation("Attempting to create a new session.");
 
             if (ModelState.IsValid)
             {
+                //if (imageFile != null && imageFile.Length > 0)
+                //{
+                //    // Validatie en opslag van de afbeelding
+                //    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
+                //    var extension = Path.GetExtension(imageFile.FileName).ToLower();
+                //    if (!allowedExtensions.Contains(extension))
+                //    {
+                //        ModelState.AddModelError("ImageUrl", "Only JPG, JPEG, PNG, and GIF files are allowed.");
+                //        return View(Sessions);
+                //    }
+
+                //    var fileName = Path.GetFileNameWithoutExtension(imageFile.FileName);
+                //    var uniqueFileName = $"{fileName}_{Guid.NewGuid()}{extension}";
+                //    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "news", uniqueFileName);
+
+                //    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+                //    using (var stream = new FileStream(filePath, FileMode.Create))
+                //    {
+                //        await imageFile.CopyToAsync(stream);
+                //    }
+
+                //    news.ImageUrl = $"/images/news/{uniqueFileName}";
+                //}
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null)
                 {
@@ -124,7 +148,7 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,IsEarlyAccess")] Session session)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,IsEarlyAccess, ImageUrl")] Session session)
         {
             if (id != session.Id)
             {
