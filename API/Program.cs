@@ -1,4 +1,5 @@
 using Core.Data;
+using Core.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace API
@@ -8,6 +9,13 @@ namespace API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Register dependencies
+            builder.Services.AddScoped<SessionService>();
+
+            // Register ApplicationDbContext if it's not already registered
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             // Add services to the container.
 

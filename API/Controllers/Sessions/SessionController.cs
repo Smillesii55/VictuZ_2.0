@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-using Core.Data;
-
 using Core.Models.Sessions;
+using Core.Service;
 
 namespace API.Controllers.Sessions
 {
@@ -11,103 +8,44 @@ namespace API.Controllers.Sessions
     [ApiController]
     public class SessionController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;  // Vervang met de naam van jouw DbContext
+        private readonly SessionService _sessionService;
 
-        public SessionController(ApplicationDbContext context)
+        public SessionController(SessionService sessionService)
         {
-            _context = context;
+            _sessionService = sessionService;
         }
 
         // GET: api/Session
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Session>>> GetSessions()
+        public async Task<ActionResult<IEnumerable<Session>>> GetAllSessions()
         {
-            return await _context.Sessions
-                                 .Include(s => s.CreatedBy)
-                                 .Include(s => s.Location)
-                                 .Include(s => s.SessionRegistrations)
-                                 .Include(s => s.Feedbacks)
-                                 .ToListAsync();
+            var sessions = await _sessionService.GetAllSessions();
+            return Ok(sessions);
         }
 
-        // GET: api/Session/5
+        // GET api/Session/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Session>> GetSession(int id)
+        public SessionService GetSessionById(int id)
         {
-            var session = await _context.Sessions
-                                        .Include(s => s.CreatedBy)
-                                        .Include(s => s.Location)
-                                        .Include(s => s.SessionRegistrations)
-                                        .Include(s => s.Feedbacks)
-                                        .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (session == null)
-            {
-                return NotFound();
-            }
-
-            return session;
+            return GetSessionById(id);
         }
 
-        // POST: api/Session
+        // POST api/<SessionController>
         [HttpPost]
-        public async Task<ActionResult<Session>> PostSession(Session session)
+        public void Post([FromBody] string value)
         {
-            _context.Sessions.Add(session);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetSession), new { id = session.Id }, session);
         }
 
-        // PUT: api/Session/5
+        // PUT api/<SessionController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSession(int id, Session session)
+        public void Put(int id, [FromBody] string value)
         {
-            if (id != session.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(session).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SessionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
-        // DELETE: api/Session/5
+        // DELETE api/<SessionController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSession(int id)
+        public void Delete(int id)
         {
-            var session = await _context.Sessions.FindAsync(id);
-            if (session == null)
-            {
-                return NotFound();
-            }
-
-            _context.Sessions.Remove(session);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool SessionExists(int id)
-        {
-            return _context.Sessions.Any(e => e.Id == id);
         }
     }
 }

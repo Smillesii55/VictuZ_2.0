@@ -2,11 +2,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Core.Data;
 using Core.Models.Users;
+using Core.Service;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Haal de connectiestring op uit appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString(// Register dependencies
+
+// Register ApplicationDbContext if it's not already registered
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+);
 
 // Configureer de DbContext met de connectiestring
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
