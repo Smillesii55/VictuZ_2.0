@@ -66,7 +66,7 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,ImageUrl,IsEarlyAccess")] Session session, IFormFile imageFile)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,ImageUrl,IsEarlyAccess")] Session session, IFormFile ?imageFile)
         {
             _logger.LogInformation("Attempting to create a new session.");
 
@@ -150,7 +150,7 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,ImageUrl,IsEarlyAccess")] Session session, IFormFile imageFile)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,ActivityDate,EndDate,LocationId,Host,MaxParticipants,ImageUrl,IsEarlyAccess")] Session session, IFormFile ?imageFile)
         {
             if (id != session.Id)
             {

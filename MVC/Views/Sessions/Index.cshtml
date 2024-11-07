@@ -23,7 +23,7 @@
             <h4 class="my-0 fw-normal title-text">@sessionsInMonth.First().ActivityDate.ToString("MMMM")</h4>
         </div>
         <div class="card-body">
-            <div class="row">
+            <div class="row align-items-end">
                 @foreach (var session in sessionsInMonth)
                 {
                     <!-- Als een sessie in vervroegde toegang is (3 dagen) dan mogen niet-ingelogde gebruikers het niet zien -->
@@ -31,6 +31,10 @@
                     {
                         <div class="col-md-4">
                             <div class="card mb-4 shadow-sm border-success">
+                                @if (!string.IsNullOrEmpty(session.ImageUrl))
+                                {
+                                    <img src="@session.ImageUrl" class="card-img-top" alt="Afbeelding voor @session.Title" style="height: 200px; object-fit: cover;" />
+                                }
                                 <div class="card-header bg-success">
                                     <h4 class="my-0 fw-normal">@session.Title</h4>
                                 </div>
