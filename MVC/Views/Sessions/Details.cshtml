@@ -5,15 +5,15 @@
     ViewData["Title"] = "Details";
     var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
     int userId = userIdString != null ? int.Parse(userIdString) : 0;
-    var sessionRegistrations = Model.SessionRegistrations ?? new List<Core.Models.Sessions.SessionRegistration>();
-    bool isRegistered = sessionRegistrations.Any(r => r.UserId == userId);
-    bool isFull = sessionRegistrations.Count >= Model.MaxParticipants;
+    var sessionRegistraties = Model.SessionRegistrations ?? new List<Core.Models.Sessions.SessionRegistration>();
+    bool isGeregistreerd = sessionRegistraties.Any(r => r.UserId == userId);
+    bool isVol = sessionRegistraties.Count >= Model.MaxParticipants;
 }
 
 <h1>Details</h1>
 
 <div>
-    <h4>Session</h4>
+    <h4>Sessie</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -58,36 +58,36 @@
             @Html.DisplayFor(model => model.MaxParticipants)
         </dd>
         <dt class="col-sm-2">
-            Current Participants
+            Huidige Deelnemers
         </dt>
 
         <dd class="col-sm-10">
-            @sessionRegistrations.Count
+            @sessionRegistraties.Count
         </dd>
 
         <dt class="col-sm-2">
-            Created By
+            Gemaakt door
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreatedBy.Name)
         </dd>
 
         <dt class="col-sm-2">
-            Location
+            Locatie
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Location.Name)
         </dd>
 
         <dt class="col-sm-2">
-            Early access
+            Vervroegde Toegang
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.IsEarlyAccess)
         </dd>
 
         <dt class="col-sm-2">
-            Created at
+            Aangemaakt op
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.CreatedAt)
@@ -97,15 +97,14 @@
 <div>
     @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
     {
-        if (isRegistered)
+        if (isGeregistreerd)
         {
             <form asp-action="Unregister" method="post">
                 <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Unregister" class="btn btn-secondary" />
+                <input type="submit" value="Uitschrijven" class="btn btn-secondary" />
             </form>
         }
-
-        else if (isFull)
+        else if (isVol)
         {
             <button class="btn btn-secondary" disabled>Vol</button>
         }
@@ -113,15 +112,14 @@
         {
             <form asp-action="Register" method="post">
                 <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Register" class="btn btn-primary" />
+                <input type="submit" value="Inschrijven" class="btn btn-primary" />
             </form>
         }
     }
     @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Bewerken</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Verwijderen</a>
     }
     <a asp-action="Index" class="btn btn-link">Terug naar Agenda</a>
 </div>
-
