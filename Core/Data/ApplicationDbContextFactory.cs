@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.Data
 {
-    internal class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {

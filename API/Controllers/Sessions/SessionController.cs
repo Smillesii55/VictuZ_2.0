@@ -13,33 +13,24 @@ namespace API.Controllers.Sessions
     {
         private readonly ApplicationDbContext _context;  // Vervang met de naam van jouw DbContext
 
-        public SessionController(ApplicationDbContext context)
+        public SessionController()
         {
-            _context = context;
+            ApplicationDbContextFactory factory = new ApplicationDbContextFactory();
+            _context = factory.CreateDbContext(new string[] { });
         }
 
         // GET: api/Session
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Session>>> GetSessions()
         {
-            return await _context.Sessions
-                                 .Include(s => s.CreatedBy)
-                                 .Include(s => s.Location)
-                                 .Include(s => s.SessionRegistrations)
-                                 .Include(s => s.Feedbacks)
-                                 .ToListAsync();
+            return await _context.Sessions.ToListAsync();
         }
 
         // GET: api/Session/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Session>> GetSession(int id)
         {
-            var session = await _context.Sessions
-                                        .Include(s => s.CreatedBy)
-                                        .Include(s => s.Location)
-                                        .Include(s => s.SessionRegistrations)
-                                        .Include(s => s.Feedbacks)
-                                        .FirstOrDefaultAsync(s => s.Id == id);
+            var session = await _context.Sessions.FirstOrDefaultAsync(s => s.Id == id);
 
             if (session == null)
             {
