@@ -1,12 +1,12 @@
 ﻿@model Core.Models.Sessions.Session
 
 @{
-    ViewData["Title"] = "Activiteit aanmaken";
+    ViewData["Title"] = "Activiteit Aanmaken";
 }
 
-<h1>Create</h1>
+<h1>Aanmaken</h1>
 
-<h4>Session</h4>
+<h4>Sessie</h4>
 <hr />
 <div class="row">
     <div class="col-md-6">
@@ -61,124 +61,19 @@
             </div>
 
             <div class="form-group mb-3">
-                <input type="checkbox" asp-for="IsEarlyAccess" class="form-check-input"/>
+                <input type="checkbox" asp-for="IsEarlyAccess" class="form-check-input" />
                 <label asp-for="IsEarlyAccess" class="control-label">Vervroegde toegang voor leden</label>
             </div>
 
             <div class="form-group mt-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Aanmaken" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<!-- Modals voor ActivityDate en EndDate -->
-<!-- CSS Styling voor de modal -->
-<style>
-    /* Stijlen voor de modal */
-    .modal {
-        display: none; /* Verborgen standaard */
-        position: fixed;
-        z-index: 1000; /* Verhoog de z-index zodat de modal boven alle andere elementen staat */
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto; /* Scrollen indien nodig binnen de modal */
-        background-color: rgba(0, 0, 0, 0.4); /* Achtergrond met transparantie */
-    }
-
-    /* Inhoud van de modal */
-    .modal-content {
-        background-color: #fefefe;
-        margin: 10% auto; /* Iets hoger geplaatst zodat het beter zichtbaar is op kleinere schermen */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 400px;
-        position: relative; /* Voor eventuele positionering binnen de modal */
-    }
-
-    /* Sluitknop */
-    .close {
-        color: #aaa;
-        position: absolute;
-        right: 10px;
-        top: 5px;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-        }
-
-    /* Stijlen voor inputs en knop */
-    .modal input {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-    }
-
-    .modal button {
-        width: 100%;
-        padding: 10px;
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-        .modal button:hover {
-            background-color: #45a049;
-        }
-
-    /* Voorkom dat de "Creëer nieuwe locatie" knop over de modal heen valt */
-    .input-group {
-        position: relative;
-        z-index: 1; /* Zorg ervoor dat deze lager is dan de modal */
-    }
-
-    /* Klasse om scrollen van de body te voorkomen */
-    .modal-open {
-        overflow: hidden;
-    }
-</style>
-
-<!-- De Modal voor ActivityDate -->
-<div id="activityDateModal" class="modal">
-
-    <!-- Inhoud van de modal -->
-    <div class="modal-content">
-        <span class="close" data-modal="activityDateModal">&times;</span>
-        <h3>Selecteer Datum en Tijd</h3>
-        <input type="date" id="activityDatePicker">
-        <input type="time" id="activityTimePicker">
-        <button id="activityOkButton">OK</button>
-    </div>
-
-</div>
-
-<!-- De Modal voor EndDate -->
-<div id="endDateModal" class="modal">
-
-    <!-- Inhoud van de modal -->
-    <div class="modal-content">
-        <span class="close" data-modal="endDateModal">&times;</span>
-        <h3>Selecteer Datum en Tijd</h3>
-        <input type="date" id="endDatePicker">
-        <input type="time" id="endTimePicker">
-        <button id="endOkButton">OK</button>
-    </div>
-
-</div>
-
 <div>
-    <a asp-action="Index" class="btn btn-link">Back to List</a>
+    <a asp-action="Index" class="btn btn-link">Terug naar Overzicht</a>
 </div>
 
 @section Scripts {

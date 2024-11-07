@@ -1,12 +1,12 @@
 ﻿@model Core.Models.Suggestions.Suggestion
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Bewerken";
 }
 
-<h1>Edit</h1>
+<h1>Bewerken</h1>
 
-<h4>Suggestion</h4>
+<h4>Suggestie</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -44,16 +44,18 @@
                 <span asp-validation-for="LikeCount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Opslaan" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Terug naar Overzicht</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

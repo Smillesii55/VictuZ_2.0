@@ -1,12 +1,12 @@
 ﻿@model Core.Models.Newss.News
 
 @{
-    ViewData["Title"] = "Create News";
+    ViewData["Title"] = "Nieuws Aanmaken";
 }
 
-<h1>Create News</h1>
+<h1>Nieuws Aanmaken</h1>
 
-<h4>News</h4>
+<h4>Nieuws</h4>
 <hr />
 <div class="row">
     <div class="col-md-6">
@@ -28,15 +28,15 @@
             @await Html.PartialAsync("_ImageUpload", Model)
 
             <div class="form-group mt-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-link">Cancel</a>
+                <input type="submit" value="Aanmaken" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-link">Annuleren</a>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" class="btn btn-link">Back to News List</a>
+    <a asp-action="Index" class="btn btn-link">Terug naar Nieuws Overzicht</a>
 </div>
 
 @section Scripts {
