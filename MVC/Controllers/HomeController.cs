@@ -26,7 +26,7 @@ namespace MVC.Controllers
                 .Include(s => s.Location)
                 .Where(s => s.ActivityDate >= DateTime.Now)
                 .OrderBy(s => s.ActivityDate)
-                .Take(3)
+                .Take(4)
                 .ToListAsync();
 
             // Haal de laatste 3 nieuwsberichten op

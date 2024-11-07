@@ -54,7 +54,7 @@ namespace MVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,ImageUrl")] News news, IFormFile imageFile)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,ImageUrl")] News news, IFormFile ?imageFile)
         {
             if (ModelState.IsValid)
             {
@@ -116,7 +116,7 @@ namespace MVC.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "BoardMember")]
 
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,PublicationDate,ImageUrl")] News news, IFormFile imageFile)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,PublicationDate,ImageUrl")] News news, IFormFile ?imageFile)
         {
             if (id != news.Id)
             {

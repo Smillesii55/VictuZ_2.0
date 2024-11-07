@@ -1,5 +1,6 @@
 ﻿@model MVC.Models.HomeIndexViewModel
 @using System.Security.Claims
+@using Core.Models.Sessions
 @{
     ViewData["Title"] = "Startpagina";
     int? huidigeGebruikerId = null;
@@ -11,15 +12,61 @@
             huidigeGebruikerId = int.Parse(gebruikerIdWaarde);
         }
     }
+
+    Session firstSession = null;
 }
 
 <!-- Header Banner -->
-<div class="header-banner text-white">
-    <div class="banner-content text-center">
-        <h1>Bekijk de volgende activiteiten!</h1>
-        <p class="lead">Meld je aan en doe mee</p>
-        <a href="@Url.Action("Index", "Sessions")" class="btn btn-warning btn-lg">Bekijk Activiteiten</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="header-banner text-white">
+                <div class="banner-content text-center">
+                    <h1>Bekijk de volgende activiteiten!</h1>
+                    <p class="lead">Meld je aan en doe mee</p>
+                    <a href="@Url.Action("Index", "Sessions")" class="btn btn-warning btn-lg">Bekijk Activiteiten</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 align-self-center">
+            @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
+            {
+                @if ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) || Model.UpcomingSessions.First().IsEarlyAccess == false || User.Identity.IsAuthenticated)
+                {
+                    firstSession = Model.UpcomingSessions.First();
+                    <h1>Eerstvolgende activiteit</h1>
+
+                    <div class="col">
+                        <div class="card h-100">
+                            @if (!string.IsNullOrEmpty(firstSession.ImageUrl))
+                            {
+                                <img src="@firstSession.ImageUrl" class="card-img-top" alt="Afbeelding voor @firstSession.Title" style="height: 200px; object-fit: cover;" />
+                            }
+                            <div class="card-body">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="card-title">@firstSession.Title</h5>
+                                    <small class="text-muted">@firstSession.ActivityDate.ToString("dd-MM-yyyy HH:mm")</small>
+                                </div>
+                                <p class="card-text"><strong>Locatie:</strong> @firstSession.Location?.Name</p>
+                            </div>
+                            <div class="card-footer text-end">
+                                <a href="@Url.Action("Details", "Sessions", new { id = firstSession.Id })" class="btn btn-sm btn-primary">Bekijk</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p>Dit evenement mag je niet zien</p>
+                }
+            }
+            else
+            {
+                <p>Er zijn geen activiteiten gepland</p>
+            }
+        </div>
     </div>
+    
 </div>
 
 <!-- Hoofdinhoud -->
@@ -124,6 +171,11 @@
                         <div class="row row-cols-1 g-4">
                             @foreach (var session in Model.UpcomingSessions)
                             {
+                                @if (session == firstSession)
+                                {
+                                    continue;
+                                }
+
                                 @if ((session.IsEarlyAccess == true && DateTime.Now.AddDays(3) < session.CreatedAt) || session.IsEarlyAccess == false || User.Identity.IsAuthenticated)
                                 {
                                     <div class="col">

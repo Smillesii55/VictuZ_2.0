@@ -31,6 +31,10 @@ namespace Core.Models.Sessions
         [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; }
 
+        [StringLength(200, ErrorMessage = "Image URL cannot exceed 200 characters.")]
+        [Display(Name = "Image URL")]
+        public string? ImageUrl { get; set; }
+
         // Navigatie-eigenschappen
         public User? CreatedBy { get; set; }
         public Location? Location { get; set; }
