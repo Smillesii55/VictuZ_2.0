@@ -15,7 +15,7 @@
     --light-gray: #edf5f7;
     --danger-red: #dc3545; /* For warnings/actions */
     /* Transparent black for overlays */
-    --overlay-color: rgba(0, 0, 0, 0.5);
+    --overlay-color: rgba(0, 0, 0, 0.3);
 }
 
 /* ========================= */
@@ -186,12 +186,14 @@ body {
 /* ========================= */
 
 .header-banner {
-    background-image: url('/images/Hero-Image.jpg');
+    background-image: url('/images/Hero-Image.jpg'); /* Zorg ervoor dat dit het juiste pad is */
     background-size: cover;
     background-position: center;
     position: relative;
-    padding: 120px 0;
+    padding: 38px 0;
     color: var(--white); /* White text on the banner */
+    display: flex;
+    align-items: center;
 }
 
     .header-banner::after {
@@ -201,42 +203,177 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 1; /* Overlay above the image */
+        background-color: var(--overlay-color); /* Gebruik de variabele voor overlay kleur */
+        z-index: 1; /* Overlay boven de achtergrond */
     }
 
-/* Content within the banner */
-.banner-content {
-    position: relative;
-    z-index: 2; /* Ensures content is above the overlay */
+    /* Content binnen de banner */
+    .header-banner .container {
+        position: relative;
+        z-index: 2; /* Zorgt ervoor dat de inhoud boven de overlay ligt */
+    }
+
+.banner-content h1 {
+    font-size: 3em;
+    margin-bottom: 0.5em;
+    color: var(--accent-color); /* Yellow heading */
 }
 
+.banner-content p.lead {
+    font-size: 1.5em;
+    margin-bottom: 1em;
+    color: var(--white); /* White lead text */
+}
+
+/* Styling voor buttons in de banner */
+.banner-content .btn {
+    font-size: 1.2em;
+    padding: 0.75em 1.5em;
+    border-radius: 50px; /* Round buttons */
+    background-color: var(--primary-color);
+    color: var(--white);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: none; /* Remove default border */
+}
+
+    .banner-content .btn:hover {
+        background-color: var(--secondary-color); /* Light blue on hover */
+        color: var(--white); /* White text on hover */
+    }
+
+/* ========================= */
+/*   HEADER BANNER EVENEMENT  */
+/* ========================= */
+
+    .eerstvolgende-activiteit .card-header {
+        background-color: var(--border-color) !important;
+        border-bottom: 1px solid var(--gray);
+    }
+
+    .eerstvolgende-activiteit .card-body {
+        padding: 15px;
+    }
+
+    .eerstvolgende-activiteit .card-title {
+        font-size: 1.25rem;
+        color: var(--primary-color);
+    }
+
+    .eerstvolgende-activiteit .card-text {
+        font-size: 1rem;
+        color: var(--gray);
+    }
+
+    .eerstvolgende-activiteit .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        padding: 0.5em 1em;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+        .eerstvolgende-activiteit .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+
+
+.eerstvolgende-activiteit {
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--white); /* Zorgt voor contrast binnen de banner */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .eerstvolgende-activiteit:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .eerstvolgende-activiteit .card-img-top {
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .eerstvolgende-activiteit .card-body {
+        padding: 15px;
+    }
+
+    .eerstvolgende-activiteit .card-title {
+        font-size: 1.25rem;
+        color: var(--primary-color);
+    }
+
+    .eerstvolgende-activiteit .card-text {
+        font-size: 1rem;
+        color: var(--gray);
+    }
+
+    .eerstvolgende-activiteit .btn-primary {
+        background-color: var(--primary-color);
+        color: var(--white);
+        border: none;
+        padding: 0.5em 1em;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+        .eerstvolgende-activiteit .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+/* ========================= */
+/*        RESPONSIVITY       */
+/* ========================= */
+
+@media (max-width: 767.98px) {
+    .header-banner .row {
+        flex-direction: column;
+    }
+
     .banner-content h1 {
-        font-size: 3em;
-        margin-bottom: 0.5em;
-        color: var(--accent-color); /* Yellow heading */
+        font-size: 2rem;
     }
 
     .banner-content p.lead {
-        font-size: 1.5em;
-        margin-bottom: 1em;
-        color: var(--white); /* White lead text */
+        font-size: 1.2rem;
     }
 
-    /* Styling for buttons in the banner */
-    .banner-content .btn {
-        font-size: 1.2em;
-        padding: 0.75em 1.5em;
-        border-radius: 50px; /* Round buttons */
-        background-color: var(--primary-color);
-        color: var(--white);
-        transition: background-color 0.3s ease, color 0.3s ease;
-        border: none; /* Remove default border */
+    .eerstvolgende-activiteit {
+        margin-top: 20px;
+        width: 100%;
     }
 
-        .banner-content .btn:hover {
-            background-color: var(--secondary-color); /* Light blue on hover */
-            color: var(--white); /* White text on hover */
+        .eerstvolgende-activiteit .card-img-top {
+            height: 200px;
         }
+}
+
+/* ========================= */
+/*   Extra Flexbox Uitlijning */
+/* ========================= */
+
+.header-banner .row {
+    display: flex;
+    align-items: center;
+}
+
+.header-banner .col-md-8,
+.header-banner .col-md-4 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.eerstvolgende-activiteit .card-title,
+.eerstvolgende-activiteit .card-text {
+    color: var(--black);
+}
+
 
 /* ========================= */
 /*         FOOTER STYLES     */
