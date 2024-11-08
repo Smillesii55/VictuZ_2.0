@@ -28,7 +28,11 @@ namespace MVC.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Sessions.Include(s => s.CreatedBy).Include(s => s.Location);
+
+
             return View(await applicationDbContext.ToListAsync());
+
+
         }
 
         // GET: Sessions/Details/5

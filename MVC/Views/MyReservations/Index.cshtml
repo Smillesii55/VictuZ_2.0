@@ -1,0 +1,64 @@
+﻿@model MVC.Models.MyReservationsViewModel
+@using Core.Models.Sessions
+@using System.Security.Claims
+
+
+@{
+    ViewData["Title"] = "Index";
+    int? huidigeGebruikerId = null;
+    if (User.Identity.IsAuthenticated)
+    {
+        string gebruikerIdWaarde = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!string.IsNullOrEmpty(gebruikerIdWaarde))
+        {
+            huidigeGebruikerId = int.Parse(gebruikerIdWaarde);
+        }
+    }
+}
+
+<div class="header-banner text-white d-flex align-items-center">
+    <div class="overlay"></div> <!-- Overlay voor betere leesbaarheid -->
+    <div class="container px-4">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="banner-content">
+                    <h1>Bekijk je aankomende activiteiten!</h1>
+                    <p class="lead">Je hebt je geregistreerd voor de volgende activiteiten.</p>
+                    <a href="@Url.Action("Index", "Sessions")" class="btn btn-warning btn-lg">Bekijk Activiteiten</a>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                @if (Model.MyReservations != null && Model.MyReservations.Any())
+                {
+                    var firstSession = Model.MyReservations.First(); // Eerste sessie in de lijst
+                    if ((firstSession.IsEarlyAccess == true && DateTime.Now.AddDays(3) < firstSession.CreatedAt) || firstSession.IsEarlyAccess == false || User.Identity.IsAuthenticated)
+                    {
+                        <div class="eerstvolgende-activiteit card bg-light text-dark">
+                            <div class="card-header bg-secondary text-white">
+                                @firstSession.Title
+                            </div>
+                            @if (!string.IsNullOrEmpty(firstSession.ImageUrl))
+                            {
+                                <img src="@firstSession.ImageUrl" class="card-img-top" alt="Afbeelding voor @firstSession.Title" style="height: 150px; object-fit: cover;" />
+                            }
+                            <div class="card-body">
+                                <p class="card-text"><strong>Datum:</strong> @firstSession.ActivityDate.ToString("dd-MM-yyyy HH:mm")</p>
+                                <p class="card-text"><strong>Locatie:</strong> @firstSession.Location?.Name</p>
+                                <a href="@Url.Action("Details", "Sessions", new { id = firstSession.Id })" class="btn btn-primary btn-sm">Bekijk</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center">Dit evenement mag je niet zien</p>
+                    }
+                }
+                else
+                {
+                    <p class="text-center">Er zijn geen activiteiten waarvoor je je hebt ingeschreven.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
