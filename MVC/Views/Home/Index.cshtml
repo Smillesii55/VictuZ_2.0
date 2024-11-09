@@ -176,7 +176,11 @@
                                     continue;
                                 }
 
-                                @if ((session.IsEarlyAccess == true && DateTime.Now.AddDays(3) < session.CreatedAt) || session.IsEarlyAccess == false || User.Identity.IsAuthenticated)
+                                // Calculate the half duration from creation to the activity date
+                                var halfDuration = (session.ActivityDate - session.CreatedAt) / 2;
+                                var earlyAccessDate = session.ActivityDate - halfDuration;
+
+                                @if ((session.IsEarlyAccess == true && DateTime.Now >= earlyAccessDate) || session.IsEarlyAccess == false || User.Identity.IsAuthenticated)
                                 {
                                     <div class="col">
                                         <div class="card h-100">
@@ -207,6 +211,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Nieuws Sectie -->
         <div class="col-md-12">

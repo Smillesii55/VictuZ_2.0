@@ -11,7 +11,7 @@
 @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
 {
     <p>
-        <a asp-action="Create" class="btn btn-primary">Nieuwe Sessie Aanmaken</a>
+        <a asp-action="Create" class="btn btn-primary">Nieuwe Activiteit Aanmaken</a>
     </p>
 }
 
@@ -26,8 +26,12 @@
             <div class="row align-items-end">
                 @foreach (var session in sessionsInMonth)
                 {
-                    <!-- Als een sessie in vervroegde toegang is (3 dagen) dan mogen niet-ingelogde gebruikers het niet zien -->
-                    @if ((session.IsEarlyAccess == true && DateTime.Now.AddDays(3) < session.CreatedAt) || session.IsEarlyAccess == false || User.Identity.IsAuthenticated)
+                    @* Calculate early access date based on half the time between creation and activity date *@
+                    var halfDuration = (session.ActivityDate - session.CreatedAt) / 2;
+                    var earlyAccessDate = session.ActivityDate - halfDuration;
+
+                    <!-- Als een sessie in vervroegde toegang is, dan mogen niet-ingelogde gebruikers het niet zien -->
+                    @if ((session.IsEarlyAccess == true && DateTime.Now >= earlyAccessDate) || session.IsEarlyAccess == false || User.Identity.IsAuthenticated)
                     {
                         <div class="col-md-4">
                             <div class="card mb-4 shadow-sm border-success">
