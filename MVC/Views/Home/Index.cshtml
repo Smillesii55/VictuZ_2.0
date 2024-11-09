@@ -34,19 +34,54 @@
         <div class="row align-items-center">
             <!-- Banner Inhoud -->
             <div class="col-md-8">
-                <div class="banner-content">
-                    <h1>Bekijk Onze volgende activiteit!</h1>
-                    <!-- Toegevoegde beschrijving van het evenement -->
-                    <p class="event-description">Hier komt de beschrijving van het evenement. Vertel de bezoekers meer over wat ze kunnen verwachten, de locatie, het doel van het evenement, etc.</p>
-                    <a href="@Url.Action("Index", "Sessions")" class="btn btn-warning btn-lg">Bekijk Activiteiten</a>
+                <div class="banner-content d-flex flex-column justify-content-between" style="height: 100%;">
+                    <!-- Bovenste Sectie: Titel en Beschrijving -->
+                    <div>
+                        <h1>Bekijk Onze volgende activiteit!</h1>
+                        @* Toegevoegde beschrijving van het evenement *@
+                        @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
+                        {
+                            if ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) ||
+                            Model.UpcomingSessions.First().IsEarlyAccess == false ||
+                            User.Identity.IsAuthenticated)
+                            {
+                                firstSession = Model.UpcomingSessions.First();
+                                <p class="text-white fw-bold mb-0">@firstSession.Title</p>
+                                <p class="event-description mb-3">@firstSession.Description</p>
+                            }
+                            else
+                            {
+                                <p class="text-center">Dit evenement mag je niet zien</p>
+                            }
+                        }
+                        else
+                        {
+                            <p class="text-center">Er zijn geen activiteiten gepland</p>
+                        }
+                    </div>
+
+                    <!-- Onderste Sectie: Opmerking en Knop -->
+                    @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any() &&
+                    ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) ||
+                    Model.UpcomingSessions.First().IsEarlyAccess == false ||
+                    User.Identity.IsAuthenticated))
+                    {
+                        <div class="mt-3">
+                            <p class="mb-0">Toch opzoek naar iets anders?</p>
+                            <a href="@Url.Action("Index", "Sessions", new { id = firstSession.Id })" class="btn btn-warning btn-lg mt-2">Bekijk Activiteiten</a>
+                        </div>
+                    }
                 </div>
             </div>
+
             <!-- Eerstvolgende Activiteit -->
             <div class="col-md-4 mt-4 mt-md-0">
                 @* Bestaande code voor eerstvolgende activiteit *@
                 @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
                 {
-                    if ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) || Model.UpcomingSessions.First().IsEarlyAccess == false || User.Identity.IsAuthenticated)
+                    if ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) ||
+                    Model.UpcomingSessions.First().IsEarlyAccess == false ||
+                    User.Identity.IsAuthenticated)
                     {
                         firstSession = Model.UpcomingSessions.First();
                         <div class="eerstvolgende-activiteit card bg-light text-dark shadow">
@@ -60,7 +95,7 @@
                             <div class="card-body">
                                 <p class="card-text"><strong>Datum:</strong> @firstSession.ActivityDate.ToString("dd-MM-yyyy HH:mm")</p>
                                 <p class="card-text"><strong>Locatie:</strong> @firstSession.Location?.Name</p>
-                                <a href="@Url.Action("Details", "Sessions", new { id = firstSession.Id })" class="btn btn-primary btn-sm">Bekijk</a>
+                                <a href="@Url.Action("Details", "Sessions", new { id = firstSession.Id })" class="btn btn-primary btn-sm">Lees meer</a>
                             </div>
                         </div>
                     }
@@ -77,6 +112,7 @@
         </div>
     </div>
 </div>
+
 
 
 
