@@ -67,8 +67,8 @@
                     User.Identity.IsAuthenticated))
                     {
                         <div class="mt-3">
-                            <p class="mb-0">Toch opzoek naar iets anders?</p>
-                            <a href="@Url.Action("Index", "Sessions", new { id = firstSession.Id })" class="btn btn-warning btn-lg mt-2">Bekijk Activiteiten</a>
+                            <p class="text-muted mb-0">Toch opzoek naar iets anders?</p>
+                            <a href="@Url.Action("Index", "Sessions", new { id = firstSession.Id })" class="btn btn-secondary btn-lg mt-2">Alle Activiteiten</a>
                         </div>
                     }
                 </div>
