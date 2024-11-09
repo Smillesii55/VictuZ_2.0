@@ -9,6 +9,7 @@ using Core.Models.Sessions;
 using Core.Models.Suggestions;
 using Core.Models.Users;
 
+
 namespace Core.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, int>

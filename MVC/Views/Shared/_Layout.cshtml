@@ -34,12 +34,19 @@
                                 <a class="nav-link" asp-area="" asp-controller="Suggestions" asp-action="Index">Suggesties</a>
                             </li>
                         }
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Member"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="MyReservations" asp-action="Index">Mijn Activiteiten</a>
+                            </li>
+                        }
                         @if (User.Identity.IsAuthenticated && User.IsInRole("BoardMember"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Gebruikersbeheer</a>
                             </li>
                         }
+                        
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Sessions" asp-action="Index">Agenda</a>
                         </li>
