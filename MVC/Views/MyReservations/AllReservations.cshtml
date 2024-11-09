@@ -1,0 +1,42 @@
+﻿@model MVC.Models.MyReservationsViewModel
+
+@{
+    ViewData["Title"] = "All Reservations";
+}
+
+<div class="container mt-5">
+    <h2>Alle geplande activiteiten waarvoor je bent ingeschreven:</h2>
+
+    @if (Model.MyReservations != null && Model.MyReservations.Any())
+    {
+        <div class="row">
+            @foreach (var reservation in Model.MyReservations)
+            {
+                <div class="col-lg-4 mb-4">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(reservation.ImageUrl))
+                        {
+                            <img src="@reservation.ImageUrl" class="card-img-top" alt="Afbeelding voor @reservation.Title" style="height: 200px; object-fit: cover;">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@reservation.Title</h5>
+                            <p class="card-text">
+                                <strong>Datum:</strong> @reservation.ActivityDate.ToString("dd-MM-yyyy HH:mm")
+                                <br>
+                                <strong>Locatie:</strong> @reservation.Location?.Name
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="@Url.Action("Details", "Sessions", new { id = reservation.Id })" class="btn btn-primary btn-sm">Bekijk Activiteit</a>
+                                <span class="badge bg-success">Ingeschreven</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center">Je hebt geen reserveringen voor activiteiten.</p>
+    }
+</div>
