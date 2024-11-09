@@ -13,10 +13,9 @@ namespace API.Controllers.Sessions
     {
         private readonly ApplicationDbContext _context;  // Vervang met de naam van jouw DbContext
 
-        public SessionController()
+        public SessionController(ApplicationDbContext context)
         {
-            ApplicationDbContextFactory factory = new ApplicationDbContextFactory();
-            _context = factory.CreateDbContext([]);
+            _context = context;
         }
 
         // GET: api/Session
