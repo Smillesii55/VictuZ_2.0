@@ -12,9 +12,11 @@ namespace API.Controllers.Sessions
     {
         private readonly ApplicationDbContext _context;
 
-        public SessionRegistrationController(ApplicationDbContext context)
+
+        public SessionRegistrationController()
         {
-            _context = context;
+            ApplicationDbContextFactory factory = new ApplicationDbContextFactory();
+            _context = factory.CreateDbContext([]);
         }
 
         // GET: api/SessionRegistration
