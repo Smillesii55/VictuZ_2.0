@@ -13,7 +13,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="CreatedById" class="control-label"></label>
+                <label asp-for="CreatedById" class="control-label">Gemaakt door</label>
                 <select asp-for="CreatedById" class="form-control" asp-items="ViewBag.CreatedById"></select>
             </div>
             <div class="form-group">
@@ -22,7 +22,7 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SubmittedOn" class="control-label"></label>
+                <label asp-for="SubmittedOn" class="control-label">Verstuurd op</label>
                 <input asp-for="SubmittedOn" class="form-control" />
                 <span asp-validation-for="SubmittedOn" class="text-danger"></span>
             </div>
@@ -36,11 +36,7 @@
                     <input class="form-check-input" asp-for="IsAnonymousToBoard" /> @Html.DisplayNameFor(model => model.IsAnonymousToBoard)
                 </label>
             </div>
-            <div class="form-group">
-                <label asp-for="LikeCount" class="control-label"></label>
-                <input asp-for="LikeCount" class="form-control" />
-                <span asp-validation-for="LikeCount" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Aanmaken" class="btn btn-primary" />
             </div>

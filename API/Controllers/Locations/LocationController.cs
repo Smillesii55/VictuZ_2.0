@@ -12,9 +12,10 @@ namespace API.Controllers.Locations
     {
         private readonly ApplicationDbContext _context;  // Vervang met de naam van jouw DbContext
 
-        public LocationController(ApplicationDbContext context)
+        public LocationController()
         {
-            _context = context;
+            ApplicationDbContextFactory factory = new ApplicationDbContextFactory();
+            _context = factory.CreateDbContext([]);
         }
 
         // GET: api/Location
