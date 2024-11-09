@@ -228,10 +228,12 @@
                                 <li>📋 Beheer al je inschrijvingen op één dashboard</li>
                             </ul>
                             <div>
-                                <a href="@Url.Action("Register", "Account")" class="btn btn-primary mt-3">Maak een Account</a>
+                                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary mt-3">Maak een Account</a>
                             </div>
-                            
-                            <a href="@Url.Action("Login", "Account")" class="text-secondary small">Heb je al een account? <u>Log in</u> voor exclusieve content</a>
+
+                            <a asp-area="Identity" asp-page="/Account/Login" class="text-secondary small">
+                                Heb je al een account? <u>Log in</u> voor exclusieve content
+                            </a>
                         </div>
                     }
                 </div>
@@ -293,7 +295,7 @@
                         <div class="mt-4 p-3 bg-light border rounded">
                             <h5>Mis geen evenementen!</h5>
                             <p>Registreer je nu om toegang te krijgen tot exclusieve evenementen met vervroegde toegang.</p>
-                            <a href="@Url.Action("Register", "Account")" class="btn btn-primary">Registreer Nu</a>
+                            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary mt-3">Registreer Nu</a>
                         </div>
                     }
 
