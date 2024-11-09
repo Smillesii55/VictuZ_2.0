@@ -14,31 +14,43 @@
     }
 
     Session firstSession = null;
+
+    // Bereken het aantal zichtbare agenda-items
+    int zichtbareAgendaItems = 0;
+    if (Model.UpcomingSessions != null)
+    {
+        zichtbareAgendaItems = Model.UpcomingSessions.Count(session =>
+            (session.IsEarlyAccess == true && DateTime.Now.AddDays(3) < session.CreatedAt) ||
+            session.IsEarlyAccess == false ||
+            User.Identity.IsAuthenticated
+        );
+    }
 }
 
 <div class="header-banner text-white d-flex align-items-center">
     <div class="overlay"></div> <!-- Overlay voor betere leesbaarheid -->
     <div class="container px-4">
-        <!-- Voeg padding-klassen toe -->
+        <!-- Hoofdrij met banner inhoud en eerstvolgende activiteit -->
         <div class="row align-items-center">
             <!-- Banner Inhoud -->
             <div class="col-md-8">
                 <div class="banner-content">
-                    <h1>Bekijk de volgende activiteiten!</h1>
-                    <p class="lead">Meld je aan en doe mee</p>
+                    <h1>Bekijk Onze volgende activiteit!</h1>
+                    <!-- Toegevoegde beschrijving van het evenement -->
+                    <p class="event-description">Hier komt de beschrijving van het evenement. Vertel de bezoekers meer over wat ze kunnen verwachten, de locatie, het doel van het evenement, etc.</p>
                     <a href="@Url.Action("Index", "Sessions")" class="btn btn-warning btn-lg">Bekijk Activiteiten</a>
                 </div>
             </div>
             <!-- Eerstvolgende Activiteit -->
-            <div class="col-md-4">
+            <div class="col-md-4 mt-4 mt-md-0">
+                @* Bestaande code voor eerstvolgende activiteit *@
                 @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
                 {
                     if ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) || Model.UpcomingSessions.First().IsEarlyAccess == false || User.Identity.IsAuthenticated)
                     {
                         firstSession = Model.UpcomingSessions.First();
-                        <div class="eerstvolgende-activiteit card bg-light text-dark">
+                        <div class="eerstvolgende-activiteit card bg-light text-dark shadow">
                             <div class="card-header bg-secondary text-white">
-                                <!-- Voeg een card-header toe -->
                                 @firstSession.Title
                             </div>
                             @if (!string.IsNullOrEmpty(firstSession.ImageUrl))
@@ -46,7 +58,6 @@
                                 <img src="@firstSession.ImageUrl" class="card-img-top" alt="Afbeelding voor @firstSession.Title" style="height: 150px; object-fit: cover;" />
                             }
                             <div class="card-body">
-                                
                                 <p class="card-text"><strong>Datum:</strong> @firstSession.ActivityDate.ToString("dd-MM-yyyy HH:mm")</p>
                                 <p class="card-text"><strong>Locatie:</strong> @firstSession.Location?.Name</p>
                                 <a href="@Url.Action("Details", "Sessions", new { id = firstSession.Id })" class="btn btn-primary btn-sm">Bekijk</a>
@@ -63,10 +74,12 @@
                     <p class="text-center">Er zijn geen activiteiten gepland</p>
                 }
             </div>
-
         </div>
+p
     </div>
 </div>
+
+
 
 
 <!-- Hoofdinhoud -->
@@ -151,11 +164,25 @@
                     }
                     else
                     {
-                        <p class="text-black">Word lid om suggesties te bekijken en te delen.</p>
+                        <p class="text-muted">Je bent niet ingelogd. Meld je aan om suggesties te zien en bij te dragen!</p>
+                        <div class="text-black mt-3">
+                            <h5>Waarom een account aanmaken?</h5>
+                            <ul>
+                                <li>🔓 Vervroegde toegang tot evenementen</li>
+                                <li>💡 Bekijk en dien je eigen suggesties in</li>
+                                <li>📋 Beheer al je inschrijvingen op één dashboard</li>
+                            </ul>
+                            <div>
+                                <a href="@Url.Action("Register", "Account")" class="btn btn-primary mt-3">Maak een Account</a>
+                            </div>
+                            
+                            <a href="@Url.Action("Login", "Account")" class="text-secondary small">Heb je al een account? <u>Log in</u> voor exclusieve content</a>
+                        </div>
                     }
                 </div>
             </div>
         </div>
+
 
         <!-- Agenda Sectie -->
         <div class="col-md-6 d-flex">
@@ -200,6 +227,17 @@
                     {
                         <p>Geen aankomende activiteiten.</p>
                     }
+
+                    @* Call-to-Action voor niet-ingelogde gebruikers met minder dan 2 zichtbare agenda-items *@
+                    @if (!User.Identity.IsAuthenticated && zichtbareAgendaItems <= 2)
+                    {
+                        <div class="mt-4 p-3 bg-light border rounded">
+                            <h5>Mis geen evenementen!</h5>
+                            <p>Registreer je nu om toegang te krijgen tot exclusieve evenementen met vervroegde toegang.</p>
+                            <a href="@Url.Action("Register", "Account")" class="btn btn-primary">Registreer Nu</a>
+                        </div>
+                    }
+
                     <!-- "Bekijk alle" knop onderaan -->
                     <div class="mt-auto">
                         <a href="@Url.Action("Index", "Sessions")" class="btn btn-outline-primary mt-3">Bekijk alle activiteiten</a>
