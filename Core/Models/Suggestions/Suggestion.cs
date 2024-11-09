@@ -16,6 +16,7 @@ namespace Core.Models.Suggestions
         public bool IsAnonymous { get; set; }
         public bool IsAnonymousToBoard { get; set; }
         public int LikeCount { get; set; }
+        public bool IsDeleted { get; set; }
 
         // Navigation properties
         public User? CreatedBy { get; set; }
