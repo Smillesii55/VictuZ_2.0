@@ -9,11 +9,11 @@ namespace API.Controllers.Suggestions
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SuggestionLikeController : ControllerBase
+    public class SuggesionLikeController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public SuggestionLikeController(ApplicationDbContext context)
+        public SuggesionLikeController(ApplicationDbContext context)
         {
             ApplicationDbContextFactory factory = new ApplicationDbContextFactory();
             _context = factory.CreateDbContext([]);
