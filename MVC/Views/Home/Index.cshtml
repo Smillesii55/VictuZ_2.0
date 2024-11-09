@@ -41,8 +41,14 @@
                         @* Toegevoegde beschrijving van het evenement *@
                         @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
                         {
-                            if ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) ||
-                            Model.UpcomingSessions.First().IsEarlyAccess == false ||
+                            firstSession = Model.UpcomingSessions.First();
+
+                            // Bereken de half duur tussen CreatedAt en ActivityDate
+                            var halfDuration = (firstSession.ActivityDate - firstSession.CreatedAt) / 2;
+                            var earlyAccessDate = firstSession.ActivityDate - halfDuration;
+
+                            if ((firstSession.IsEarlyAccess == true && DateTime.Now >= earlyAccessDate) ||
+                            firstSession.IsEarlyAccess == false ||
                             User.Identity.IsAuthenticated)
                             {
                                 firstSession = Model.UpcomingSessions.First();
@@ -61,15 +67,23 @@
                     </div>
 
                     <!-- Onderste Sectie: Opmerking en Knop -->
-                    @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any() &&
-                    ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) ||
-                    Model.UpcomingSessions.First().IsEarlyAccess == false ||
-                    User.Identity.IsAuthenticated))
-                    {
+                        @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
+                        {
+                            firstSession = Model.UpcomingSessions.First();
+
+                            // Bereken de half duur tussen CreatedAt en ActivityDate
+                            var halfDuration = (firstSession.ActivityDate - firstSession.CreatedAt) / 2;
+                            var earlyAccessDate = firstSession.ActivityDate - halfDuration;
+
+                            if ((firstSession.IsEarlyAccess == true && DateTime.Now >= earlyAccessDate) ||
+                            firstSession.IsEarlyAccess == false ||
+                            User.Identity.IsAuthenticated)
+                            {
                         <div class="mt-3">
                             <p class="text-muted mb-0">Toch opzoek naar iets anders?</p>
                             <a href="@Url.Action("Index", "Sessions", new { id = firstSession.Id })" class="btn btn-secondary btn-lg mt-2">Alle Activiteiten</a>
                         </div>
+                            }
                     }
                 </div>
             </div>
@@ -79,8 +93,14 @@
                 @* Bestaande code voor eerstvolgende activiteit *@
                 @if (Model.UpcomingSessions != null && Model.UpcomingSessions.Any())
                 {
-                    if ((Model.UpcomingSessions.First().IsEarlyAccess == true && DateTime.Now.AddDays(3) < Model.UpcomingSessions.First().CreatedAt) ||
-                    Model.UpcomingSessions.First().IsEarlyAccess == false ||
+                    firstSession = Model.UpcomingSessions.First();
+
+                    // Bereken de half duur tussen CreatedAt en ActivityDate
+                    var halfDuration = (firstSession.ActivityDate - firstSession.CreatedAt) / 2;
+                    var earlyAccessDate = firstSession.ActivityDate - halfDuration;
+
+                    if ((firstSession.IsEarlyAccess == true && DateTime.Now >= earlyAccessDate) ||
+                    firstSession.IsEarlyAccess == false ||
                     User.Identity.IsAuthenticated)
                     {
                         firstSession = Model.UpcomingSessions.First();

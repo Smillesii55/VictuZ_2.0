@@ -21,41 +21,47 @@ namespace MVC.Controllers
         // GET: Suggestions
         public async Task<IActionResult> Index()
         {
-            // Create an instance of SuggestionsViewModel and populate it
+            int? currentUserId = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                string userIdValue = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (!string.IsNullOrEmpty(userIdValue) && int.TryParse(userIdValue, out int parsedUserId))
+                {
+                    currentUserId = parsedUserId;
+                }
+            }
+
+            // 1. Top 3 Suggesties met de hoogste LikeCount
+            var topSuggestions = await _context.Suggestions
+                .Where(s => !s.IsDeleted) // Veronderstel een soft delete mechanisme
+                .OrderByDescending(s => s.LikeCount)
+                .Take(3)
+                .ToListAsync();
+
+            // 2. Trending 3 Suggesties: Meeste likes binnen de kortste tijd sinds creatie, exclusief Top suggesties
+            var trendingSuggestions = await _context.Suggestions
+                .Where(s => !s.IsDeleted && !topSuggestions.Select(ts => ts.Id).Contains(s.Id))
+                .OrderByDescending(s => s.LikeCount)
+                .ThenBy(s => s.SubmittedOn) // Prioriteit aan nieuwere suggesties met veel likes
+                .Take(3)
+                .ToListAsync();
+
+            // 3. Alle overige Suggesties, exclusief Top en Trending
+            var allSuggestions = await _context.Suggestions
+                .Where(s => !s.IsDeleted &&
+                            !topSuggestions.Select(ts => ts.Id).Contains(s.Id) &&
+                            !trendingSuggestions.Select(ts => ts.Id).Contains(s.Id))
+                .OrderByDescending(s => s.SubmittedOn) // Of een andere gewenste volgorde
+                .ToListAsync();
+
             var viewModel = new SuggestionsViewModel
             {
-                TopSuggestions = await GetTopSuggestions(),
-                TrendingSuggestions = await GetTrendingSuggestions(),
-                AllSuggestions = await GetAllSuggestions()
+                TopSuggestions = topSuggestions,
+                TrendingSuggestions = trendingSuggestions,
+                AllSuggestions = allSuggestions
             };
 
             return View(viewModel);
-        }
-
-        private async Task<List<Suggestion>> GetTopSuggestions()
-        {
-            // Logic to retrieve top suggestions, you can customize this.
-            // For example, top could be based on the highest like count.
-            return await _context.Suggestions
-                .OrderByDescending(s => s.LikeCount)
-                .Take(5)
-                .ToListAsync();
-        }
-
-        private async Task<List<Suggestion>> GetTrendingSuggestions()
-        {
-            // Logic to retrieve trending suggestions, e.g., those with increasing likes over time.
-            // You could implement a trend algorithm here.
-            return await _context.Suggestions
-                .OrderByDescending(s => s.SubmittedOn)
-                .Take(5)
-                .ToListAsync();
-        }
-
-        private async Task<List<Suggestion>> GetAllSuggestions()
-        {
-            // Retrieve all suggestions.
-            return await _context.Suggestions.ToListAsync();
         }
 
         // GET: Suggestions/Details/5
@@ -99,9 +105,10 @@ namespace MVC.Controllers
             return View(suggestion);
         }
 
+        // POST: Suggestions/ToggleLike
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ToggleLike(int id)
+        public async Task<IActionResult> ToggleLike(int id)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -114,9 +121,9 @@ namespace MVC.Controllers
                 return Unauthorized();
             }
 
-            var suggestion = _context.Suggestions
+            var suggestion = await _context.Suggestions
                 .Include(s => s.SuggestionLikes)
-                .FirstOrDefault(s => s.Id == id);
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if (suggestion == null)
             {
@@ -128,7 +135,7 @@ namespace MVC.Controllers
             {
                 // Unlike
                 _context.SuggestionLikes.Remove(existingLike);
-                suggestion.LikeCount--;
+                suggestion.LikeCount = Math.Max(0, suggestion.LikeCount - 1); // Voorkom negatieve likes
             }
             else
             {
@@ -139,26 +146,22 @@ namespace MVC.Controllers
                     UserId = userId
                 };
                 _context.SuggestionLikes.Add(like);
-                suggestion.LikeCount++;
+                suggestion.LikeCount += 1;
             }
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            // Haal de URL van de vorige pagina op uit de Referer-header
+            // Redirect naar de vorige pagina of naar Index als referer niet beschikbaar is
             var referer = Request.Headers["Referer"].ToString();
-
             if (!string.IsNullOrEmpty(referer))
             {
-                // Redirect naar de vorige pagina
                 return Redirect(referer);
             }
             else
             {
-                // Als de Referer-header niet beschikbaar is, redirect naar een fallback actie
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
         }
-
 
         private bool SuggestionExists(int id)
         {

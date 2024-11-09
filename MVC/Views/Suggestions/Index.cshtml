@@ -180,60 +180,64 @@
                 <div class="card-body d-flex flex-column flex-grow-1">
                     @if (Model.AllSuggestions != null && Model.AllSuggestions.Any())
                     {
-                        @foreach (var suggestion in Model.AllSuggestions)
-                        {
-                            <div class="card mb-3 suggestion-card">
-                                <div class="card-body">
-                                    <h5 class="card-text">@suggestion.Content</h5>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <small class="text-muted">
-                                            Ingediend op @suggestion.SubmittedOn.ToString("dd-MM-yyyy HH:mm")
-                                            @if (!suggestion.IsAnonymous && suggestion.CreatedBy != null)
-                                            {
-                                                <span>door @suggestion.CreatedBy.UserName</span>
-                                            }
-                                            else
-                                            {
-                                                <span>door Anoniem</span>
-                                            }
-                                        </small>
-                                        @{
-                                            bool userHasLiked = false;
-                                            if (currentUserId.HasValue && suggestion.SuggestionLikes != null)
-                                            {
-                                                userHasLiked = suggestion.SuggestionLikes.Any(like => like.UserId == currentUserId.Value);
-                                            }
-                                        }
-                                        <!-- New Like Button -->
-                                        <div class="uiverse-like-button">
-                                            @if (currentUserId.HasValue)
-                                            {
-                                                @using (Html.BeginForm("ToggleLike", "Suggestions", new { id = suggestion.Id }, FormMethod.Post, false, new { @class = "d-inline" }))
+                        <!-- Scrollable Container -->
+                        <div style="overflow-y: auto; max-height: 400px;">
+                            @foreach (var suggestion in Model.AllSuggestions)
+                            {
+                                <div class="card mb-3 suggestion-card">
+                                    <div class="card-body">
+                                        <h5 class="card-text">@suggestion.Content</h5>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                Ingediend op @suggestion.SubmittedOn.ToString("dd-MM-yyyy HH:mm")
+                                                @if (!suggestion.IsAnonymous && suggestion.CreatedBy != null)
                                                 {
-                                                    @Html.AntiForgeryToken()
-                                                    <div class="like-button">
-                                                        <input class="on" id="heart-@suggestion.Id" type="checkbox" name="liked" @(userHasLiked ? "checked" : "") onchange="this.form.submit();" />
-                                                        <label class="like" for="heart-@suggestion.Id">
-                                                            <svg class="like-icon" fill-rule="nonzero" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"></path>
-                                                            </svg>
-                                                            <span class="like-text">Likes</span>
-                                                        </label>
-                                                        <span class="like-count one">@suggestion.LikeCount</span>
-                                                        <span class="like-count two">@suggestion.LikeCount</span>
-                                                    </div>
+                                                    <span>door @suggestion.CreatedBy.UserName</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>door Anoniem</span>
+                                                }
+                                            </small>
+                                            @{
+                                                bool userHasLiked = false;
+                                                if (currentUserId.HasValue && suggestion.SuggestionLikes != null)
+                                                {
+                                                    userHasLiked = suggestion.SuggestionLikes.Any(like => like.UserId == currentUserId.Value);
                                                 }
                                             }
-                                            else
-                                            {
-                                                <!-- Display Like Count for Unauthenticated Users -->
-                                                <span><i class="fas fa-thumbs-up"></i> @suggestion.LikeCount</span>
-                                            }
+                                            <!-- Like Button -->
+                                            <div class="uiverse-like-button">
+                                                @if (currentUserId.HasValue)
+                                                {
+                                                    @using (Html.BeginForm("ToggleLike", "Suggestions", new { id = suggestion.Id }, FormMethod.Post, false, new { @class = "d-inline" }))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        <div class="like-button">
+                                                            <input class="on" id="heart-@suggestion.Id" type="checkbox" name="liked" @(userHasLiked ? "checked" : "") onchange="this.form.submit();" />
+                                                            <label class="like" for="heart-@suggestion.Id">
+                                                                <!-- SVG Icon -->
+                                                                <svg class="like-icon" fill-rule="nonzero" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"></path>
+                                                                </svg>
+                                                                <span class="like-text">Likes</span>
+                                                            </label>
+                                                            <span class="like-count one">@suggestion.LikeCount</span>
+                                                            <span class="like-count two">@suggestion.LikeCount</span>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <!-- Like Count voor Niet-Geregistreerde Gebruikers -->
+                                                    <span><i class="fas fa-thumbs-up"></i> @suggestion.LikeCount</span>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
+                            }
+                        </div>
                     }
                     else
                     {
@@ -242,7 +246,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
     <!-- Button to add a new suggestion -->
     <div class="text-center mt-4">
