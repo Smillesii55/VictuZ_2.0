@@ -15,8 +15,7 @@ namespace API.Controllers.Suggestions
 
         public SuggestionLikeController(ApplicationDbContext context)
         {
-            ApplicationDbContextFactory factory = new ApplicationDbContextFactory();
-            _context = factory.CreateDbContext([]);
+            _context = context;
         }
 
         // GET: api/SuggestionLike

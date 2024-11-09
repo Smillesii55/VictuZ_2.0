@@ -14,12 +14,11 @@ namespace API.Controllers.Suggestions
 
         public SuggestionController(ApplicationDbContext context)
         {
-            ApplicationDbContextFactory factory = new ApplicationDbContextFactory();
-            _context = factory.CreateDbContext([]);
+            _context = context;
         }
 
-        // GET: api/Suggestion
-        [HttpGet]
+            // GET: api/Suggestion
+            [HttpGet]
         public async Task<ActionResult<IEnumerable<Suggestion>>> GetSuggestions()
         {
             return await _context.Suggestions.ToListAsync();
